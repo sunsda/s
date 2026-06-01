@@ -21,8 +21,14 @@
       messagingSenderId: "147157518487",
       appId: "1:147157518487:web:4137fac6107dfa475741d2"
     };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+    let db = null;
+    try {
+      if (window.firebase && !firebase.apps.length) firebase.initializeApp(firebaseConfig);
+      if (window.firebase) db = firebase.database();
+    } catch (e) {
+      console.warn('Firebase 초기화 실패:', e);
+      db = null;
+    }
   </script>
   <style>
     :root {
@@ -106,6 +112,7 @@
         <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z"/><path fill="#34A853" d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2a4.8 4.8 0 0 1-7.18-2.54H1.83v2.07A8 8 0 0 0 8.98 17z"/><path fill="#FBBC05" d="M4.5 10.52a4.8 4.8 0 0 1 0-3.04V5.41H1.83a8 8 0 0 0 0 7.18l2.67-2.07z"/><path fill="#EA4335" d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 0 0 1.83 5.4L4.5 7.49a4.77 4.77 0 0 1 4.48-3.3z"/></svg>
         Google로 로그인
       </button>
+      <button id="localModeLoginBtn" type="button" style="margin-top:10px;width:100%;padding:12px 20px;border:1.5px solid var(--line);border-radius:12px;background:#f8fafc;font-size:14px;font-weight:700;cursor:pointer;color:var(--muted)">로그인 없이 로컬 모드로 시작 (클라우드 데이터 미사용)</button>
       <div id="loginError" style="margin-top:14px;font-size:13px;color:var(--red);display:none"></div>
     </div>
   </div>
@@ -355,7 +362,7 @@
       <div id="mtab-tasks" class="mtab-content hidden">
         <div style="margin-bottom:12px;color:var(--muted);font-size:13px">프로젝트에 포함할 운영 태스크를 설정합니다. 추가 후에도 태스크 탭에서 수정할 수 있습니다.</div>
         <div id="modalTaskList"></div>
-        <button class="btn btn-secondary btn-small" id="addModalTaskBtn" type="button" style="margin-top:10px">${+ 태스크 추가}</button>
+        <button class="btn btn-secondary btn-small" id="addModalTaskBtn" type="button" style="margin-top:10px">+ 태스크 추가</button>
       </div>
 
       <div class="modal-actions">
@@ -368,8 +375,9 @@
   <script>
     // ── Google 로그인 ──
     const ALLOWED_DOMAIN = 'flyingjp.com';
-    const auth = firebase.auth();
-    const provider = new firebase.auth.GoogleAuthProvider();
+    const auth = (window.firebase && firebase.auth) ? firebase.auth() : null;
+    const provider = (window.firebase && firebase.auth) ? new firebase.auth.GoogleAuthProvider() : null;
+    let localMode = false;
 
     function showLogin(){ document.getElementById('loginScreen').style.display='flex'; document.getElementById('mainApp').style.display='none'; }
     function showApp(){ document.getElementById('loginScreen').style.display='none'; document.getElementById('mainApp').style.display='block'; }
@@ -377,6 +385,12 @@
     document.getElementById('googleLoginBtn').addEventListener('click', async () => {
       const errEl = document.getElementById('loginError');
       errEl.style.display='none';
+      if(!auth || !provider){
+        errEl.textContent = 'Firebase 로그인을 사용할 수 없어 로컬 모드로 실행합니다.';
+        errEl.style.display='block';
+        localMode = true; showApp(); load(); renderTrash(); render();
+        return;
+      }
       try {
         const result = await auth.signInWithPopup(provider);
         const email = result.user.email || '';
@@ -391,19 +405,47 @@
       }
     });
 
-    auth.onAuthStateChanged(user => {
-      if(user && user.email && user.email.endsWith('@' + ALLOWED_DOMAIN)){
-        showApp();
-        load();
-        render();
-      } else {
-        showLogin();
-      }
+    document.getElementById('localModeLoginBtn')?.addEventListener('click', () => {
+      localMode = true;
+      showApp();
+      load();
+      renderTrash();
+      render();
     });
 
-        const ANTHROPIC_API_KEY = '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';
+    if(auth){
+      auth.onAuthStateChanged(user => {
+        if(localMode) return;
+        if(user && user.email && user.email.endsWith('@' + ALLOWED_DOMAIN)){
+          showApp();
+          load();
+          renderTrash();
+          render();
+        } else {
+          showLogin();
+        }
+      });
+    } else {
+      showLogin();
+    }
+
+        const ANTHROPIC_API_KEY = ''; // 브라우저에 API 키를 넣지 않도록 비활성화
     const STORAGE_KEY = 'fj_ad_multi_page_dashboard_blank_v2';
     const TRASH_KEY = 'fj_ad_trash_blank_v2';
+    // 기존 테스트/이전 버전에서 쓰던 localStorage 키도 함께 복구합니다.
+    const LEGACY_STORAGE_KEYS = [
+      'fj_ad_multi_page_dashboard_v1',
+      'fj_ad_multi_page_dashboard_blank_v1',
+      'fj_ad_multi_page_dashboard_blank_v2',
+      'adDashboardStable_v1',
+      'fj_ad_dashboard_final_v1'
+    ];
+    const LEGACY_TRASH_KEYS = [
+      'fj_ad_trash_v1',
+      'fj_ad_trash_blank_v1',
+      'fj_ad_trash_blank_v2'
+    ];
+    let firebaseLoadedOnce = false;
     let projects = [];
     let trash = [];
     let trashOpen = false;
@@ -542,20 +584,53 @@
     }
 
     function load(){
-      try { const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); projects = raw.map(d => makeProject(d)); } catch(e){ projects = []; }
-      try { trash = JSON.parse(localStorage.getItem(TRASH_KEY) || '[]'); } catch(e){ trash = []; }
-      db.ref('dashboard/projects').on('value', snap => {
-        const data = snap.val();
-        if(data && Array.isArray(data) && data.length > 0){
-          projects = data.map(d => makeProject(d));
-          localStorage.setItem(STORAGE_KEY,JSON.stringify(projects));
-          renderSummary();
-          if(selectedProjectId){ const p=getProject(); if(p) renderDetail(); }
-        } else if(projects.length > 0) {
-          db.ref('dashboard/projects').set(projects);
+      // 1) 우선 브라우저 localStorage에서 복구합니다. 현재 키가 비어 있으면 이전 버전 키도 확인합니다.
+      try {
+        let raw = localStorage.getItem(STORAGE_KEY);
+        if(!raw){
+          for(const key of LEGACY_STORAGE_KEYS){
+            raw = localStorage.getItem(key);
+            if(raw) break;
+          }
         }
-      });
-      db.ref('dashboard/trash').on('value', snap => { const data=snap.val(); if(data && Array.isArray(data)) trash=data; });
+        projects = raw ? JSON.parse(raw).map(d => makeProject(d)) : [];
+      } catch(e){ projects = []; }
+      try {
+        let rawTrash = localStorage.getItem(TRASH_KEY);
+        if(!rawTrash){
+          for(const key of LEGACY_TRASH_KEYS){
+            rawTrash = localStorage.getItem(key);
+            if(rawTrash) break;
+          }
+        }
+        trash = rawTrash ? JSON.parse(rawTrash) : [];
+      } catch(e){ trash = []; }
+
+      // 2) 로그인 상태일 때만 Firebase Realtime Database를 읽습니다.
+      //    로컬 모드에서는 Firebase에 쓰지 않습니다. 기존 클라우드 데이터를 덮어쓰는 것을 막기 위함입니다.
+      const canUseCloud = db && !localMode && auth && auth.currentUser && auth.currentUser.email && auth.currentUser.email.endsWith('@' + ALLOWED_DOMAIN);
+      if(canUseCloud){
+        db.ref('dashboard/projects').on('value', snap => {
+          firebaseLoadedOnce = true;
+          const data = snap.val();
+          if(data && Array.isArray(data) && data.length > 0){
+            projects = data.map(d => makeProject(d));
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
+            if(!selectedProjectId || !projects.some(p => p.id === selectedProjectId)) selectedProjectId = projects[0]?.id || null;
+            renderSummary(); renderHome(); renderMainCalendar();
+            if(selectedProjectId && document.getElementById('detailScreen').classList.contains('active')) renderDetail();
+          }
+          // 중요: Firebase가 비어 있어도 자동으로 localStorage 데이터를 업로드하지 않습니다.
+          // 사용자가 저장/수정 액션을 했을 때만 save()를 통해 반영합니다.
+        }, err => {
+          console.warn('Firebase 프로젝트 읽기 실패:', err);
+        });
+        db.ref('dashboard/trash').on('value', snap => {
+          const data = snap.val();
+          if(data && Array.isArray(data)){ trash = data; localStorage.setItem(TRASH_KEY, JSON.stringify(trash)); renderTrash(); }
+        }, err => console.warn('Firebase 휴지통 읽기 실패:', err));
+      }
+
       if(!Array.isArray(projects)) projects = [];
       projects = projects.map(p => makeProject({...p, id:p.id || uid()}));
       if(!Array.isArray(trash)) trash = [];
@@ -564,7 +639,14 @@
     function save(){
       localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
       localStorage.setItem(TRASH_KEY, JSON.stringify(trash));
-      try { db.ref('dashboard/projects').set(projects); db.ref('dashboard/trash').set(trash); } catch(e){}
+      // 로그인된 회사 계정일 때만 Firebase에 저장합니다. 로컬 모드는 클라우드 데이터를 건드리지 않습니다.
+      const canUseCloud = db && !localMode && auth && auth.currentUser && auth.currentUser.email && auth.currentUser.email.endsWith('@' + ALLOWED_DOMAIN);
+      try {
+        if(canUseCloud){
+          db.ref('dashboard/projects').set(projects);
+          db.ref('dashboard/trash').set(trash);
+        }
+      } catch(e){ console.warn('Firebase 저장 실패:', e); }
     }
     function getProject(){ return projects.find(p => p.id === selectedProjectId) || projects[0]; }
 
@@ -922,7 +1004,7 @@
       }).join('');
       return `<section class="panel">
         <div class="panel-title"><h3>운영 태스크</h3><small>상태·진행률은 각 탭 데이터 기준 자동 계산 / 커스텀 태스크는 직접 편집</small></div>
-        <div style="margin-bottom:12px"><button class="btn btn-primary btn-small" id="addTaskBtn" type="button">${+ 태스크 추가}</button></div>
+        <div style="margin-bottom:12px"><button class="btn btn-primary btn-small" id="addTaskBtn" type="button">+ 태스크 추가</button></div>
         <table><thead><tr><th>태스크</th><th>운영 목적</th><th>상태</th><th>진행률</th><th>다음 일정</th><th></th></tr></thead><tbody>${rows}</tbody></table>
       </section>`;
     }
@@ -932,9 +1014,9 @@
       const sorted = p.seoItems.slice().sort((a,b)=> (a.status==='완료')-(b.status==='완료') || parseDate(a.draft)-parseDate(b.draft));
       return `
         <section class="panel">
-          <div class="panel-title"><h3>콘텐츠 관리</h3><small>대기중은 가까운 일정순, 완료는 별도 구분</small><button class="btn btn-secondary btn-small" id="addSeoItemBtn" type="button">${+ SEO 추가}</button></div>
+          <div class="panel-title"><h3>콘텐츠 관리</h3><small>대기중은 가까운 일정순, 완료는 별도 구분</small><button class="btn btn-secondary btn-small" id="addSeoItemBtn" type="button">+ SEO 추가</button></div>
           <div class="summary" style="grid-template-columns:repeat(3,1fr)">
-            <div class="card"><div class="label">${SEO 발행 회차}</div><div class="value">${p.seoItems.length}회차</div></div>
+            <div class="card"><div class="label">SEO 발행 회차</div><div class="value">${p.seoItems.length}회차</div></div>
             <div class="card"><div class="label">대기중</div><div class="value">${pending.length}건</div></div>
             <div class="card"><div class="label">완료</div><div class="value">${done.length}건</div></div>
           </div>
@@ -999,7 +1081,7 @@
           </td>
         </tr>`;
       }).join('');
-      return `<table><thead><tr><th>회차</th><th>초안 제출일</th><th>검수 기간</th><th>공개일</th><th>${SEO 테마}</th><th>상태</th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
+      return `<table><thead><tr><th>회차</th><th>초안 제출일</th><th>검수 기간</th><th>공개일</th><th>SEO 테마</th><th>상태</th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
     }
     function calendarHtml(p){
       // 캘린더 표시 기준 월 (state는 data attr로 유지)
@@ -1079,7 +1161,7 @@
       if(!p.etcItems) p.etcItems = [];
       if(!p.etcItems.length){
         return `<section class="panel">
-          <div class="panel-title"><h3>기타 업무</h3><small>등록된 기타 업무 없음</small><button class="btn btn-secondary btn-small" id="addEtcItemBtn" type="button">${+ 업무 추가}</button></div>
+          <div class="panel-title"><h3>기타 업무</h3><small>등록된 기타 업무 없음</small><button class="btn btn-secondary btn-small" id="addEtcItemBtn" type="button">+ 업무 추가</button></div>
           <div class="empty card" style="box-shadow:none;border-style:dashed">등록된 기타 업무가 없습니다.</div>
         </section>`;
       }
@@ -1099,14 +1181,14 @@
       }).join('');
       const doneCount = p.etcItems.filter(x=>x.status==='완료').length;
       return `<section class="panel">
-        <div class="panel-title"><h3>기타 업무</h3><small>${doneCount}/${p.etcItems.length} 완료</small><button class="btn btn-secondary btn-small" id="addEtcItemBtn" type="button">${+ 업무 추가}</button></div>
+        <div class="panel-title"><h3>기타 업무</h3><small>${doneCount}/${p.etcItems.length} 완료</small><button class="btn btn-secondary btn-small" id="addEtcItemBtn" type="button">+ 업무 추가</button></div>
         <table><thead><tr><th>업무명</th><th>목적 / 내용</th><th>상태</th><th>다음 일정</th><th>메모</th><th></th></tr></thead><tbody>${rows}</tbody></table>
       </section>`;
     }
 
     function partnersHtml(p){
       const rows=(p.partners||[]);
-      if(!rows.length) return `<section class="panel"><div class="panel-title"><h3>체험단 / 제휴 운영</h3><small>등록된 체험단/제휴 일정 없음</small><button class="btn btn-secondary btn-small" id="addPartnerItemBtn" type="button">${+ 체험단 추가}</button></div><div class="empty card" style="box-shadow:none;border-style:dashed">등록된 체험단 또는 제휴 운영 일정이 없습니다.</div></section>`;
+      if(!rows.length) return `<section class="panel"><div class="panel-title"><h3>체험단 / 제휴 운영</h3><small>등록된 체험단/제휴 일정 없음</small><button class="btn btn-secondary btn-small" id="addPartnerItemBtn" type="button">+ 체험단 추가</button></div><div class="empty card" style="box-shadow:none;border-style:dashed">등록된 체험단 또는 제휴 운영 일정이 없습니다.</div></section>`;
       const trs=rows.map((x,i)=>{
         if(x._editing) return `<tr style="background:#f8fafc;border-left:3px solid var(--purple)">
           <td colspan="5" style="padding:14px 16px">
@@ -1129,7 +1211,7 @@
             <button class="btn-icon partner-del-btn" data-idx="${i}" type="button" style="border:1px solid #fecaca;border-radius:7px;padding:5px 9px;cursor:pointer;font-size:13px;background:#fff5f5;color:var(--red)">삭제</button>
           </td></tr>`;
       }).join('');
-      return `<section class="panel"><div class="panel-title"><h3>체험단 / 제휴 운영</h3><small>${SEO 콘텐츠와 분리된 체험단/제휴 일정}</small><button class="btn btn-secondary btn-small" id="addPartnerItemBtn" type="button">${+ 체험단 추가}</button></div><table><thead><tr><th>시기</th><th>진행 내용</th><th>세부 내용 / 담당</th><th>상태</th><th></th></tr></thead><tbody>${trs}</tbody></table></section>`;
+      return `<section class="panel"><div class="panel-title"><h3>체험단 / 제휴 운영</h3><small>SEO 콘텐츠와 분리된 체험단/제휴 일정</small><button class="btn btn-secondary btn-small" id="addPartnerItemBtn" type="button">+ 체험단 추가</button></div><table><thead><tr><th>시기</th><th>진행 내용</th><th>세부 내용 / 담당</th><th>상태</th><th></th></tr></thead><tbody>${trs}</tbody></table></section>`;
     }
     function reportHtml(p){
       if(!p.reportItems || !p.reportItems.length){
@@ -1156,11 +1238,11 @@
       }).join('');
       return `
         <section class="panel">
-          <div class="panel-title"><h3>결과 보고 일정</h3><small>운영 기간 기준 자동 생성 · ${done}/${total} 완료</small><button class="btn btn-secondary btn-small" id="addReportItemBtn" type="button">${+ 보고 추가}</button></div>
+          <div class="panel-title"><h3>결과 보고 일정</h3><small>운영 기간 기준 자동 생성 · ${done}/${total} 완료</small><button class="btn btn-secondary btn-small" id="addReportItemBtn" type="button">+ 보고 추가</button></div>
           <div class="summary" style="grid-template-columns:repeat(3,1fr);margin-bottom:16px">
             <div class="card"><div class="label">전체 보고 횟수</div><div class="value">${total}회</div></div>
             <div class="card"><div class="label">완료</div><div class="value">${done}회</div></div>
-            <div class="card"><div class="label">다음 보고</div><div class="value" style="font-size:18px">${next ? next.date : '-'}</div><div class="sub">${next ? next.label : 전체 완료}</div></div>
+            <div class="card"><div class="label">다음 보고</div><div class="value" style="font-size:18px">${next ? next.date : '-'}</div><div class="sub">${next ? next.label : '전체 완료'}</div></div>
           </div>
           <table><thead><tr><th>보고일</th><th>구분</th><th>상태</th><th>메모</th><th></th></tr></thead><tbody>${rows}</tbody></table>
         </section>
@@ -2435,7 +2517,7 @@
     // ─────────────────────────────────────────────────────────
 
 
-    load(); renderTrash(); render();
+    if(!auth){ load(); renderTrash(); render(); }
   </script>
 </body>
 </html>
