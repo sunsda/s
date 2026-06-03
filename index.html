@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OVAS 観覧客満足度分析レポート</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+<style>
+  :root {
+    --bg:#f0f5ff; --surface:#ffffff;
+    --bp:#2563eb; --bd:#1e3a8a; --bm:#3b82f6;
+    --bl:#dbeafe; --bxl:#eff6ff; --bb:#bfdbfe; --bi:#e0eaff;
+    --tm:#1e293b; --ts:#64748b; --tt:#94a3b8;
+    --gr-bg:#d1fae5; --gr-t:#065f46;
+    --re-bg:#fee2e2; --re-t:#dc2626;
+    --am-bg:#fef3c7; --am-t:#92400e;
+    --rc:16px; --rs:10px; --rp:99px;
+    --sh:0 2px 12px rgba(37,99,235,0.07);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:"Pretendard",sans-serif;background:var(--bg);color:var(--tm);min-height:100vh;}
+
+  .hero{background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 60%,#3b82f6 100%);color:#fff;padding:60px 48px 48px;position:relative;overflow:hidden;}
+  .hero::after{content:"OVAS";position:absolute;right:-10px;top:-20px;font-size:200px;font-weight:800;color:rgba(255,255,255,0.05);letter-spacing:-8px;pointer-events:none;line-height:1;}
+  .hero-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:16px;font-weight:500;}
+  .hero h1{font-size:clamp(26px,4vw,48px);font-weight:800;line-height:1.2;margin-bottom:10px;}
+  .hero-sub{font-size:13px;color:rgba(255,255,255,0.5);margin-top:6px;}
+
+  .stat-strip{display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border-bottom:1px solid var(--bb);box-shadow:var(--sh);}
+  .stat-item{padding:28px 24px;border-right:1px solid var(--bi);}
+  .stat-item:last-child{border-right:none;}
+  .stat-num{font-size:38px;font-weight:800;color:var(--bp);line-height:1;margin-bottom:4px;}
+  .stat-label{font-size:12px;color:var(--ts);font-weight:500;}
+
+  .container{max-width:1160px;margin:0 auto;padding:48px 32px;}
+  .eyebrow{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--bm);font-weight:600;margin-bottom:6px;}
+  .sh{font-size:22px;font-weight:700;margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid var(--bl);color:var(--bd);}
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:40px;}
+  .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:40px;}
+
+  .card{background:var(--surface);border:1px solid var(--bb);border-radius:var(--rc);padding:24px;box-shadow:var(--sh);}
+  .ct{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--tt);font-weight:600;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--bi);}
+
+  .bc{display:flex;flex-direction:column;gap:12px;}
+  .br{display:flex;align-items:center;gap:10px;}
+  .bl2{font-size:13px;min-width:140px;color:var(--tm);font-weight:500;line-height:1.3;}
+  .bt{flex:1;height:26px;background:var(--bxl);border-radius:var(--rp);overflow:hidden;}
+  .bf{height:100%;background:linear-gradient(90deg,var(--bm),var(--bp));border-radius:var(--rp);display:flex;align-items:center;justify-content:flex-end;padding-right:10px;animation:grow 0.9s ease-out forwards;}
+  .bf.ac{background:linear-gradient(90deg,#f87171,#dc2626);}
+  .bf.go{background:linear-gradient(90deg,#fbbf24,#d97706);}
+  .bf.sa{background:linear-gradient(90deg,#34d399,#059669);}
+  .bf.gr{background:linear-gradient(90deg,#94a3b8,#64748b);}
+  .bp2{font-size:11px;color:#fff;font-weight:700;}
+  .bco{font-size:12px;color:var(--tt);min-width:26px;font-weight:600;}
+  @keyframes grow{from{width:0 !important;}}
+
+  .mw{display:flex;gap:8px;margin-bottom:20px;}
+  .mb2{flex:1;height:64px;border-radius:var(--rs);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;font-weight:600;transition:transform 0.2s;cursor:default;}
+  .mb2:hover{transform:translateY(-2px);}
+  .mn{font-size:22px;font-weight:800;}
+
+  .qg{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:40px;}
+  .qi{background:var(--bxl);border:1px solid var(--bb);border-radius:var(--rc);padding:20px;border-left:4px solid var(--bp);font-size:13px;line-height:1.7;}
+  .qi strong{color:var(--bd);}
+  .qm{font-size:10px;color:var(--tt);margin-top:10px;font-weight:600;letter-spacing:0.5px;}
+
+  .il{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:40px;}
+  .ii{display:flex;gap:14px;padding:20px;background:var(--surface);border:1px solid var(--bb);border-radius:var(--rc);box-shadow:var(--sh);}
+  .iic{font-size:26px;flex-shrink:0;width:40px;height:40px;display:flex;align-items:center;justify-content:center;}
+  .iib h4{font-size:14px;font-weight:700;margin-bottom:6px;color:var(--tm);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .iib p{font-size:12.5px;color:var(--ts);line-height:1.65;}
+
+  .badge{display:inline-block;font-size:9px;letter-spacing:1px;padding:2px 8px;border-radius:var(--rp);font-weight:700;background:var(--bl);color:var(--bd);}
+  .badge.warn{background:var(--re-bg);color:var(--re-t);}
+  .badge.gold{background:var(--am-bg);color:var(--am-t);}
+
+  .rl{}
+  .ri{display:flex;gap:20px;padding:20px 0;border-bottom:1px solid var(--bi);}
+  .ri:last-child{border-bottom:none;}
+  .rn{font-size:30px;font-weight:800;min-width:44px;line-height:1.1;color:var(--bl);-webkit-text-stroke:1.5px var(--bp);}
+  .rc2 h4{font-size:15px;font-weight:700;margin-bottom:6px;color:var(--bd);}
+  .rc2 p{font-size:13px;color:var(--ts);line-height:1.7;}
+  .rt{display:inline-block;font-size:10px;letter-spacing:1px;padding:3px 10px;margin-top:8px;border-radius:var(--rp);background:var(--bxl);color:var(--bp);font-weight:700;border:1px solid var(--bb);}
+
+  .sw{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:40px;}
+  .sc{padding:24px;text-align:center;border-radius:var(--rc);border:1px solid var(--bb);background:var(--surface);box-shadow:var(--sh);}
+  .si{font-size:34px;margin-bottom:10px;}
+  .sc h4{font-size:14px;font-weight:700;margin-bottom:6px;color:var(--bd);}
+  .sc p{font-size:12px;color:var(--ts);line-height:1.6;}
+
+  .sep{border:none;border-top:1px solid var(--bi);margin:44px 0;}
+
+  footer{background:var(--bd);color:rgba(255,255,255,0.45);text-align:center;padding:28px;font-size:12px;font-weight:500;line-height:1.8;}
+
+  @media(max-width:768px){
+    .stat-strip,.g2,.g3,.qg,.sw,.il{grid-template-columns:1fr;}
+    .hero{padding:40px 20px;}
+    .container{padding:32px 16px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">Survey Analysis Report · 2026</div>
+  <h1>OVAS 観覧客<br>満足度・認識調査</h1>
+  <div class="hero-sub">大阪観光現地アンケート — 韓国人観覧客対象 / N=3</div>
+</div>
+
+<div class="stat-strip">
+  <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">有効回答者数</div></div>
+  <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">推薦意向率</div></div>
+  <div class="stat-item"><div class="stat-num">67%</div><div class="stat-label">全体満足（満足以上）</div></div>
+  <div class="stat-item"><div class="stat-num">4回↑</div><div class="stat-label">回答者の大阪訪問回数</div></div>
+</div>
+
+<div class="container">
+
+  <div class="eyebrow">Section 01</div>
+  <div class="sh">基本情報・訪問背景</div>
+
+  <div class="g3">
+    <div class="card">
+      <div class="ct">年齢層の分布</div>
+      <div class="bc">
+        <div class="br"><div class="bl2">20代</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
+        <div class="br"><div class="bl2">30代</div><div class="bt"><div class="bf" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
+        <div class="br"><div class="bl2">40代</div><div class="bt"><div class="bf go" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">観覧同行者の構成</div>
+      <div class="bc">
+        <div class="br"><div class="bl2">一人</div><div class="bt"><div class="bf" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
+        <div class="br"><div class="bl2">友人</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
+        <div class="br"><div class="bl2">家族</div><div class="bt"><div class="bf go" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">普段の公演観覧習慣</div>
+      <div class="bc">
+        <div class="br"><div class="bl2">よく観覧する</div><div class="bt"><div class="bf" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
+        <div class="br"><div class="bl2">たまに観覧する</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
+        <div class="br"><div class="bl2">ほぼ初めて</div><div class="bt"><div class="bf go" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="ct">観覧を決めた理由 (Q5)</div>
+      <div class="bc">
+        <div class="br"><div class="bl2">大阪での特別な体験</div><div class="bt"><div class="bf" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
+        <div class="br"><div class="bl2">観光コースの一つ</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
+        <div class="br"><div class="bl2">同行者が希望したため</div><div class="bt"><div class="bf go" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">観覧前の期待度 (Q6)</div>
+      <div class="mw">
+        <div class="mb2" style="background:#dbeafe;color:#1d4ed8;flex:1"><div class="mn">1</div>非常に期待</div>
+        <div class="mb2" style="background:#eff6ff;color:#3b82f6;flex:1"><div class="mn">1</div>普通</div>
+        <div class="mb2" style="background:#f8faff;color:#93b4d8;flex:1"><div class="mn">1</div>期待せず</div>
+      </div>
+      <p style="font-size:12px;color:var(--ts);line-height:1.6;">期待が低かった回答者も<strong>満足</strong>に転換した点が注目されます。</p>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <div class="eyebrow">Section 02</div>
+  <div class="sh">観覧満足度・体験評価</div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="ct">全体的な満足度 (Q8)</div>
+      <div class="bc" style="margin-bottom:14px">
+        <div class="br"><div class="bl2">満足</div><div class="bt"><div class="bf sa" style="width:67%"><span class="bp2">67%</span></div></div><div class="bco">2名</div></div>
+        <div class="br"><div class="bl2">普通</div><div class="bt"><div class="bf gr" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
+      </div>
+      <div style="background:var(--gr-bg);border-radius:var(--rs);padding:12px;text-align:center;">
+        <span style="font-size:13px;color:var(--gr-t);font-weight:700;">不満回答0件・最低限のポジティブ体験が保障</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">期待と実際の比較 (Q10)</div>
+      <div class="bc">
+        <div class="br"><div class="bl2">期待以上</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
+        <div class="br"><div class="bl2">期待通り</div><div class="bt"><div class="bf" style="width:67%"><span class="bp2">67%</span></div></div><div class="bco">2名</div></div>
+        <div class="br"><div class="bl2">期待以下</div><div class="bt"><div class="bf ac" style="width:0%"></div></div><div class="bco">0名</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">最も満足した要素 (Q9)</div>
+      <div class="bc">
+        <div class="br"><div class="bl2">公演内容</div><div class="bt"><div class="bf" style="width:67%"><span class="bp2">67%</span></div></div><div class="bco">2名</div></div>
+        <div class="br"><div class="bl2">非日常的な体験</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">公演の理解度 (Q12)</div>
+      <div class="bc">
+        <div class="br"><div class="bl2">非常にわかりやすい</div><div class="bt"><div class="bf sa" style="width:67%"><span class="bp2">67%</span></div></div><div class="bco">2名</div></div>
+        <div class="br"><div class="bl2">ある程度理解できた</div><div class="bt"><div class="bf" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
+      </div>
+      <p style="font-size:12px;color:var(--ts);line-height:1.6;margin-top:12px;">言語の壁への懸念があっても全員が理解可能 → 視覚・パフォーマンス中心構成の強みを確認</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:40px">
+    <div class="ct">韓国人観光客から見た公演の雰囲気 (Q13)</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+      <div style="text-align:center;padding:20px;background:var(--bxl);border-radius:var(--rs);border:1px solid var(--bb)">
+        <div style="font-size:32px;margin-bottom:8px">😄</div>
+        <div style="font-size:13px;font-weight:700;color:var(--bd)">非常に興味深い</div>
+        <div style="font-size:11px;color:var(--tt);margin-top:4px;font-weight:500">20代・家族</div>
+      </div>
+      <div style="text-align:center;padding:20px;background:var(--bxl);border-radius:var(--rs);border:1px solid var(--bb)">
+        <div style="font-size:32px;margin-bottom:8px">😊</div>
+        <div style="font-size:13px;font-weight:700;color:var(--bd)">概ね楽しかった</div>
+        <div style="font-size:11px;color:var(--tt);margin-top:4px;font-weight:500">30・40代</div>
+      </div>
+      <div style="text-align:center;padding:20px;background:#f8faff;border-radius:var(--rs);border:1px solid var(--bi)">
+        <div style="font-size:32px;margin-bottom:8px">😐</div>
+        <div style="font-size:13px;font-weight:700;color:var(--ts)">馴染みにくい雰囲気</div>
+        <div style="font-size:11px;color:var(--tt);margin-top:4px;font-weight:500">30代・友人同行</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <div class="eyebrow">Section 03</div>
+  <div class="sh">不満点・参入障壁の分析</div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="ct">観覧中に残念だった点 (Q14)</div>
+      <div class="bc" style="margin-bottom:14px">
+        <div class="br"><div class="bl2">価格の負担感</div><div class="bt"><div class="bf ac" style="width:67%"><span class="bp2">67%</span></div></div><div class="bco">2名</div></div>
+        <div class="br"><div class="bl2">馴染みにくい雰囲気</div><div class="bt"><div class="bf gr" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
+      </div>
+      <div style="background:var(--re-bg);border-radius:var(--rs);padding:12px">
+        <p style="font-size:12px;color:var(--re-t);font-weight:700">⚠ 価格が最多の不満要素 (67%)</p>
+        <p style="font-size:12px;color:#b91c1c;margin-top:4px">再訪問および口コミ拡散への心理的ハードルとして機能</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">韓国人が観覧を迷う主な理由 (Q17)</div>
+      <div class="bc">
+        <div class="br"><div class="bl2">言語の壁への不安</div><div class="bt"><div class="bf" style="width:67%"><span class="bp2">67%</span></div></div><div class="bco">2名</div></div>
+        <div class="br"><div class="bl2">好みに合うか不安</div><div class="bt"><div class="bf go" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
+        <div class="br"><div class="bl2">公演内容の理解不足</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
+        <div class="br"><div class="bl2">旅行優先順位が低い</div><div class="bt"><div class="bf gr" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">必要な韓国語サポート (Q15·Q16)</div>
+      <div class="bc">
+        <div class="br"><div class="bl2">韓国語案内</div><div class="bt"><div class="bf" style="width:100%"><span class="bp2">100%</span></div></div><div class="bco">3名</div></div>
+        <div class="br"><div class="bl2">実際の観覧レビュー</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
+        <div class="br"><div class="bl2">旅行コースとの連携紹介</div><div class="bt"><div class="bf go" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">追加してほしい要素</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="padding:11px 14px;background:var(--bxl);border-radius:var(--rs);font-size:13px;border-left:3px solid var(--bp)">🎬 <strong>SNSコンテンツでの発信</strong> — バイラルマーケティング (40代)</div>
+        <div style="padding:11px 14px;background:#fffbeb;border-radius:var(--rs);font-size:13px;border-left:3px solid #d97706">🎟 <strong>割引・参加型イベント</strong> — 価格ハードルの緩和 (20代)</div>
+        <div style="padding:11px 14px;background:#f0fdf4;border-radius:var(--rs);font-size:13px;border-left:3px solid #059669">🗺 <strong>旅行コースとの連携紹介</strong> — 旅程への統合 (30代)</div>
+        <div style="padding:11px 14px;background:#fdf4ff;border-radius:var(--rs);font-size:13px;border-left:3px solid #9333ea">🎌 <strong>アニメ要素の追加</strong> — 韓国人の好みへの対応 (20代)</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <div class="eyebrow">Section 04</div>
+  <div class="sh">推薦意向・再観覧意向</div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="ct">周囲への推薦意向 (Q18)</div>
+      <div class="mw">
+        <div class="mb2" style="background:#dbeafe;color:#1d4ed8;flex:1"><div class="mn">1</div>非常にそう思う</div>
+        <div class="mb2" style="background:#2563eb;color:#fff;flex:2"><div class="mn">2</div>そう思う</div>
+      </div>
+      <div style="background:var(--bl);border-radius:var(--rs);padding:14px;text-align:center;border:1px solid var(--bb)">
+        <span style="font-size:30px;font-weight:800;color:var(--bp)">100%</span>
+        <span style="font-size:13px;color:var(--bd);margin-left:8px;font-weight:600">全員が推薦意向あり</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">再観覧意向 (Q19)</div>
+      <div class="mw">
+        <div class="mb2" style="background:#dbeafe;color:#1d4ed8;flex:1"><div class="mn">1</div>ぜひまた行きたい</div>
+        <div class="mb2" style="background:#2563eb;color:#fff;flex:2"><div class="mn">2</div>少し行きたい</div>
+      </div>
+      <p style="font-size:12px;color:var(--ts);line-height:1.6;margin-top:12px">「全く行きたくない」「行きたくない」の回答0件。再観覧の障壁は主に価格と旅行頻度に起因すると推定。</p>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <div class="eyebrow">Section 05</div>
+  <div class="sh">観覧客の声 (Q21–Q23)</div>
+
+  <div class="qg">
+    <div class="qi">
+      大阪旅行の<br><strong>ユニークな体験</strong>
+      <div style="margin-top:10px;font-size:13px;line-height:1.7;color:var(--ts)">「魅力は十分あるので、しっかりPRすれば反応は良いと思う。」</div>
+      <div class="qm">40代・一人・SNS発信を提案</div>
+    </div>
+    <div class="qi">
+      大阪のローカル公演を<br><strong>全身で体験！</strong>
+      <div style="margin-top:10px;font-size:13px;line-height:1.7;color:var(--ts)">「楽しかったが、子どもと行くには喫煙・飲酒の雰囲気が気になった。まずは公演の存在自体を認知させる必要がある。」</div>
+      <div class="qm">30代・友人同行・認知度拡大を強調</div>
+    </div>
+    <div class="qi">
+      大阪ならではの<br><strong>特別なショー</strong>
+      <div style="margin-top:10px;font-size:13px;line-height:1.7;color:var(--ts)">「皆さんの熱量に感動しました！言語の壁なく十分に楽しめるショーでした。」</div>
+      <div class="qm">20代・家族・言語不要を強調</div>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <div class="eyebrow">Section 06</div>
+  <div class="sh">重要インサイト</div>
+
+  <div class="il">
+    <div class="ii"><div class="iic">✅</div><div class="iib"><h4>言語の壁＝実際の壁ではない <span class="badge">STRENGTH</span></h4><p>観覧前に「言語の壁」を最も多く懸念していたが(67%)、観覧後は全員が理解可能と回答。非言語パフォーマンス中心の構成が韓国人観光客に有効に機能。この「誤解の解消」をマーケティングの核心メッセージとして活用すべき。</p></div></div>
+    <div class="ii"><div class="iic">💰</div><div class="iib"><h4>価格への抵抗が最大の離脱リスク <span class="badge warn">RISK</span></h4><p>回答者の67%が「価格の負担感」を明示的な不満として挙げた。満足度は高いが、再訪問や口コミ拡散への心理的ハードルとして機能。割引クーポン・パッケージ連携など参入コスト緩和策が必要。</p></div></div>
+    <div class="ii"><div class="iic">📢</div><div class="iib"><h4>認知度不足が根本的な課題 <span class="badge warn">RISK</span></h4><p>「公演の存在自体を知らせる必要がある」との直接的な声。3名全員が大阪4回以上の訪問者であり、旅慣れた旅行者もOVASをごく最近知ったことが判明。初期認知チャネルの拡大（SNS・旅行プラットフォーム提携）が最優先課題。</p></div></div>
+    <div class="ii"><div class="iic">🎯</div><div class="iib"><h4>リピーター訪問者がコアターゲット <span class="badge gold">OPPORTUNITY</span></h4><p>全回答者が大阪4回以上の訪問者。「新しい体験」を求める旅慣れた大阪旅行者に特に響く。初訪問者よりリピーター向けマーケティングが有効な可能性が高い。</p></div></div>
+    <div class="ii"><div class="iic">🌐</div><div class="iib"><h4>SNSレビューが主要流入経路になり得る <span class="badge gold">OPPORTUNITY</span></h4><p>推薦意向100%・再観覧意向100%であり口コミマーケティングの潜在力が高い。実際の韓国人観覧レビュー・ショートフォームコンテンツ制作支援でバイラル効果が期待できる。観覧客をコンテンツ生産者として活用する戦略を検討。</p></div></div>
+    <div class="ii"><div class="iic">👨‍👩‍👧</div><div class="iib"><h4>ファミリー観覧環境の改善が必要 <span class="badge">IMPROVE</span></h4><p>飲酒・喫煙の雰囲気により子ども連れでの観覧が難しいとのフィードバック。ファミリー市場は大きいため、ファミリー専用タイム設定や年齢を考慮した環境区分などの対策検討の価値あり。</p></div></div>
+  </div>
+
+  <hr class="sep">
+
+  <div class="eyebrow">Section 07</div>
+  <div class="sh">韓国人最適ターゲットセグメント (Q20より)</div>
+
+  <div class="sw">
+    <div class="sc"><div class="si">🧳</div><h4>特別な体験追求型</h4><p>大阪を複数回訪れた旅慣れた旅行者。一般的な観光地はすでに巡っており、「今回は何か違うもの」を求める層。</p></div>
+    <div class="sc"><div class="si">👫</div><h4>友人・カップル旅行者</h4><p>公演・文化に関心があるか、新しい体験を共有したい20〜30代の同行旅行者。SNSシェア意欲が高い。</p></div>
+    <div class="sc"><div class="si">👨‍👩‍👧‍👦</div><h4>ファミリー旅行者（条件付き）</h4><p>現状の飲酒・喫煙環境改善を前提とした潜在ターゲット。子連れの30〜40代の親世代も公演自体に興味を感じる。</p></div>
+  </div>
+
+  <hr class="sep">
+
+  <div class="eyebrow">Section 08</div>
+  <div class="sh">実行推奨事項</div>
+
+  <div class="card">
+    <div class="rl">
+      <div class="ri"><div class="rn">01</div><div class="rc2"><h4>「言葉がわからなくても楽しめる」メッセージを前面に</h4><p>観覧前の最多懸念(67%)だが、実際には全員が理解に成功。「言語の壁のないパフォーマンス」を韓国語プロモーションの核心コピーとして使用。レビュー収集時にこの体験を際立たせるよう誘導。</p><span class="rt">MARKETING · CONTENT</span></div></div>
+      <div class="ri"><div class="rn">02</div><div class="rc2"><h4>韓国旅行プラットフォームへの出店＋韓国語案内資料の制作</h4><p>認知度不足が核心問題。Klook・マイリアルトリップ・ネイバーカフェの大阪旅行コミュニティなど韓国人接点チャネルへの出店を優先。韓国語パンフレットおよびウェブサイトの韓国語版が必須。</p><span class="rt">DISTRIBUTION · LOCALIZATION</span></div></div>
+      <div class="ri"><div class="rn">03</div><div class="rc2"><h4>価格体系の柔軟化（割引クーポン・パッケージ連携）</h4><p>67%が価格負担を言及。初回体験誘導のための割引クーポン配布、大阪主要観光地パッケージ連携、または早期予約割引の導入。実際の値下げより「特典を受けた感覚」の設計が効果的。</p><span class="rt">PRICING · PARTNERSHIP</span></div></div>
+      <div class="ri"><div class="rn">04</div><div class="rc2"><h4>SNSレビューコンテンツ生産インフラの構築</h4><p>推薦意向100%の資産をバイラルに転換。観覧後のフォトスポット設置・シェア促進、ハッシュタグ運営、韓国人インフルエンサー招待試写会など、レビュー生産エコシステムを積極的に整備。</p><span class="rt">SNS · VIRAL</span></div></div>
+      <div class="ri"><div class="rn">05</div><div class="rc2"><h4>ファミリー観覧環境の分離または改善</h4><p>飲酒・喫煙環境の改善によりファミリー市場の拡大可能性を探索。ファミリー専用時間帯の設定または区域分離だけでも新規ターゲット開拓が期待できる。</p><span class="rt">EXPERIENCE · VENUE</span></div></div>
+    </div>
+  </div>
+
+
+</div><!-- end JP container -->
+
+<!-- TOGGLE SECTION -->
+<div style="background:#fff;border-top:2px solid var(--bi);">
+  <div style="max-width:1160px;margin:0 auto;padding:0 32px;">
+    <button onclick="toggleKR()" id="toggle-btn"
+      style="display:flex;align-items:center;gap:12px;width:100%;padding:24px 0;background:none;border:none;cursor:pointer;text-align:left;font-family:'Pretendard',sans-serif;">
+      <div style="width:36px;height:36px;background:var(--bp);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform 0.3s;" id="toggle-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div>
+        <div style="font-size:15px;font-weight:700;color:var(--bd);">한국어 버전 보기</div>
+        <div style="font-size:12px;color:var(--tt);margin-top:2px;">Korean Version · 동일 내용</div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<div id="kr-section" style="display:none;background:var(--bg);">
+  <!-- KR HERO -->
+  <div class="hero" style="background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 60%,#3b82f6 100%);">
+    <div class="hero-label">Survey Analysis Report · 2026</div>
+    <h1>OVAS 관람객<br>만족도 · 인식 조사</h1>
+    <div class="hero-sub">오사카 관광 현장 설문 — 한국인 관람객 대상 / N=3</div>
+  </div>
+  <div class="stat-strip">
+    <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">유효 응답자 수</div></div>
+    <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">추천 의향률</div></div>
+    <div class="stat-item"><div class="stat-num">67%</div><div class="stat-label">전반 만족 (만족 이상)</div></div>
+    <div class="stat-item"><div class="stat-num">4회↑</div><div class="stat-label">응답자 오사카 방문 횟수</div></div>
+  </div>
+  <div class="container">
+
+  <div class="eyebrow">Section 01</div>
+  <div class="sh">기본 정보 · 방문 맥락</div>
+
+  <div class="g3">
+    <div class="card">
+      <div class="ct">연령대 분포</div>
+      <div class="bc">
+        <div class="br"><div class="bl2">20대</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
+        <div class="br"><div class="bl2">30대</div><div class="bt"><div class="bf" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
+        <div class="br"><div class="bl2">40대</div><div class="bt"><div class="bf go" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">관람 동행 구성</div>
+      <div class="bc">
+        <div class="br"><div class="bl2">혼자</div><div class="bt"><div class="bf" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
+        <div class="br"><div class="bl2">친구</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
+        <div class="br"><div class="bl2">가족</div><div class="bt"><div class="bf go" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">평소 공연 관람 습관</div>
+      <div class="bc">
+        <div class="br"><div class="bl2">자주 관람</div><div class="bt"><div class="bf" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
+        <div class="br"><div class="bl2">가끔 관람</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
+        <div class="br"><div class="bl2">거의 처음</div><div class="bt"><div class="bf go" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="ct">관람 결정 이유 (Q5)</div>
+      <div class="bc">
+        <div class="br"><div class="bl2">오사카 색다른 경험</div><div class="bt"><div class="bf" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
+        <div class="br"><div class="bl2">관광 코스 중 하나</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
+        <div class="br"><div class="bl2">동행인이 원해서</div><div class="bt"><div class="bf go" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">관람 전 기대 수준 (Q6)</div>
+      <div class="mw">
+        <div class="mb2" style="background:#dbeafe;color:#1d4ed8;flex:1"><div class="mn">1</div>매우 기대</div>
+        <div class="mb2" style="background:#eff6ff;color:#3b82f6;flex:1"><div class="mn">1</div>보통</div>
+        <div class="mb2" style="background:#f8faff;color:#93b4d8;flex:1"><div class="mn">1</div>기대 없음</div>
+      </div>
+      <p style="font-size:12px;color:var(--ts);line-height:1.6;">낮은 기대로 온 응답자도 <strong>만족</strong>으로 전환된 점이 주목됩니다.</p>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <div class="eyebrow">Section 02</div>
+  <div class="sh">관람 만족도 · 경험 평가</div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="ct">전반 만족도 (Q8)</div>
+      <div class="bc" style="margin-bottom:14px">
+        <div class="br"><div class="bl2">만족</div><div class="bt"><div class="bf sa" style="width:67%"><span class="bp2">67%</span></div></div><div class="bco">2명</div></div>
+        <div class="br"><div class="bl2">보통</div><div class="bt"><div class="bf gr" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
+      </div>
+      <div style="background:var(--gr-bg);border-radius:var(--rs);padding:12px;text-align:center;">
+        <span style="font-size:13px;color:var(--gr-t);font-weight:700;">불만족 응답 0건 · 최소한의 긍정 경험 보장</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">기대 대비 실제 경험 (Q10)</div>
+      <div class="bc">
+        <div class="br"><div class="bl2">기대 이상</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
+        <div class="br"><div class="bl2">기대한 만큼</div><div class="bt"><div class="bf" style="width:67%"><span class="bp2">67%</span></div></div><div class="bco">2명</div></div>
+        <div class="br"><div class="bl2">기대 이하</div><div class="bt"><div class="bf ac" style="width:0%"></div></div><div class="bco">0명</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">가장 만족한 요소 (Q9)</div>
+      <div class="bc">
+        <div class="br"><div class="bl2">공연 내용</div><div class="bt"><div class="bf" style="width:67%"><span class="bp2">67%</span></div></div><div class="bco">2명</div></div>
+        <div class="br"><div class="bl2">색다른 경험</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">공연 이해도 (Q12)</div>
+      <div class="bc">
+        <div class="br"><div class="bl2">매우 쉬웠다</div><div class="bt"><div class="bf sa" style="width:67%"><span class="bp2">67%</span></div></div><div class="bco">2명</div></div>
+        <div class="br"><div class="bl2">어느 정도 이해</div><div class="bt"><div class="bf" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
+      </div>
+      <p style="font-size:12px;color:var(--ts);line-height:1.6;margin-top:12px;">언어 장벽 우려에도 전원 이해 가능 → 시각·퍼포먼스 중심 구성의 강점 확인</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:40px">
+    <div class="ct">한국인 관점 공연 분위기 (Q13)</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+      <div style="text-align:center;padding:20px;background:var(--bxl);border-radius:var(--rs);border:1px solid var(--bb)">
+        <div style="font-size:32px;margin-bottom:8px">😄</div>
+        <div style="font-size:13px;font-weight:700;color:var(--bd)">매우 흥미로움</div>
+        <div style="font-size:11px;color:var(--tt);margin-top:4px;font-weight:500">20대 · 가족</div>
+      </div>
+      <div style="text-align:center;padding:20px;background:var(--bxl);border-radius:var(--rs);border:1px solid var(--bb)">
+        <div style="font-size:32px;margin-bottom:8px">😊</div>
+        <div style="font-size:13px;font-weight:700;color:var(--bd)">대체로 재미있음</div>
+        <div style="font-size:11px;color:var(--tt);margin-top:4px;font-weight:500">30·40대</div>
+      </div>
+      <div style="text-align:center;padding:20px;background:#f8faff;border-radius:var(--rs);border:1px solid var(--bi)">
+        <div style="font-size:32px;margin-bottom:8px">😐</div>
+        <div style="font-size:13px;font-weight:700;color:var(--ts)">낯선 느낌</div>
+        <div style="font-size:11px;color:var(--tt);margin-top:4px;font-weight:500">30대 친구동행</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <div class="eyebrow">Section 03</div>
+  <div class="sh">아쉬운 점 · 진입 장벽 분석</div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="ct">관람 중 아쉬웠던 점 (Q14)</div>
+      <div class="bc" style="margin-bottom:14px">
+        <div class="br"><div class="bl2">가격 부담</div><div class="bt"><div class="bf ac" style="width:67%"><span class="bp2">67%</span></div></div><div class="bco">2명</div></div>
+        <div class="br"><div class="bl2">낯선 분위기</div><div class="bt"><div class="bf gr" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
+      </div>
+      <div style="background:var(--re-bg);border-radius:var(--rs);padding:12px">
+        <p style="font-size:12px;color:var(--re-t);font-weight:700">⚠ 가격이 최다 불만 요소 (67%)</p>
+        <p style="font-size:12px;color:#b91c1c;margin-top:4px">재방문 및 추천 확산에 심리적 허들로 작용</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">한국인이 관람 망설이는 이유 (Q17)</div>
+      <div class="bc">
+        <div class="br"><div class="bl2">언어 장벽 우려</div><div class="bt"><div class="bf" style="width:67%"><span class="bp2">67%</span></div></div><div class="bco">2명</div></div>
+        <div class="br"><div class="bl2">취향 불확실</div><div class="bt"><div class="bf go" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
+        <div class="br"><div class="bl2">공연 이해 부족</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
+        <div class="br"><div class="bl2">여행 우선순위 낮음</div><div class="bt"><div class="bf gr" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">필요한 한국어 지원 (Q15·Q16)</div>
+      <div class="bc">
+        <div class="br"><div class="bl2">한국어 안내</div><div class="bt"><div class="bf" style="width:100%"><span class="bp2">100%</span></div></div><div class="bco">3명</div></div>
+        <div class="br"><div class="bl2">실제 관람 후기</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
+        <div class="br"><div class="bl2">여행코스 연계 소개</div><div class="bt"><div class="bf go" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">추가되길 바라는 요소</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="padding:11px 14px;background:var(--bxl);border-radius:var(--rs);font-size:13px;border-left:3px solid var(--bp)">🎬 <strong>SNS 콘텐츠 홍보</strong> — 바이럴 마케팅 (40대)</div>
+        <div style="padding:11px 14px;background:#fffbeb;border-radius:var(--rs);font-size:13px;border-left:3px solid #d97706">🎟 <strong>할인 이벤트 &amp; 참여형 이벤트</strong> — 가격 허들 완화 (20대)</div>
+        <div style="padding:11px 14px;background:#f0fdf4;border-radius:var(--rs);font-size:13px;border-left:3px solid #059669">🗺 <strong>여행 코스 연계 소개</strong> — 여행 동선 통합 (30대)</div>
+        <div style="padding:11px 14px;background:#fdf4ff;border-radius:var(--rs);font-size:13px;border-left:3px solid #9333ea">🎌 <strong>애니메이션 요소 추가</strong> — 한국 취향 공략 (20대)</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <div class="eyebrow">Section 04</div>
+  <div class="sh">추천 의향 · 재관람 의향</div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="ct">주변 추천 의향 (Q18)</div>
+      <div class="mw">
+        <div class="mb2" style="background:#dbeafe;color:#1d4ed8;flex:1"><div class="mn">1</div>매우 그렇다</div>
+        <div class="mb2" style="background:#2563eb;color:#fff;flex:2"><div class="mn">2</div>그렇다</div>
+      </div>
+      <div style="background:var(--bl);border-radius:var(--rs);padding:14px;text-align:center;border:1px solid var(--bb)">
+        <span style="font-size:30px;font-weight:800;color:var(--bp)">100%</span>
+        <span style="font-size:13px;color:var(--bd);margin-left:8px;font-weight:600">전원 추천 의향 보유</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">재관람 의향 (Q19)</div>
+      <div class="mw">
+        <div class="mb2" style="background:#dbeafe;color:#1d4ed8;flex:1"><div class="mn">1</div>매우 있다</div>
+        <div class="mb2" style="background:#2563eb;color:#fff;flex:2"><div class="mn">2</div>조금 있다</div>
+      </div>
+      <p style="font-size:12px;color:var(--ts);line-height:1.6;margin-top:12px">"매우 없다" "없다" 응답 0건. 재관람 장벽은 주로 가격과 여행 빈도에 기인할 것으로 추정.</p>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <div class="eyebrow">Section 05</div>
+  <div class="sh">관람객 직접 목소리 (Q21–Q23)</div>
+
+  <div class="qg">
+    <div class="qi">
+      오사카 여행의<br><strong>독특한 체험</strong>
+      <div style="margin-top:10px;font-size:13px;line-height:1.7;color:var(--ts)">"장점이 충분해서 홍보가 잘되면 반응이 좋을 거라 생각됨."</div>
+      <div class="qm">40대 · 혼자 · SNS 홍보 제안</div>
+    </div>
+    <div class="qi">
+      오사카의 로컬 공연을<br><strong>온몸으로!</strong>
+      <div style="margin-top:10px;font-size:13px;line-height:1.7;color:var(--ts)">"재미있었지만 아이들이랑 가기엔 흡연·음주 분위기가 아쉬움. 공연의 존재 자체를 알려야 함."</div>
+      <div class="qm">30대 · 친구 동행 · 인지도 확대 강조</div>
+    </div>
+    <div class="qi">
+      오사카만의<br><strong>특별한 쇼</strong>
+      <div style="margin-top:10px;font-size:13px;line-height:1.7;color:var(--ts)">"다들 너무 열정적으로 공연해서 반했습니다! 언어 장벽 없이 충분히 즐길 수 있었어요."</div>
+      <div class="qm">20대 · 가족 · 언어 장벽 불필요 강조</div>
+    </div>
+  </div>
+
+  <hr class="sep">
+
+  <div class="eyebrow">Section 06</div>
+  <div class="sh">핵심 인사이트</div>
+
+  <div class="il">
+    <div class="ii"><div class="iic">✅</div><div class="iib"><h4>언어 장벽 = 실제 장벽 아님 <span class="badge">STRENGTH</span></h4><p>관람 전 "언어 장벽"을 가장 많이 우려했지만(67%), 막상 관람 후에는 전원 이해 가능하다고 응답. 비언어 퍼포먼스 중심 구성이 한국 관광객에게 유효하게 작동. 이 '착각 해소'를 마케팅 핵심 메시지로 활용해야 함.</p></div></div>
+    <div class="ii"><div class="iic">💰</div><div class="iib"><h4>가격 저항이 최대 이탈 위험 <span class="badge warn">RISK</span></h4><p>응답자 67%가 "가격 부담"을 명시적 아쉬움으로 지목. 만족도는 높지만 재방문 및 추천 확산에 가격이 심리적 허들로 작용. 할인 쿠폰·패키지 연계 등 진입 비용 완화 전략이 필요.</p></div></div>
+    <div class="ii"><div class="iic">📢</div><div class="iib"><h4>인지도 부재가 근본 문제 <span class="badge warn">RISK</span></h4><p>"공연의 존재 자체를 알려야 한다"는 직접 언급. 3명 모두 오사카 4회 이상 방문자로, 경험 많은 여행객도 OVAS를 최근에야 인지. 초기 인지 채널 확장(SNS, 여행 플랫폼 제휴)이 최우선 과제.</p></div></div>
+    <div class="ii"><div class="iic">🎯</div><div class="iib"><h4>고반복 방문자가 핵심 타깃 <span class="badge gold">OPPORTUNITY</span></h4><p>응답자 전원이 오사카 4회 이상 방문자. "색다른 경험"을 원하는 숙련된 오사카 여행자에게 특히 어필. 첫 방문자보다 반복 여행자 대상 마케팅이 효과적일 가능성이 높음.</p></div></div>
+    <div class="ii"><div class="iic">🌐</div><div class="iib"><h4>SNS 후기가 핵심 유입 경로 될 것 <span class="badge gold">OPPORTUNITY</span></h4><p>추천 의향 100%, 재관람 의향 100%이므로 구전 마케팅 잠재력 높음. 실제 한국인 관람 후기·숏폼 콘텐츠 제작 지원 시 바이럴 효과 기대 가능. 관람객을 콘텐츠 생산자로 활용하는 전략 고려.</p></div></div>
+    <div class="ii"><div class="iic">👨‍👩‍👧</div><div class="iib"><h4>가족 관람객 환경 개선 필요 <span class="badge">IMPROVE</span></h4><p>음주·흡연 분위기로 인해 아이와 함께하기 어렵다는 피드백. 가족 여행객은 큰 시장이므로, 패밀리 타임 별도 운영 또는 연령 고려 환경 구획 등 대안 검토 가치 있음.</p></div></div>
+  </div>
+
+  <hr class="sep">
+
+  <div class="eyebrow">Section 07</div>
+  <div class="sh">한국인 최적 타깃 세그먼트 (Q20 기반)</div>
+
+  <div class="sw">
+    <div class="sc"><div class="si">🧳</div><h4>특별한 경험 추구형</h4><p>오사카를 여러 번 방문한 숙련 여행자. 일반 관광지는 이미 다 돌아봤고, "이번엔 뭔가 다른 것"을 원하는 층.</p></div>
+    <div class="sc"><div class="si">👫</div><h4>친구/커플 여행객</h4><p>공연·문화에 관심이 있거나 새로운 경험을 함께 나누고 싶은 20~30대 동반 여행자. SNS 공유 욕구 높음.</p></div>
+    <div class="sc"><div class="si">👨‍👩‍👧‍👦</div><h4>가족 여행객 (조건부)</h4><p>현재 음주·흡연 분위기 개선 전제 하에 잠재 타깃. 아이가 있는 30~40대 부모 세대도 공연 자체에 흥미를 느낌.</p></div>
+  </div>
+
+  <hr class="sep">
+
+  <div class="eyebrow">Section 08</div>
+  <div class="sh">실행 권고사항</div>
+
+  <div class="card">
+    <div class="rl">
+      <div class="ri"><div class="rn">01</div><div class="rc2"><h4>"언어 몰라도 즐길 수 있다" 메시지를 전면에</h4><p>관람 전 최다 우려(67%)지만 실제론 전원 이해 성공. "언어 장벽 없는 퍼포먼스"를 한국어 홍보의 핵심 카피로 사용. 리뷰 수집 시 이 경험을 부각하도록 유도.</p><span class="rt">MARKETING · CONTENT</span></div></div>
+      <div class="ri"><div class="rn">02</div><div class="rc2"><h4>한국 여행 플랫폼 입점 + 한국어 안내 자료 제작</h4><p>인지도 부재가 핵심 문제. 클룩, 마이리얼트립, 네이버 카페 오사카 여행 커뮤니티 등 한국인 접점 채널 입점 우선. 한국어 팸플릿 및 웹사이트 한국어 버전 필수.</p><span class="rt">DISTRIBUTION · LOCALIZATION</span></div></div>
+      <div class="ri"><div class="rn">03</div><div class="rc2"><h4>가격 체계 유연화 (할인 쿠폰 / 패키지 연계)</h4><p>67%가 가격 부담 언급. 초기 경험 유도를 위한 할인 쿠폰 배포, 오사카 주요 관광지 패키지 연계, 또는 조기 예약 할인 도입. 실제 가격 인하보다 "혜택 받은 느낌" 설계가 효과적.</p><span class="rt">PRICING · PARTNERSHIP</span></div></div>
+      <div class="ri"><div class="rn">04</div><div class="rc2"><h4>SNS 후기 콘텐츠 생산 인프라 구축</h4><p>추천 의향 100% 자원을 바이럴로 전환. 관람 후 포토존·공유 유도 멘트, 해시태그 운영, 한국인 인플루언서 초청 시사회 등 후기 생산 생태계를 적극 조성.</p><span class="rt">SNS · VIRAL</span></div></div>
+      <div class="ri"><div class="rn">05</div><div class="rc2"><h4>가족 관람 환경 분리 또는 개선</h4><p>음주·흡연 환경 개선을 통해 가족 시장 확장 가능성 탐색. 패밀리 전용 시간대 운영 또는 구역 분리만으로도 신규 타깃 개척 기대.</p><span class="rt">EXPERIENCE · VENUE</span></div></div>
+    </div>
+  </div>
+
+  </div>
+  <div style="background:var(--bd);color:rgba(255,255,255,0.45);text-align:center;padding:28px;font-size:12px;font-weight:500;line-height:1.8;">
+    OVAS 관람객 만족도 및 인식 조사 분석 리포트 &nbsp;·&nbsp; N=3 (유효 한국어 응답) &nbsp;·&nbsp; 2026.04–05<br>
+    소규모 표본으로 통계적 대표성 제한 — 추가 설문 확장 권장
+  </div>
+</div>
+
+<script>
+function toggleKR() {
+  var sec = document.getElementById('kr-section');
+  var btn = document.getElementById('toggle-btn');
+  var icon = document.getElementById('toggle-icon');
+  var label = btn.querySelector('div > div:first-child');
+  var sub = btn.querySelector('div > div:last-child');
+  var open = sec.style.display === 'none';
+  sec.style.display = open ? 'block' : 'none';
+  icon.style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
+  label.textContent = open ? '한국어 버전 닫기' : '한국어 버전 보기';
+  sub.textContent = open ? 'Korean Version · 접기' : 'Korean Version · 동일 내용';
+  if (open) sec.scrollIntoView({behavior:'smooth', block:'start'});
+}
+</script>
+
+
+<footer>
+  OVAS 観覧客満足度および認識調査分析レポート &nbsp;·&nbsp; N=3（有効韓国語回答）&nbsp;·&nbsp; 2026.04–05<br>
+  少規模サンプルのため統計的代表性に限界あり — 追加アンケートの拡大を推奨
+</footer>
+
+</body>
+</html>
