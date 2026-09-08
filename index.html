@@ -2,112 +2,75 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>야마토 수하물 배송 요금 최종 기획안 / ヤマト手荷物配送 料金最終案</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>야마토 수하물 배송 요금안 / ヤマト手荷物配送 料金案</title>
 <style>
-:root{--bg:#f5f7f6;--text:#172019;--muted:#6b756f;--line:#dce5df;--green:#075a34;--soft:#eaf4ee;--amber:#fff7e8;--blue:#edf5fb;--dark:#102e21}
-*{box-sizing:border-box}
-body{
-  margin:0;background:var(--bg);color:var(--text);
-  font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Noto Sans KR","Hiragino Kaku Gothic ProN","Yu Gothic","Meiryo","Segoe UI",sans-serif;
+:root {
+  --bg:#f5f7f6; --card:#ffffff; --text:#172019; --muted:#6c776f;
+  --line:#dde5df; --green:#075a34; --amber:#fff7e8; --blue:#eef6fb;
 }
-.wrap{width:min(1380px,calc(100% - 28px));margin:24px auto 60px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Noto Sans KR","Hiragino Kaku Gothic ProN","Yu Gothic","Meiryo","Segoe UI",sans-serif}
+.wrap{width:min(1260px,calc(100% - 28px));margin:24px auto 60px}
 .hero{background:var(--green);color:#fff;border-radius:18px;padding:26px 28px}
-.hero .tag{font-size:12px;font-weight:850;letter-spacing:.08em;opacity:.75}
-.hero h1{margin:5px 0 3px;font-size:31px}
-.hero .ja-title{font-size:18px;font-weight:800;opacity:.9;margin-bottom:8px}
-.hero p{margin:0;font-size:14px;opacity:.9;line-height:1.6}
-.hero .jp-line{color:rgba(255,255,255,.78)}
-.bi,.cell-bi,.th-bi{display:flex;flex-direction:column;gap:2px;align-items:center}
-.ko{font-weight:800}
-.ja{font-size:11px;color:#6f7973;font-weight:650;line-height:1.4}
-.th-bi .ja{font-size:10px}
-.jp-line{font-size:12px;color:#7b857f;line-height:1.55}
-.section-ja{font-size:13px;color:#7a857f;font-weight:700;margin-top:2px}
-.unit-ja{display:block;font-size:10px;color:#7a857f;margin-top:2px}
-
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
-.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:17px 18px}
-.card .name{font-weight:900;font-size:16px}
-.card .ja-name{font-size:12px;color:var(--muted);font-weight:700;margin-top:2px}
-.card .price{font-size:27px;font-weight:950;color:var(--green);margin-top:3px}
-.card .desc{font-size:12px;color:var(--muted);line-height:1.6;margin-top:5px}
-
-.notice{margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:15px;padding:15px 17px;font-size:13px;line-height:1.7}
-.notice b{color:var(--green)}
-
-.fee-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
-.fee-card{background:#fff;border:1px solid var(--line);border-radius:15px;padding:16px 17px}
-.fee-card .range{font-size:15px;font-weight:900}
-.fee-card .fee{font-size:25px;font-weight:950;color:var(--green);margin-top:3px}
-.fee-card .ja-fee{font-size:12px;font-weight:750;color:#607067;margin-top:2px}
-.fee-card .desc{font-size:12px;color:var(--muted);line-height:1.55;margin-top:5px}
-
+.hero .tag{font-size:12px;font-weight:800;letter-spacing:.08em;opacity:.75}
+.hero h1{margin:6px 0 2px;font-size:30px}
+.hero .ja-title{font-size:17px;font-weight:800;opacity:.88}
+.hero p{margin:10px 0 0;font-size:13px;line-height:1.7;opacity:.9}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+.card h2{margin:0;font-size:20px}
+.card .ja{margin-top:2px;font-size:12px;color:var(--muted);font-weight:700}
+.price-row{display:flex;gap:18px;margin-top:14px;flex-wrap:wrap}
+.price-block{min-width:140px}
+.label{font-size:12px;color:var(--muted);font-weight:750}
+.big{margin-top:2px;font-size:28px;font-weight:950;color:var(--green)}
+.desc{margin-top:10px;font-size:12px;color:var(--muted);line-height:1.65}
 .flow{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
 .flow-card{background:#fff;border:1px solid var(--line);border-radius:15px;padding:17px}
-.flow-card.late{background:var(--amber)} .flow-card.air{background:var(--blue)}
-.time{font-size:20px;font-weight:950;color:var(--green)}
-.ftitle{font-weight:900;margin-top:4px}
-.fja{font-size:12px;font-weight:700;color:#66756c;margin-top:2px}
-.fdesc{font-size:13px;color:var(--muted);line-height:1.55;margin-top:6px}
-
-.logic{margin-top:14px;background:var(--dark);color:#fff;border-radius:16px;padding:18px 20px}
-.logic h3{margin:0;font-size:16px}
-.logic .logic-ja{font-size:12px;opacity:.78;margin:2px 0 8px}
-.logic p{margin:0;font-size:13px;line-height:1.7;opacity:.92}
-
-.section{margin-top:30px}
-.title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.section h2{font-size:22px;margin:0}
-.badge{display:inline-block;padding:6px 10px;border-radius:12px;background:var(--soft);color:var(--green);font-size:11px;font-weight:900;text-align:center;line-height:1.4}
-.badge small{font-size:10px;font-weight:700}
-.sub{font-size:13px;color:var(--muted);line-height:1.65;margin:7px 0 11px}
-
-.table-wrap{background:#fff;border:1px solid var(--line);border-radius:17px;overflow:auto}
-table{width:100%;border-collapse:collapse;min-width:1460px}
-th,td{padding:13px 10px;border-bottom:1px solid var(--line);text-align:center;white-space:nowrap;vertical-align:middle}
-th{font-size:12px;color:#56635a;background:#f8faf9}
-th small{display:block;font-size:10px;color:#87918b;margin-top:4px}
+.flow-card.next{background:var(--amber)}
+.flow-card.air{background:var(--blue)}
+.time{font-size:19px;font-weight:950;color:var(--green)}
+.ftitle{margin-top:4px;font-weight:900}
+.fja{margin-top:2px;font-size:11px;color:var(--muted);font-weight:700}
+.fdesc{margin-top:6px;font-size:12px;color:var(--muted);line-height:1.6}
+.note{margin-top:14px;padding:15px 17px;background:#fff;border:1px solid var(--line);border-radius:15px;font-size:13px;line-height:1.7}
+.note b{color:var(--green)}
+.section{margin-top:28px}
+.section h2{margin:0;font-size:22px}
+.section .ja-head{margin-top:2px;font-size:13px;font-weight:700;color:var(--muted)}
+.table-wrap{margin-top:11px;background:#fff;border:1px solid var(--line);border-radius:17px;overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:1080px}
+th,td{padding:13px 11px;border-bottom:1px solid var(--line);text-align:center;vertical-align:middle;white-space:nowrap}
+th{background:#f8faf9;color:#56635a;font-size:12px}
 td{font-size:13px}
 tbody tr:last-child td{border-bottom:0}
+.jp-small{display:block;margin-top:2px;color:#7a857e;font-size:10px;font-weight:650}
 .cost{font-weight:850}
-.handling{font-weight:900;color:#274f3a}
 .money{font-size:15px;font-weight:950;color:var(--green)}
 .profit{display:block;margin-top:3px;font-size:11px;font-weight:850;color:#7a5b16}
-.late-head{background:#fff2d5}
-.late{background:#fffaf0}
-
-.calc{margin-top:30px;background:#fff;border:1px solid var(--line);border-radius:17px;padding:20px}
+.next{background:#fffaf0}
+.calc{margin-top:28px;background:#fff;border:1px solid var(--line);border-radius:17px;padding:20px}
 .calc h2{margin:0;font-size:22px}
-.calc .ja-head{font-size:13px;color:var(--muted);font-weight:700;margin:2px 0 12px}
-.inputs{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
-label{display:flex;flex-direction:column;gap:2px;font-size:12px;font-weight:850;color:#59655e;margin-bottom:5px}
-label small{font-size:10px;color:#7a857f;font-weight:700}
-select,input{width:100%;height:44px;border:1px solid #ccd7d0;border-radius:10px;background:#fff;padding:0 11px;font:inherit;color:var(--text)}
+.calc .ja-head{margin-top:2px;font-size:13px;color:var(--muted);font-weight:700}
+.inputs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+label{display:block;margin-bottom:5px;font-size:12px;font-weight:850;color:#59655e}
+label small{display:block;margin-top:2px;font-size:10px;color:#7b857f;font-weight:700}
+select,input{width:100%;height:44px;padding:0 11px;border:1px solid #ccd7d0;border-radius:10px;background:#fff;color:var(--text);font:inherit}
 .results{display:grid;grid-template-columns:1.05fr .95fr;gap:12px;margin-top:14px}
 .total{background:var(--green);color:#fff;border-radius:14px;padding:18px 20px}
-.lab{font-size:12px;opacity:.78;line-height:1.45}
-.amount{font-size:34px;font-weight:950;line-height:1.2;margin-top:2px}
-.service{font-size:13px;opacity:.9;margin-top:7px}
+.rlabel{font-size:12px;opacity:.78}
+.amount{margin-top:2px;font-size:34px;font-weight:950;line-height:1.2}
+.margin{margin-top:7px;font-size:14px;font-weight:800}
 .delivery{background:#f7f9f8;border:1px solid var(--line);border-radius:14px;padding:18px 20px}
-.delivery .lab{color:var(--muted);font-weight:850;opacity:1}
-.delivery .main{font-size:21px;font-weight:950;margin-top:3px}
-.delivery .note{font-size:12px;color:var(--muted);line-height:1.55;margin-top:7px}
-.breakdown{margin-top:10px;border:1px dashed #cad6cf;border-radius:12px;padding:12px 14px;background:#fbfcfb;font-size:13px;color:#59645d;line-height:1.65}
+.delivery .rlabel{color:var(--muted);opacity:1;font-weight:850}
+.delivery .main{margin-top:3px;font-size:20px;font-weight:950}
+.delivery .sub{margin-top:7px;font-size:12px;line-height:1.55;color:var(--muted)}
+.breakdown{margin-top:10px;padding:12px 14px;border:1px dashed #cbd6cf;border-radius:12px;background:#fbfcfb;font-size:13px;color:#59645d;line-height:1.65}
 .breakdown b{color:#1d2a22}
-.foot{font-size:11px;color:#7a857e;text-align:right;margin-top:12px;line-height:1.6}
-
-@media(max-width:900px){
-  .cards,.flow,.fee-grid{grid-template-columns:1fr 1fr}
-  .inputs{grid-template-columns:1fr 1fr}
-  .results{grid-template-columns:1fr}
-}
-@media(max-width:560px){
-  .wrap{width:calc(100% - 16px);margin-top:8px}
-  .hero{padding:20px;border-radius:14px}
-  .hero h1{font-size:25px}
-  .cards,.flow,.fee-grid,.inputs{grid-template-columns:1fr}
-}
+.foot{margin-top:12px;text-align:right;font-size:11px;color:#7a857e;line-height:1.6}
+@media(max-width:850px){.cards,.flow{grid-template-columns:1fr}.inputs{grid-template-columns:1fr 1fr}.results{grid-template-columns:1fr}}
+@media(max-width:560px){.wrap{width:calc(100% - 16px);margin-top:8px}.hero{padding:20px}.hero h1{font-size:24px}.inputs{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -115,538 +78,208 @@ select,input{width:100%;height:44px;border:1px solid #ccd7d0;border-radius:10px;
 
 <section class="hero">
   <div class="tag">STAFF ONLY · KANSAI</div>
-  <h1>야마토 수하물 배송 요금 최종 기획안</h1>
-  <div class="ja-title">ヤマト手荷物配送 料金最終案</div>
-  <p>
-    야마토 사이즈 상한 기준으로 소형·중형·대형을 나누고 접수비를 차등 적용<br>
-    <span class="jp-line">ヤマトサイズの上限基準で小型・中型・大型に区分し、受付手数料を設定します。</span>
-  </p>
+  <h1>야마토 수하물 배송 요금안</h1>
+  <div class="ja-title">ヤマト手荷物配送 料金案</div>
+  <p>플랜 구분 없이 1가지 요금 체계만 사용.<br>プラン分けをせず、1つの料金体系で運用します。</p>
 </section>
 
 <section class="cards">
   <div class="card">
-    <div class="name">소형 · 100까지</div>
-    <div class="ja-name">小型 · 100サイズまで</div>
-    <div class="price">보관 500円 / 1일</div>
-    <div class="desc">60까지 / 80까지 / 100까지 모두 소형으로 적용.<br><span class="jp-line">60・80・100サイズまでをすべて小型として適用。</span></div>
+    <h2>소형짐 · 100사이즈까지</h2>
+    <div class="ja">小型荷物 · 100サイズまで</div>
+    <div class="price-row">
+      <div class="price-block"><div class="label">당일 수거 / 当日集荷</div><div class="big">+500円</div></div>
+      <div class="price-block"><div class="label">다음날 수거 / 翌日集荷</div><div class="big">+1,000円</div></div>
+    </div>
+    <div class="desc">60·80·100사이즈까지 모두 소형짐으로 적용.<br>60・80・100サイズまではすべて小型荷物として適用。</div>
   </div>
-  <div class="card">
-    <div class="name">중형 · 120~160</div>
-    <div class="ja-name">中型 · 120〜160サイズ</div>
-    <div class="price">보관 800円 / 1일</div>
-    <div class="desc">120까지 / 140까지 / 160까지 중형 적용.<br><span class="jp-line">120・140・160サイズまでを中型として適用。</span></div>
-  </div>
-  <div class="card">
-    <div class="name">대형 · 180~200</div>
-    <div class="ja-name">大型 · 180〜200サイズ</div>
-    <div class="price">보관 800円 / 1일</div>
-    <div class="desc">180까지 / 200까지 대형 적용.<br><span class="jp-line">180・200サイズまでを大型として適用。</span></div>
-  </div>
-</section>
 
-<div class="notice">
-  <b>100사이즈는 한 번만 표기합니다.</b><br>
-  100까지는 소형으로 확정하고, 별도 캐리어 행을 두지 않습니다.
-  사이즈는 “60까지 / 80까지 / 100까지”처럼 각 야마토 규격의 <b>상한</b>을 의미합니다.<br>
-  <span class="jp-line">100サイズまでは小型として統一し、100サイズの重複行は設けません。各サイズは「60まで・80まで・100まで」の上限基準です。</span>
-</div>
-
-<section class="fee-grid">
-  <div class="fee-card">
-    <div class="range">소형 · 60 / 80 / 100까지</div>
-    <div class="fee">접수비 200円</div>
-    <div class="ja-fee">小型 · 受付手数料 200円</div>
-  </div>
-  <div class="fee-card">
-    <div class="range">중형 · 120 / 140 / 160까지</div>
-    <div class="fee">접수비 300円</div>
-    <div class="ja-fee">中型 · 受付手数料 300円</div>
-  </div>
-  <div class="fee-card">
-    <div class="range">대형 · 180 / 200까지</div>
-    <div class="fee">접수비 400円</div>
-    <div class="ja-fee">大型 · 受付手数料 400円</div>
+  <div class="card">
+    <h2>캐리어 · 120사이즈 이상</h2>
+    <div class="ja">スーツケース · 120サイズ以上</div>
+    <div class="price-row">
+      <div class="price-block"><div class="label">당일 수거 / 当日集荷</div><div class="big">+800円</div></div>
+      <div class="price-block"><div class="label">다음날 수거 / 翌日集荷</div><div class="big">+1,600円</div></div>
+    </div>
+    <div class="desc">120·140·160·180·200사이즈는 캐리어 기준.<br>120・140・160・180・200サイズはスーツケース基準。</div>
   </div>
 </section>
 
 <section class="flow">
   <div class="flow-card">
     <div class="time">09:00~11:30</div>
-    <div class="ftitle">호텔 · 당일 배송</div>
-    <div class="fja">ホテル・当日配送</div>
-    <div class="fdesc">당일 11:30 수거. 1일 보관료 기준의 일부 반영.<br><span class="jp-line">当日11:30集荷。1日保管料金を基準に一部を反映。</span></div>
+    <div class="ftitle">호텔 · 당일 수거</div>
+    <div class="fja">ホテル・当日集荷</div>
+    <div class="fdesc">소형짐 +500엔 / 캐리어 +800엔의 이익을 확보.</div>
   </div>
-  <div class="flow-card late">
+  <div class="flow-card next">
     <div class="time">11:40~익일 11:30</div>
-    <div class="ftitle">호텔 · 익일 배송</div>
-    <div class="fja">ホテル・翌日配送</div>
-    <div class="fdesc">날짜가 넘어가므로 2일 보관료 기준 + 높은 반영률 적용.<br><span class="jp-line">日付をまたぐため2日分の保管料金を基準に高い反映率を適用。</span></div>
+    <div class="ftitle">호텔 · 다음날 수거</div>
+    <div class="fja">ホテル・翌日集荷</div>
+    <div class="fdesc">날짜가 넘어가므로 소형짐 +1,000엔 / 캐리어 +1,600엔의 이익을 확보.</div>
   </div>
   <div class="flow-card air">
-    <div class="time">공항 · 전 시간대</div>
-    <div class="ftitle">전부 익일 배송 · +600엔</div>
-    <div class="fja">空港・全時間帯 翌日配送・+600円</div>
-    <div class="fdesc">사이즈와 관계없이 공항 추가운임 600엔.<br><span class="jp-line">サイズに関係なく空港追加運賃600円。</span></div>
+    <div class="time">공항 · +600엔</div>
+    <div class="ftitle">전부 익일 배송</div>
+    <div class="fja">空港・すべて翌日配送</div>
+    <div class="fdesc">공항 추가운임 600엔은 야마토 원가이므로 고객가에 그대로 더함.</div>
   </div>
 </section>
 
-<section class="logic">
-  <h3>가격 구조</h3>
-  <div class="logic-ja">料金構成</div>
-  <p>
-    고객 판매가 = 야마토 실제 운임 + 구간별 접수비 + 보관료 일부.<br>
-    소형 200엔 / 중형 300엔 / 대형 400엔.<br>
-    A안: 당일 20% / 익일 45% · B안: 당일 25% / 익일 60% · C안: 당일 30% / 익일 70%.<br>
-    <span style="opacity:.78">販売価格＝ヤマト実運賃＋区分別受付手数料＋保管料金の一部。小型200円 / 中型300円 / 大型400円。</span>
-  </p>
-</section>
-
+<div class="note">
+  <b>계산 방식 / 計算方法</b><br>
+  고객 판매가 = <b>야마토 실제 운임 + 이익금액</b>입니다. 공항 배송은 여기에 야마토 공항 추가운임 600엔을 더합니다.<br>
+  販売価格 ＝ <b>ヤマト実運賃 ＋ 利益額</b>。空港配送はヤマト空港追加運賃600円を加算します。
+</div>
 
 <section class="section">
-  <div class="title-row">
-    <div>
-      <h2>A안 · 보관 부담 낮게 반영</h2>
-      <div class="section-ja">A案 · 保管負担を低めに反映</div>
-    </div>
-    <span class="badge">당일 20% / 익일 45%<br><small>当日 20% / 翌日 45%</small></span>
-  </div>
-  <p class="sub">
-    09:00~11:30은 1일 보관료 기준의 20%, 11:40~익일 11:30은 2일 보관료 기준의 45%를 반영합니다.<br>
-    <span class="jp-line">09:00〜11:30は1日保管料金の20%、11:40〜翌日11:30は2日分保管料金の45%を反映します。</span>
-  </p>
+  <h2>최종 요금표</h2>
+  <div class="ja-head">最終料金表</div>
   <div class="table-wrap">
     <table>
       <thead>
         <tr>
-          <th><div class="th-bi"><span class="ko">야마토 사이즈</span><span class="ja">ヤマトサイズ</span></div></th>
-          <th><div class="th-bi"><span class="ko">구분</span><span class="ja">区分</span></div></th>
-          <th><div class="th-bi"><span class="ko">접수비</span><span class="ja">受付手数料</span></div></th>
-          <th><div class="th-bi"><span class="ko">1일 보관 기준</span><span class="ja">1日保管基準</span></div></th>
-          <th><div class="th-bi"><span class="ko">날짜 넘어갈 때 보관 기준</span><span class="ja">日付をまたぐ場合の保管基準</span></div></th>
-          <th><div class="th-bi"><span class="ko">야마토 원가</span><span class="ja">ヤマト原価</span></div></th>
-          <th><div class="th-bi"><span class="ko">09:00~11:30 호텔</span><span class="ja">09:00〜11:30 ホテル</span></div><small>판매가 / 이익 · 販売価格 / 利益</small></th>
-          <th class="late-head"><div class="th-bi"><span class="ko">11:40~익일 11:30 호텔</span><span class="ja">11:40〜翌日11:30 ホテル</span></div><small>판매가 / 이익 · 販売価格 / 利益</small></th>
-          <th><div class="th-bi"><span class="ko">09:00~11:30 공항</span><span class="ja">09:00〜11:30 空港</span></div><small>판매가 / 이익 · 販売価格 / 利益</small></th>
-          <th class="late-head"><div class="th-bi"><span class="ko">11:40~익일 11:30 공항</span><span class="ja">11:40〜翌日11:30 空港</span></div><small>판매가 / 이익 · 販売価格 / 利益</small></th>
+          <th>사이즈<br><span class="jp-small">サイズ</span></th>
+          <th>구분<br><span class="jp-small">区分</span></th>
+          <th>야마토 원가<br><span class="jp-small">ヤマト原価</span></th>
+          <th>09:00~11:30 호텔<br><span class="jp-small">ホテル 当日集荷</span></th>
+          <th>11:40~익일 11:30 호텔<br><span class="jp-small">ホテル 翌日集荷</span></th>
+          <th>09:00~11:30 공항<br><span class="jp-small">空港 当日集荷</span></th>
+          <th>11:40~익일 11:30 공항<br><span class="jp-small">空港 翌日集荷</span></th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td><b>60까지</b><span class="unit-ja">〜60サイズ</span></td>
-          <td><div class="cell-bi"><span class="ko">소형</span><span class="ja">小型</span></div></td>
-          <td class="handling">200円</td>
-          <td>500円</td>
-          <td>1,000円</td>
-          <td class="cost">740円</td>
-          <td class="money">1,100円<span class="profit">이익 / 利益 +360円</span></td>
-          <td class="money late">1,400円<span class="profit">이익 / 利益 +660円</span></td>
-          <td class="money">1,700円<span class="profit">이익 / 利益 +360円</span></td>
-          <td class="money late">2,000円<span class="profit">이익 / 利益 +660円</span></td>
-        </tr>
-
-        <tr>
-          <td><b>80까지</b><span class="unit-ja">〜80サイズ</span></td>
-          <td><div class="cell-bi"><span class="ko">소형</span><span class="ja">小型</span></div></td>
-          <td class="handling">200円</td>
-          <td>500円</td>
-          <td>1,000円</td>
-          <td class="cost">980円</td>
-          <td class="money">1,300円<span class="profit">이익 / 利益 +320円</span></td>
-          <td class="money late">1,700円<span class="profit">이익 / 利益 +720円</span></td>
-          <td class="money">1,900円<span class="profit">이익 / 利益 +320円</span></td>
-          <td class="money late">2,300円<span class="profit">이익 / 利益 +720円</span></td>
-        </tr>
-
-        <tr>
-          <td><b>100까지</b><span class="unit-ja">〜100サイズ</span></td>
-          <td><div class="cell-bi"><span class="ko">소형</span><span class="ja">小型</span></div></td>
-          <td class="handling">200円</td>
-          <td>500円</td>
-          <td>1,000円</td>
-          <td class="cost">1,240円</td>
-          <td class="money">1,600円<span class="profit">이익 / 利益 +360円</span></td>
-          <td class="money late">1,900円<span class="profit">이익 / 利益 +660円</span></td>
-          <td class="money">2,200円<span class="profit">이익 / 利益 +360円</span></td>
-          <td class="money late">2,500円<span class="profit">이익 / 利益 +660円</span></td>
-        </tr>
-
-        <tr>
-          <td><b>120까지</b><span class="unit-ja">〜120サイズ</span></td>
-          <td><div class="cell-bi"><span class="ko">중형</span><span class="ja">中型</span></div></td>
-          <td class="handling">300円</td>
-          <td>800円</td>
-          <td>1,600円</td>
-          <td class="cost">1,680円</td>
-          <td class="money">2,200円<span class="profit">이익 / 利益 +520円</span></td>
-          <td class="money late">2,700円<span class="profit">이익 / 利益 +1,020円</span></td>
-          <td class="money">2,800円<span class="profit">이익 / 利益 +520円</span></td>
-          <td class="money late">3,300円<span class="profit">이익 / 利益 +1,020円</span></td>
-        </tr>
-
-        <tr>
-          <td><b>140까지</b><span class="unit-ja">〜140サイズ</span></td>
-          <td><div class="cell-bi"><span class="ko">중형</span><span class="ja">中型</span></div></td>
-          <td class="handling">300円</td>
-          <td>800円</td>
-          <td>1,600円</td>
-          <td class="cost">2,200円</td>
-          <td class="money">2,700円<span class="profit">이익 / 利益 +500円</span></td>
-          <td class="money late">3,300円<span class="profit">이익 / 利益 +1,100円</span></td>
-          <td class="money">3,300円<span class="profit">이익 / 利益 +500円</span></td>
-          <td class="money late">3,900円<span class="profit">이익 / 利益 +1,100円</span></td>
-        </tr>
-
-        <tr>
-          <td><b>160까지</b><span class="unit-ja">〜160サイズ</span></td>
-          <td><div class="cell-bi"><span class="ko">중형</span><span class="ja">中型</span></div></td>
-          <td class="handling">300円</td>
-          <td>800円</td>
-          <td>1,600円</td>
-          <td class="cost">2,530円</td>
-          <td class="money">3,000円<span class="profit">이익 / 利益 +470円</span></td>
-          <td class="money late">3,600円<span class="profit">이익 / 利益 +1,070円</span></td>
-          <td class="money">3,600円<span class="profit">이익 / 利益 +470円</span></td>
-          <td class="money late">4,200円<span class="profit">이익 / 利益 +1,070円</span></td>
-        </tr>
-
-        <tr>
-          <td><b>180까지</b><span class="unit-ja">〜180サイズ</span></td>
-          <td><div class="cell-bi"><span class="ko">대형</span><span class="ja">大型</span></div></td>
-          <td class="handling">400円</td>
-          <td>800円</td>
-          <td>1,600円</td>
-          <td class="cost">3,110円</td>
-          <td class="money">3,700円<span class="profit">이익 / 利益 +590円</span></td>
-          <td class="money late">4,300円<span class="profit">이익 / 利益 +1,190円</span></td>
-          <td class="money">4,300円<span class="profit">이익 / 利益 +590円</span></td>
-          <td class="money late">4,900円<span class="profit">이익 / 利益 +1,190円</span></td>
-        </tr>
-
-        <tr>
-          <td><b>200까지</b><span class="unit-ja">〜200サイズ</span></td>
-          <td><div class="cell-bi"><span class="ko">대형</span><span class="ja">大型</span></div></td>
-          <td class="handling">400円</td>
-          <td>800円</td>
-          <td>1,600円</td>
-          <td class="cost">3,810円</td>
-          <td class="money">4,400円<span class="profit">이익 / 利益 +590円</span></td>
-          <td class="money late">5,000円<span class="profit">이익 / 利益 +1,190円</span></td>
-          <td class="money">5,000円<span class="profit">이익 / 利益 +590円</span></td>
-          <td class="money late">5,600円<span class="profit">이익 / 利益 +1,190円</span></td>
-        </tr></tbody>
+    <tr>
+      <td><b>60까지</b><span class="jp-small">〜60サイズ</span></td>
+      <td><b>소형짐</b><span class="jp-small">小型荷物</span></td>
+      <td class="cost">740円</td>
+      <td class="money">1,240円<span class="profit">이익 / 利益 +500円</span></td>
+      <td class="money next">1,740円<span class="profit">이익 / 利益 +1,000円</span></td>
+      <td class="money">1,840円<span class="profit">이익 / 利益 +500円</span></td>
+      <td class="money next">2,340円<span class="profit">이익 / 利益 +1,000円</span></td>
+    </tr>
+    
+    <tr>
+      <td><b>80까지</b><span class="jp-small">〜80サイズ</span></td>
+      <td><b>소형짐</b><span class="jp-small">小型荷物</span></td>
+      <td class="cost">980円</td>
+      <td class="money">1,480円<span class="profit">이익 / 利益 +500円</span></td>
+      <td class="money next">1,980円<span class="profit">이익 / 利益 +1,000円</span></td>
+      <td class="money">2,080円<span class="profit">이익 / 利益 +500円</span></td>
+      <td class="money next">2,580円<span class="profit">이익 / 利益 +1,000円</span></td>
+    </tr>
+    
+    <tr>
+      <td><b>100까지</b><span class="jp-small">〜100サイズ</span></td>
+      <td><b>소형짐</b><span class="jp-small">小型荷物</span></td>
+      <td class="cost">1,240円</td>
+      <td class="money">1,740円<span class="profit">이익 / 利益 +500円</span></td>
+      <td class="money next">2,240円<span class="profit">이익 / 利益 +1,000円</span></td>
+      <td class="money">2,340円<span class="profit">이익 / 利益 +500円</span></td>
+      <td class="money next">2,840円<span class="profit">이익 / 利益 +1,000円</span></td>
+    </tr>
+    
+    <tr>
+      <td><b>120까지</b><span class="jp-small">〜120サイズ</span></td>
+      <td><b>캐리어</b><span class="jp-small">スーツケース</span></td>
+      <td class="cost">1,680円</td>
+      <td class="money">2,480円<span class="profit">이익 / 利益 +800円</span></td>
+      <td class="money next">3,280円<span class="profit">이익 / 利益 +1,600円</span></td>
+      <td class="money">3,080円<span class="profit">이익 / 利益 +800円</span></td>
+      <td class="money next">3,880円<span class="profit">이익 / 利益 +1,600円</span></td>
+    </tr>
+    
+    <tr>
+      <td><b>140까지</b><span class="jp-small">〜140サイズ</span></td>
+      <td><b>캐리어</b><span class="jp-small">スーツケース</span></td>
+      <td class="cost">2,200円</td>
+      <td class="money">3,000円<span class="profit">이익 / 利益 +800円</span></td>
+      <td class="money next">3,800円<span class="profit">이익 / 利益 +1,600円</span></td>
+      <td class="money">3,600円<span class="profit">이익 / 利益 +800円</span></td>
+      <td class="money next">4,400円<span class="profit">이익 / 利益 +1,600円</span></td>
+    </tr>
+    
+    <tr>
+      <td><b>160까지</b><span class="jp-small">〜160サイズ</span></td>
+      <td><b>캐리어</b><span class="jp-small">スーツケース</span></td>
+      <td class="cost">2,530円</td>
+      <td class="money">3,330円<span class="profit">이익 / 利益 +800円</span></td>
+      <td class="money next">4,130円<span class="profit">이익 / 利益 +1,600円</span></td>
+      <td class="money">3,930円<span class="profit">이익 / 利益 +800円</span></td>
+      <td class="money next">4,730円<span class="profit">이익 / 利益 +1,600円</span></td>
+    </tr>
+    
+    <tr>
+      <td><b>180까지</b><span class="jp-small">〜180サイズ</span></td>
+      <td><b>캐리어</b><span class="jp-small">スーツケース</span></td>
+      <td class="cost">3,110円</td>
+      <td class="money">3,910円<span class="profit">이익 / 利益 +800円</span></td>
+      <td class="money next">4,710円<span class="profit">이익 / 利益 +1,600円</span></td>
+      <td class="money">4,510円<span class="profit">이익 / 利益 +800円</span></td>
+      <td class="money next">5,310円<span class="profit">이익 / 利益 +1,600円</span></td>
+    </tr>
+    
+    <tr>
+      <td><b>200까지</b><span class="jp-small">〜200サイズ</span></td>
+      <td><b>캐리어</b><span class="jp-small">スーツケース</span></td>
+      <td class="cost">3,810円</td>
+      <td class="money">4,610円<span class="profit">이익 / 利益 +800円</span></td>
+      <td class="money next">5,410円<span class="profit">이익 / 利益 +1,600円</span></td>
+      <td class="money">5,210円<span class="profit">이익 / 利益 +800円</span></td>
+      <td class="money next">6,010円<span class="profit">이익 / 利益 +1,600円</span></td>
+    </tr>
+    </tbody>
     </table>
   </div>
 </section>
-
-<section class="section">
-  <div class="title-row">
-    <div>
-      <h2>B안 · 보관 부담 중간 반영</h2>
-      <div class="section-ja">B案 · 保管負担を中程度に反映</div>
-    </div>
-    <span class="badge">당일 25% / 익일 60%<br><small>当日 25% / 翌日 60%</small></span>
-  </div>
-  <p class="sub">
-    09:00~11:30은 1일 보관료 기준의 25%, 11:40~익일 11:30은 2일 보관료 기준의 60%를 반영합니다.<br>
-    <span class="jp-line">09:00〜11:30は1日保管料金の25%、11:40〜翌日11:30は2日分保管料金の60%を反映します。</span>
-  </p>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th><div class="th-bi"><span class="ko">야마토 사이즈</span><span class="ja">ヤマトサイズ</span></div></th>
-          <th><div class="th-bi"><span class="ko">구분</span><span class="ja">区分</span></div></th>
-          <th><div class="th-bi"><span class="ko">접수비</span><span class="ja">受付手数料</span></div></th>
-          <th><div class="th-bi"><span class="ko">1일 보관 기준</span><span class="ja">1日保管基準</span></div></th>
-          <th><div class="th-bi"><span class="ko">날짜 넘어갈 때 보관 기준</span><span class="ja">日付をまたぐ場合の保管基準</span></div></th>
-          <th><div class="th-bi"><span class="ko">야마토 원가</span><span class="ja">ヤマト原価</span></div></th>
-          <th><div class="th-bi"><span class="ko">09:00~11:30 호텔</span><span class="ja">09:00〜11:30 ホテル</span></div><small>판매가 / 이익 · 販売価格 / 利益</small></th>
-          <th class="late-head"><div class="th-bi"><span class="ko">11:40~익일 11:30 호텔</span><span class="ja">11:40〜翌日11:30 ホテル</span></div><small>판매가 / 이익 · 販売価格 / 利益</small></th>
-          <th><div class="th-bi"><span class="ko">09:00~11:30 공항</span><span class="ja">09:00〜11:30 空港</span></div><small>판매가 / 이익 · 販売価格 / 利益</small></th>
-          <th class="late-head"><div class="th-bi"><span class="ko">11:40~익일 11:30 공항</span><span class="ja">11:40〜翌日11:30 空港</span></div><small>판매가 / 이익 · 販売価格 / 利益</small></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><b>60까지</b><span class="unit-ja">〜60サイズ</span></td>
-          <td><div class="cell-bi"><span class="ko">소형</span><span class="ja">小型</span></div></td>
-          <td class="handling">200円</td>
-          <td>500円</td>
-          <td>1,000円</td>
-          <td class="cost">740円</td>
-          <td class="money">1,100円<span class="profit">이익 / 利益 +360円</span></td>
-          <td class="money late">1,600円<span class="profit">이익 / 利益 +860円</span></td>
-          <td class="money">1,700円<span class="profit">이익 / 利益 +360円</span></td>
-          <td class="money late">2,200円<span class="profit">이익 / 利益 +860円</span></td>
-        </tr>
-
-        <tr>
-          <td><b>80까지</b><span class="unit-ja">〜80サイズ</span></td>
-          <td><div class="cell-bi"><span class="ko">소형</span><span class="ja">小型</span></div></td>
-          <td class="handling">200円</td>
-          <td>500円</td>
-          <td>1,000円</td>
-          <td class="cost">980円</td>
-          <td class="money">1,400円<span class="profit">이익 / 利益 +420円</span></td>
-          <td class="money late">1,800円<span class="profit">이익 / 利益 +820円</span></td>
-          <td class="money">2,000円<span class="profit">이익 / 利益 +420円</span></td>
-          <td class="money late">2,400円<span class="profit">이익 / 利益 +820円</span></td>
-        </tr>
-
-        <tr>
-          <td><b>100까지</b><span class="unit-ja">〜100サイズ</span></td>
-          <td><div class="cell-bi"><span class="ko">소형</span><span class="ja">小型</span></div></td>
-          <td class="handling">200円</td>
-          <td>500円</td>
-          <td>1,000円</td>
-          <td class="cost">1,240円</td>
-          <td class="money">1,600円<span class="profit">이익 / 利益 +360円</span></td>
-          <td class="money late">2,100円<span class="profit">이익 / 利益 +860円</span></td>
-          <td class="money">2,200円<span class="profit">이익 / 利益 +360円</span></td>
-          <td class="money late">2,700円<span class="profit">이익 / 利益 +860円</span></td>
-        </tr>
-
-        <tr>
-          <td><b>120까지</b><span class="unit-ja">〜120サイズ</span></td>
-          <td><div class="cell-bi"><span class="ko">중형</span><span class="ja">中型</span></div></td>
-          <td class="handling">300円</td>
-          <td>800円</td>
-          <td>1,600円</td>
-          <td class="cost">1,680円</td>
-          <td class="money">2,200円<span class="profit">이익 / 利益 +520円</span></td>
-          <td class="money late">3,000円<span class="profit">이익 / 利益 +1,320円</span></td>
-          <td class="money">2,800円<span class="profit">이익 / 利益 +520円</span></td>
-          <td class="money late">3,600円<span class="profit">이익 / 利益 +1,320円</span></td>
-        </tr>
-
-        <tr>
-          <td><b>140까지</b><span class="unit-ja">〜140サイズ</span></td>
-          <td><div class="cell-bi"><span class="ko">중형</span><span class="ja">中型</span></div></td>
-          <td class="handling">300円</td>
-          <td>800円</td>
-          <td>1,600円</td>
-          <td class="cost">2,200円</td>
-          <td class="money">2,700円<span class="profit">이익 / 利益 +500円</span></td>
-          <td class="money late">3,500円<span class="profit">이익 / 利益 +1,300円</span></td>
-          <td class="money">3,300円<span class="profit">이익 / 利益 +500円</span></td>
-          <td class="money late">4,100円<span class="profit">이익 / 利益 +1,300円</span></td>
-        </tr>
-
-        <tr>
-          <td><b>160까지</b><span class="unit-ja">〜160サイズ</span></td>
-          <td><div class="cell-bi"><span class="ko">중형</span><span class="ja">中型</span></div></td>
-          <td class="handling">300円</td>
-          <td>800円</td>
-          <td>1,600円</td>
-          <td class="cost">2,530円</td>
-          <td class="money">3,100円<span class="profit">이익 / 利益 +570円</span></td>
-          <td class="money late">3,800円<span class="profit">이익 / 利益 +1,270円</span></td>
-          <td class="money">3,700円<span class="profit">이익 / 利益 +570円</span></td>
-          <td class="money late">4,400円<span class="profit">이익 / 利益 +1,270円</span></td>
-        </tr>
-
-        <tr>
-          <td><b>180까지</b><span class="unit-ja">〜180サイズ</span></td>
-          <td><div class="cell-bi"><span class="ko">대형</span><span class="ja">大型</span></div></td>
-          <td class="handling">400円</td>
-          <td>800円</td>
-          <td>1,600円</td>
-          <td class="cost">3,110円</td>
-          <td class="money">3,800円<span class="profit">이익 / 利益 +690円</span></td>
-          <td class="money late">4,500円<span class="profit">이익 / 利益 +1,390円</span></td>
-          <td class="money">4,400円<span class="profit">이익 / 利益 +690円</span></td>
-          <td class="money late">5,100円<span class="profit">이익 / 利益 +1,390円</span></td>
-        </tr>
-
-        <tr>
-          <td><b>200까지</b><span class="unit-ja">〜200サイズ</span></td>
-          <td><div class="cell-bi"><span class="ko">대형</span><span class="ja">大型</span></div></td>
-          <td class="handling">400円</td>
-          <td>800円</td>
-          <td>1,600円</td>
-          <td class="cost">3,810円</td>
-          <td class="money">4,500円<span class="profit">이익 / 利益 +690円</span></td>
-          <td class="money late">5,200円<span class="profit">이익 / 利益 +1,390円</span></td>
-          <td class="money">5,100円<span class="profit">이익 / 利益 +690円</span></td>
-          <td class="money late">5,800円<span class="profit">이익 / 利益 +1,390円</span></td>
-        </tr></tbody>
-    </table>
-  </div>
-</section>
-
-<section class="section">
-  <div class="title-row">
-    <div>
-      <h2>C안 · 보관 부담 높게 반영</h2>
-      <div class="section-ja">C案 · 保管負担を高めに反映</div>
-    </div>
-    <span class="badge">당일 30% / 익일 70%<br><small>当日 30% / 翌日 70%</small></span>
-  </div>
-  <p class="sub">
-    09:00~11:30은 1일 보관료 기준의 30%, 11:40~익일 11:30은 2일 보관료 기준의 70%를 반영합니다.<br>
-    <span class="jp-line">09:00〜11:30は1日保管料金の30%、11:40〜翌日11:30は2日分保管料金の70%を反映します。</span>
-  </p>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th><div class="th-bi"><span class="ko">야마토 사이즈</span><span class="ja">ヤマトサイズ</span></div></th>
-          <th><div class="th-bi"><span class="ko">구분</span><span class="ja">区分</span></div></th>
-          <th><div class="th-bi"><span class="ko">접수비</span><span class="ja">受付手数料</span></div></th>
-          <th><div class="th-bi"><span class="ko">1일 보관 기준</span><span class="ja">1日保管基準</span></div></th>
-          <th><div class="th-bi"><span class="ko">날짜 넘어갈 때 보관 기준</span><span class="ja">日付をまたぐ場合の保管基準</span></div></th>
-          <th><div class="th-bi"><span class="ko">야마토 원가</span><span class="ja">ヤマト原価</span></div></th>
-          <th><div class="th-bi"><span class="ko">09:00~11:30 호텔</span><span class="ja">09:00〜11:30 ホテル</span></div><small>판매가 / 이익 · 販売価格 / 利益</small></th>
-          <th class="late-head"><div class="th-bi"><span class="ko">11:40~익일 11:30 호텔</span><span class="ja">11:40〜翌日11:30 ホテル</span></div><small>판매가 / 이익 · 販売価格 / 利益</small></th>
-          <th><div class="th-bi"><span class="ko">09:00~11:30 공항</span><span class="ja">09:00〜11:30 空港</span></div><small>판매가 / 이익 · 販売価格 / 利益</small></th>
-          <th class="late-head"><div class="th-bi"><span class="ko">11:40~익일 11:30 공항</span><span class="ja">11:40〜翌日11:30 空港</span></div><small>판매가 / 이익 · 販売価格 / 利益</small></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><b>60까지</b><span class="unit-ja">〜60サイズ</span></td>
-          <td><div class="cell-bi"><span class="ko">소형</span><span class="ja">小型</span></div></td>
-          <td class="handling">200円</td>
-          <td>500円</td>
-          <td>1,000円</td>
-          <td class="cost">740円</td>
-          <td class="money">1,100円<span class="profit">이익 / 利益 +360円</span></td>
-          <td class="money late">1,700円<span class="profit">이익 / 利益 +960円</span></td>
-          <td class="money">1,700円<span class="profit">이익 / 利益 +360円</span></td>
-          <td class="money late">2,300円<span class="profit">이익 / 利益 +960円</span></td>
-        </tr>
-
-        <tr>
-          <td><b>80까지</b><span class="unit-ja">〜80サイズ</span></td>
-          <td><div class="cell-bi"><span class="ko">소형</span><span class="ja">小型</span></div></td>
-          <td class="handling">200円</td>
-          <td>500円</td>
-          <td>1,000円</td>
-          <td class="cost">980円</td>
-          <td class="money">1,400円<span class="profit">이익 / 利益 +420円</span></td>
-          <td class="money late">1,900円<span class="profit">이익 / 利益 +920円</span></td>
-          <td class="money">2,000円<span class="profit">이익 / 利益 +420円</span></td>
-          <td class="money late">2,500円<span class="profit">이익 / 利益 +920円</span></td>
-        </tr>
-
-        <tr>
-          <td><b>100까지</b><span class="unit-ja">〜100サイズ</span></td>
-          <td><div class="cell-bi"><span class="ko">소형</span><span class="ja">小型</span></div></td>
-          <td class="handling">200円</td>
-          <td>500円</td>
-          <td>1,000円</td>
-          <td class="cost">1,240円</td>
-          <td class="money">1,600円<span class="profit">이익 / 利益 +360円</span></td>
-          <td class="money late">2,200円<span class="profit">이익 / 利益 +960円</span></td>
-          <td class="money">2,200円<span class="profit">이익 / 利益 +360円</span></td>
-          <td class="money late">2,800円<span class="profit">이익 / 利益 +960円</span></td>
-        </tr>
-
-        <tr>
-          <td><b>120까지</b><span class="unit-ja">〜120サイズ</span></td>
-          <td><div class="cell-bi"><span class="ko">중형</span><span class="ja">中型</span></div></td>
-          <td class="handling">300円</td>
-          <td>800円</td>
-          <td>1,600円</td>
-          <td class="cost">1,680円</td>
-          <td class="money">2,300円<span class="profit">이익 / 利益 +620円</span></td>
-          <td class="money late">3,100円<span class="profit">이익 / 利益 +1,420円</span></td>
-          <td class="money">2,900円<span class="profit">이익 / 利益 +620円</span></td>
-          <td class="money late">3,700円<span class="profit">이익 / 利益 +1,420円</span></td>
-        </tr>
-
-        <tr>
-          <td><b>140까지</b><span class="unit-ja">〜140サイズ</span></td>
-          <td><div class="cell-bi"><span class="ko">중형</span><span class="ja">中型</span></div></td>
-          <td class="handling">300円</td>
-          <td>800円</td>
-          <td>1,600円</td>
-          <td class="cost">2,200円</td>
-          <td class="money">2,800円<span class="profit">이익 / 利益 +600円</span></td>
-          <td class="money late">3,700円<span class="profit">이익 / 利益 +1,500円</span></td>
-          <td class="money">3,400円<span class="profit">이익 / 利益 +600円</span></td>
-          <td class="money late">4,300円<span class="profit">이익 / 利益 +1,500円</span></td>
-        </tr>
-
-        <tr>
-          <td><b>160까지</b><span class="unit-ja">〜160サイズ</span></td>
-          <td><div class="cell-bi"><span class="ko">중형</span><span class="ja">中型</span></div></td>
-          <td class="handling">300円</td>
-          <td>800円</td>
-          <td>1,600円</td>
-          <td class="cost">2,530円</td>
-          <td class="money">3,100円<span class="profit">이익 / 利益 +570円</span></td>
-          <td class="money late">4,000円<span class="profit">이익 / 利益 +1,470円</span></td>
-          <td class="money">3,700円<span class="profit">이익 / 利益 +570円</span></td>
-          <td class="money late">4,600円<span class="profit">이익 / 利益 +1,470円</span></td>
-        </tr>
-
-        <tr>
-          <td><b>180까지</b><span class="unit-ja">〜180サイズ</span></td>
-          <td><div class="cell-bi"><span class="ko">대형</span><span class="ja">大型</span></div></td>
-          <td class="handling">400円</td>
-          <td>800円</td>
-          <td>1,600円</td>
-          <td class="cost">3,110円</td>
-          <td class="money">3,800円<span class="profit">이익 / 利益 +690円</span></td>
-          <td class="money late">4,700円<span class="profit">이익 / 利益 +1,590円</span></td>
-          <td class="money">4,400円<span class="profit">이익 / 利益 +690円</span></td>
-          <td class="money late">5,300円<span class="profit">이익 / 利益 +1,590円</span></td>
-        </tr>
-
-        <tr>
-          <td><b>200까지</b><span class="unit-ja">〜200サイズ</span></td>
-          <td><div class="cell-bi"><span class="ko">대형</span><span class="ja">大型</span></div></td>
-          <td class="handling">400円</td>
-          <td>800円</td>
-          <td>1,600円</td>
-          <td class="cost">3,810円</td>
-          <td class="money">4,500円<span class="profit">이익 / 利益 +690円</span></td>
-          <td class="money late">5,400円<span class="profit">이익 / 利益 +1,590円</span></td>
-          <td class="money">5,100円<span class="profit">이익 / 利益 +690円</span></td>
-          <td class="money late">6,000円<span class="profit">이익 / 利益 +1,590円</span></td>
-        </tr></tbody>
-    </table>
-  </div>
-</section>
-
 
 <section class="calc">
   <h2>직원용 요금 계산기</h2>
   <div class="ja-head">スタッフ用料金計算</div>
   <div class="inputs">
     <div>
-      <label>요금안<small>料金案</small></label>
-      <select id="plan"><option value="A">A · 20% / 45%</option><option value="B" selected>B · 25% / 60%</option><option value="C">C · 30% / 70%</option></select>
-    </div>
-    <div>
       <label>야마토 사이즈<small>ヤマトサイズ</small></label>
-      <select id="size"><option value="60">60까지 / 〜60</option><option value="80">80까지 / 〜80</option><option value="100" selected>100까지 / 〜100</option><option value="120">120까지 / 〜120</option><option value="140">140까지 / 〜140</option><option value="160">160까지 / 〜160</option><option value="180">180까지 / 〜180</option><option value="200">200까지 / 〜200</option></select>
+      <select id="size">
+        <option value="60">60까지 / 〜60</option>
+        <option value="80">80까지 / 〜80</option>
+        <option value="100" selected>100까지 / 〜100</option>
+        <option value="120">120까지 / 〜120</option>
+        <option value="140">140까지 / 〜140</option>
+        <option value="160">160까지 / 〜160</option>
+        <option value="180">180까지 / 〜180</option>
+        <option value="200">200까지 / 〜200</option>
+      </select>
     </div>
     <div>
-      <label>구분 / 접수비<small>区分 / 受付手数料</small></label>
-      <input id="category" type="text" readonly>
+      <label>짐 구분<small>荷物区分</small></label>
+      <input id="type" type="text" readonly>
     </div>
     <div>
       <label>목적지<small>配送先</small></label>
-      <select id="dest"><option value="hotel" selected>호텔 / ホテル</option><option value="airport">공항 / 空港</option></select>
+      <select id="dest">
+        <option value="hotel" selected>호텔 / ホテル</option>
+        <option value="airport">공항 / 空港</option>
+      </select>
     </div>
     <div>
-      <label>센터 보관 기준<small>センター保管基準</small></label>
-      <select id="band"><option value="same">09:00~11:30 · 1일 / 1日</option><option value="overnight">11:40~익일 11:30 · 2일 / 2日</option></select>
+      <label>수거 기준<small>集荷基準</small></label>
+      <select id="pickup">
+        <option value="same">09:00~11:30 · 당일 수거 / 当日集荷</option>
+        <option value="next">11:40~익일 11:30 · 다음날 수거 / 翌日集荷</option>
+      </select>
     </div>
   </div>
 
   <div class="results">
     <div class="total">
-      <div class="lab">고객 결제금액 / お客様支払額</div>
+      <div class="rlabel">고객 결제금액 / お客様支払額</div>
       <div class="amount" id="amount"></div>
-      <div class="service" id="profit"></div>
+      <div class="margin" id="profit"></div>
     </div>
     <div class="delivery">
-      <div class="lab">배송 기준 / 配送基準</div>
+      <div class="rlabel">배송 기준 / 配送基準</div>
       <div class="main" id="delivery"></div>
-      <div class="note" id="deliveryNote"></div>
+      <div class="sub" id="deliveryNote"></div>
     </div>
   </div>
 
@@ -654,76 +287,52 @@ select,input{width:100%;height:44px;border:1px solid #ccd7d0;border-radius:10px;
 </section>
 
 <div class="foot">
-  ※ 100까지 = 소형 보관료 500엔 기준. 120 이상은 800엔/1일 기준. 날짜가 넘어가면 각각 1,000엔 / 1,600엔 기준.<br>
-  ※ 100サイズまで＝小型保管料金500円基準。120サイズ以上＝800円/1日基準。翌日にまたぐ場合はそれぞれ1,000円 / 1,600円基準。
+  ※ 이익은 카드수수료·인건비 등 기타 운영비 차감 전 기준입니다.<br>
+  ※ 利益はカード手数料・人件費などの運営費控除前です。
 </div>
 
 </div>
 
 <script>
 const yamato={"60":740,"80":980,"100":1240,"120":1680,"140":2200,"160":2530,"180":3110,"200":3810};
-const category={"60":"small","80":"small","100":"small","120":"medium","140":"medium","160":"medium","180":"large","200":"large"};
-const handling={small:200,medium:300,large:400};
-const oneDay={small:500,medium:800,large:800};
-const twoDay={small:1000,medium:1600,large:1600};
-const names={
-  small:"소형 / 小型 · 접수비 200円",
-  medium:"중형 / 中型 · 접수비 300円",
-  large:"대형 / 大型 · 접수비 400円"
-};
-const planPct={A:{same:0.20,overnight:0.45},B:{same:0.25,overnight:0.60},C:{same:0.30,overnight:0.70}};
-
-const planEl=document.getElementById("plan");
 const sizeEl=document.getElementById("size");
-const categoryEl=document.getElementById("category");
 const destEl=document.getElementById("dest");
-const bandEl=document.getElementById("band");
-
-function ceil100(n){return Math.ceil(n/100)*100}
+const pickupEl=document.getElementById("pickup");
+const typeEl=document.getElementById("type");
 
 function calc(){
-  const plan=planEl.value;
   const size=sizeEl.value;
-  const cat=category[size];
-  const dest=destEl.value;
-  const band=bandEl.value;
+  const isSmall=Number(size)<=100;
+  const next=pickupEl.value==="next";
+  const airport=destEl.value==="airport";
+  const margin=isSmall ? (next ? 1000 : 500) : (next ? 1600 : 800);
+  const sale=yamato[size]+margin+(airport?600:0);
 
-  categoryEl.value=names[cat];
-
-  const storageBase=band==="same"?oneDay[cat]:twoDay[cat];
-  const pct=planPct[plan][band];
-  const storageShare=storageBase*pct;
-
-  let sale=ceil100(yamato[size]+handling[cat]+storageShare);
-  if(dest==="airport") sale+=600;
-
-  const cost=yamato[size]+(dest==="airport"?600:0);
-  const profit=sale-cost;
-
+  typeEl.value=isSmall ? "소형짐 / 小型荷物" : "캐리어 / スーツケース";
   document.getElementById("amount").textContent=sale.toLocaleString()+"円";
-  document.getElementById("profit").textContent="이익 / 利益 +"+profit.toLocaleString()+"円 (기타 운영비 차감 전 / 運営費控除前)";
+  document.getElementById("profit").textContent="이익 / 利益 +"+margin.toLocaleString()+"円";
 
-  if(dest==="airport"){
+  if(airport){
     document.getElementById("delivery").textContent="익일 공항 배송 / 空港翌日配送";
-    document.getElementById("deliveryNote").textContent="공항은 전 시간대 익일 배송 · 사이즈 무관 +600円 / 空港は全時間帯翌日配送・全サイズ+600円";
-  }else if(band==="overnight"){
-    document.getElementById("delivery").textContent="익일 호텔 배송 / ホテル翌日配送";
-    document.getElementById("deliveryNote").textContent="11:40~익일 11:30 보관 · 2일 보관 기준 / 11:40〜翌日11:30保管・2日分保管基準";
-  }else{
-    document.getElementById("delivery").textContent="당일 호텔 배송 / ホテル当日配送";
-    document.getElementById("deliveryNote").textContent="09:00~11:30 접수 → 당일 11:30 수거 / 09:00〜11:30受付 → 当日11:30集荷";
+    document.getElementById("deliveryNote").textContent=
+      next ? "다음날 야마토 수거 + 공항 배송 / 翌日集荷 + 空港配送"
+           : "당일 야마토 수거 + 공항은 익일 배송 / 当日集荷 + 空港は翌日配送";
+  } else {
+    document.getElementById("delivery").textContent=
+      next ? "익일 호텔 배송 / ホテル翌日配送" : "당일 호텔 배송 / ホテル当日配送";
+    document.getElementById("deliveryNote").textContent=
+      next ? "11:40~익일 11:30 접수분 → 다음날 수거 / 翌日集荷"
+           : "09:00~11:30 접수분 → 당일 수거 / 当日集荷";
   }
 
-  const catName=cat==="small"?"소형 / 小型":cat==="medium"?"중형 / 中型":"대형 / 大型";
-  const days=band==="same"?"1일 / 1日":"2일 / 2日";
+  const typeName=isSmall ? "소형짐 / 小型荷物" : "캐리어 / スーツケース";
   document.getElementById("breakdown").innerHTML=
     `<b>내부 계산 / 内部計算:</b> 야마토 / ヤマト ${yamato[size].toLocaleString()}円 + `+
-    `${catName} 접수비 / 受付 ${handling[cat].toLocaleString()}円 + `+
-    `${days} 보관기준 / 保管基準 ${storageBase.toLocaleString()}円 × ${Math.round(pct*100)}% (${storageShare.toLocaleString()}円)`+
-    `${dest==="airport"?" + 공항 / 空港 600円":""} → <b>${sale.toLocaleString()}円</b>`;
+    `${typeName} 이익 / 利益 ${margin.toLocaleString()}円`+
+    `${airport ? " + 공항 / 空港 600円" : ""} = <b>${sale.toLocaleString()}円</b>`;
 }
 
-[planEl,sizeEl,destEl,bandEl].forEach(el=>el.addEventListener("change",calc));
+[sizeEl,destEl,pickupEl].forEach(el=>el.addEventListener("change",calc));
 calc();
 </script>
 
