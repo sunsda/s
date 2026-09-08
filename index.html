@@ -1,677 +1,731 @@
-<!DOCTYPE html>
-<html lang="ja">
+<!doctype html>
+<html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OVAS 観覧客満足度分析レポート</title>
-<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>야마토 수하물 배송 요금 최종 기획안 / ヤマト手荷物配送 料金最終案</title>
 <style>
-  :root {
-    --bg:#f0f5ff; --surface:#ffffff;
-    --bp:#2563eb; --bd:#1e3a8a; --bm:#3b82f6;
-    --bl:#dbeafe; --bxl:#eff6ff; --bb:#bfdbfe; --bi:#e0eaff;
-    --tm:#1e293b; --ts:#64748b; --tt:#94a3b8;
-    --gr-bg:#d1fae5; --gr-t:#065f46;
-    --re-bg:#fee2e2; --re-t:#dc2626;
-    --am-bg:#fef3c7; --am-t:#92400e;
-    --rc:16px; --rs:10px; --rp:99px;
-    --sh:0 2px 12px rgba(37,99,235,0.07);
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  body{font-family:"Pretendard",sans-serif;background:var(--bg);color:var(--tm);min-height:100vh;}
+:root{--bg:#f5f7f6;--text:#172019;--muted:#6b756f;--line:#dce5df;--green:#075a34;--soft:#eaf4ee;--amber:#fff7e8;--blue:#edf5fb;--dark:#102e21}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Noto Sans KR","Hiragino Kaku Gothic ProN","Yu Gothic","Meiryo","Segoe UI",sans-serif;
+}
+.wrap{width:min(1380px,calc(100% - 28px));margin:24px auto 60px}
+.hero{background:var(--green);color:#fff;border-radius:18px;padding:26px 28px}
+.hero .tag{font-size:12px;font-weight:850;letter-spacing:.08em;opacity:.75}
+.hero h1{margin:5px 0 3px;font-size:31px}
+.hero .ja-title{font-size:18px;font-weight:800;opacity:.9;margin-bottom:8px}
+.hero p{margin:0;font-size:14px;opacity:.9;line-height:1.6}
+.hero .jp-line{color:rgba(255,255,255,.78)}
+.bi,.cell-bi,.th-bi{display:flex;flex-direction:column;gap:2px;align-items:center}
+.ko{font-weight:800}
+.ja{font-size:11px;color:#6f7973;font-weight:650;line-height:1.4}
+.th-bi .ja{font-size:10px}
+.jp-line{font-size:12px;color:#7b857f;line-height:1.55}
+.section-ja{font-size:13px;color:#7a857f;font-weight:700;margin-top:2px}
+.unit-ja{display:block;font-size:10px;color:#7a857f;margin-top:2px}
 
-  .hero{background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 60%,#3b82f6 100%);color:#fff;padding:60px 48px 48px;position:relative;overflow:hidden;}
-  .hero::after{content:"OVAS";position:absolute;right:-10px;top:-20px;font-size:200px;font-weight:800;color:rgba(255,255,255,0.05);letter-spacing:-8px;pointer-events:none;line-height:1;}
-  .hero-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:16px;font-weight:500;}
-  .hero h1{font-size:clamp(26px,4vw,48px);font-weight:800;line-height:1.2;margin-bottom:10px;}
-  .hero-sub{font-size:13px;color:rgba(255,255,255,0.5);margin-top:6px;}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:17px 18px}
+.card .name{font-weight:900;font-size:16px}
+.card .ja-name{font-size:12px;color:var(--muted);font-weight:700;margin-top:2px}
+.card .price{font-size:27px;font-weight:950;color:var(--green);margin-top:3px}
+.card .desc{font-size:12px;color:var(--muted);line-height:1.6;margin-top:5px}
 
-  .stat-strip{display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border-bottom:1px solid var(--bb);box-shadow:var(--sh);}
-  .stat-item{padding:28px 24px;border-right:1px solid var(--bi);}
-  .stat-item:last-child{border-right:none;}
-  .stat-num{font-size:38px;font-weight:800;color:var(--bp);line-height:1;margin-bottom:4px;}
-  .stat-label{font-size:12px;color:var(--ts);font-weight:500;}
+.notice{margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:15px;padding:15px 17px;font-size:13px;line-height:1.7}
+.notice b{color:var(--green)}
 
-  .container{max-width:1160px;margin:0 auto;padding:48px 32px;}
-  .eyebrow{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--bm);font-weight:600;margin-bottom:6px;}
-  .sh{font-size:22px;font-weight:700;margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid var(--bl);color:var(--bd);}
-  .g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:40px;}
-  .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:40px;}
+.fee-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+.fee-card{background:#fff;border:1px solid var(--line);border-radius:15px;padding:16px 17px}
+.fee-card .range{font-size:15px;font-weight:900}
+.fee-card .fee{font-size:25px;font-weight:950;color:var(--green);margin-top:3px}
+.fee-card .ja-fee{font-size:12px;font-weight:750;color:#607067;margin-top:2px}
+.fee-card .desc{font-size:12px;color:var(--muted);line-height:1.55;margin-top:5px}
 
-  .card{background:var(--surface);border:1px solid var(--bb);border-radius:var(--rc);padding:24px;box-shadow:var(--sh);}
-  .ct{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--tt);font-weight:600;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--bi);}
+.flow{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+.flow-card{background:#fff;border:1px solid var(--line);border-radius:15px;padding:17px}
+.flow-card.late{background:var(--amber)} .flow-card.air{background:var(--blue)}
+.time{font-size:20px;font-weight:950;color:var(--green)}
+.ftitle{font-weight:900;margin-top:4px}
+.fja{font-size:12px;font-weight:700;color:#66756c;margin-top:2px}
+.fdesc{font-size:13px;color:var(--muted);line-height:1.55;margin-top:6px}
 
-  .bc{display:flex;flex-direction:column;gap:12px;}
-  .br{display:flex;align-items:center;gap:10px;}
-  .bl2{font-size:13px;min-width:140px;color:var(--tm);font-weight:500;line-height:1.3;}
-  .bt{flex:1;height:26px;background:var(--bxl);border-radius:var(--rp);overflow:hidden;}
-  .bf{height:100%;background:linear-gradient(90deg,var(--bm),var(--bp));border-radius:var(--rp);display:flex;align-items:center;justify-content:flex-end;padding-right:10px;animation:grow 0.9s ease-out forwards;}
-  .bf.ac{background:linear-gradient(90deg,#f87171,#dc2626);}
-  .bf.go{background:linear-gradient(90deg,#fbbf24,#d97706);}
-  .bf.sa{background:linear-gradient(90deg,#34d399,#059669);}
-  .bf.gr{background:linear-gradient(90deg,#94a3b8,#64748b);}
-  .bp2{font-size:11px;color:#fff;font-weight:700;}
-  .bco{font-size:12px;color:var(--tt);min-width:26px;font-weight:600;}
-  @keyframes grow{from{width:0 !important;}}
+.logic{margin-top:14px;background:var(--dark);color:#fff;border-radius:16px;padding:18px 20px}
+.logic h3{margin:0;font-size:16px}
+.logic .logic-ja{font-size:12px;opacity:.78;margin:2px 0 8px}
+.logic p{margin:0;font-size:13px;line-height:1.7;opacity:.92}
 
-  .mw{display:flex;gap:8px;margin-bottom:20px;}
-  .mb2{flex:1;height:64px;border-radius:var(--rs);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;font-weight:600;transition:transform 0.2s;cursor:default;}
-  .mb2:hover{transform:translateY(-2px);}
-  .mn{font-size:22px;font-weight:800;}
+.section{margin-top:30px}
+.title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.section h2{font-size:22px;margin:0}
+.badge{display:inline-block;padding:6px 10px;border-radius:12px;background:var(--soft);color:var(--green);font-size:11px;font-weight:900;text-align:center;line-height:1.4}
+.badge small{font-size:10px;font-weight:700}
+.sub{font-size:13px;color:var(--muted);line-height:1.65;margin:7px 0 11px}
 
-  .qg{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:40px;}
-  .qi{background:var(--bxl);border:1px solid var(--bb);border-radius:var(--rc);padding:20px;border-left:4px solid var(--bp);font-size:13px;line-height:1.7;}
-  .qi strong{color:var(--bd);}
-  .qm{font-size:10px;color:var(--tt);margin-top:10px;font-weight:600;letter-spacing:0.5px;}
+.table-wrap{background:#fff;border:1px solid var(--line);border-radius:17px;overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:1460px}
+th,td{padding:13px 10px;border-bottom:1px solid var(--line);text-align:center;white-space:nowrap;vertical-align:middle}
+th{font-size:12px;color:#56635a;background:#f8faf9}
+th small{display:block;font-size:10px;color:#87918b;margin-top:4px}
+td{font-size:13px}
+tbody tr:last-child td{border-bottom:0}
+.cost{font-weight:850}
+.handling{font-weight:900;color:#274f3a}
+.money{font-size:15px;font-weight:950;color:var(--green)}
+.profit{display:block;margin-top:3px;font-size:11px;font-weight:850;color:#7a5b16}
+.late-head{background:#fff2d5}
+.late{background:#fffaf0}
 
-  .il{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:40px;}
-  .ii{display:flex;gap:14px;padding:20px;background:var(--surface);border:1px solid var(--bb);border-radius:var(--rc);box-shadow:var(--sh);}
-  .iic{font-size:26px;flex-shrink:0;width:40px;height:40px;display:flex;align-items:center;justify-content:center;}
-  .iib h4{font-size:14px;font-weight:700;margin-bottom:6px;color:var(--tm);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-  .iib p{font-size:12.5px;color:var(--ts);line-height:1.65;}
+.calc{margin-top:30px;background:#fff;border:1px solid var(--line);border-radius:17px;padding:20px}
+.calc h2{margin:0;font-size:22px}
+.calc .ja-head{font-size:13px;color:var(--muted);font-weight:700;margin:2px 0 12px}
+.inputs{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+label{display:flex;flex-direction:column;gap:2px;font-size:12px;font-weight:850;color:#59655e;margin-bottom:5px}
+label small{font-size:10px;color:#7a857f;font-weight:700}
+select,input{width:100%;height:44px;border:1px solid #ccd7d0;border-radius:10px;background:#fff;padding:0 11px;font:inherit;color:var(--text)}
+.results{display:grid;grid-template-columns:1.05fr .95fr;gap:12px;margin-top:14px}
+.total{background:var(--green);color:#fff;border-radius:14px;padding:18px 20px}
+.lab{font-size:12px;opacity:.78;line-height:1.45}
+.amount{font-size:34px;font-weight:950;line-height:1.2;margin-top:2px}
+.service{font-size:13px;opacity:.9;margin-top:7px}
+.delivery{background:#f7f9f8;border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.delivery .lab{color:var(--muted);font-weight:850;opacity:1}
+.delivery .main{font-size:21px;font-weight:950;margin-top:3px}
+.delivery .note{font-size:12px;color:var(--muted);line-height:1.55;margin-top:7px}
+.breakdown{margin-top:10px;border:1px dashed #cad6cf;border-radius:12px;padding:12px 14px;background:#fbfcfb;font-size:13px;color:#59645d;line-height:1.65}
+.breakdown b{color:#1d2a22}
+.foot{font-size:11px;color:#7a857e;text-align:right;margin-top:12px;line-height:1.6}
 
-  .badge{display:inline-block;font-size:9px;letter-spacing:1px;padding:2px 8px;border-radius:var(--rp);font-weight:700;background:var(--bl);color:var(--bd);}
-  .badge.warn{background:var(--re-bg);color:var(--re-t);}
-  .badge.gold{background:var(--am-bg);color:var(--am-t);}
-
-  .rl{}
-  .ri{display:flex;gap:20px;padding:20px 0;border-bottom:1px solid var(--bi);}
-  .ri:last-child{border-bottom:none;}
-  .rn{font-size:30px;font-weight:800;min-width:44px;line-height:1.1;color:var(--bl);-webkit-text-stroke:1.5px var(--bp);}
-  .rc2 h4{font-size:15px;font-weight:700;margin-bottom:6px;color:var(--bd);}
-  .rc2 p{font-size:13px;color:var(--ts);line-height:1.7;}
-  .rt{display:inline-block;font-size:10px;letter-spacing:1px;padding:3px 10px;margin-top:8px;border-radius:var(--rp);background:var(--bxl);color:var(--bp);font-weight:700;border:1px solid var(--bb);}
-
-  .sw{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:40px;}
-  .sc{padding:24px;text-align:center;border-radius:var(--rc);border:1px solid var(--bb);background:var(--surface);box-shadow:var(--sh);}
-  .si{font-size:34px;margin-bottom:10px;}
-  .sc h4{font-size:14px;font-weight:700;margin-bottom:6px;color:var(--bd);}
-  .sc p{font-size:12px;color:var(--ts);line-height:1.6;}
-
-  .sep{border:none;border-top:1px solid var(--bi);margin:44px 0;}
-
-  footer{background:var(--bd);color:rgba(255,255,255,0.45);text-align:center;padding:28px;font-size:12px;font-weight:500;line-height:1.8;}
-
-  @media(max-width:768px){
-    .stat-strip,.g2,.g3,.qg,.sw,.il{grid-template-columns:1fr;}
-    .hero{padding:40px 20px;}
-    .container{padding:32px 16px;}
-  }
+@media(max-width:900px){
+  .cards,.flow,.fee-grid{grid-template-columns:1fr 1fr}
+  .inputs{grid-template-columns:1fr 1fr}
+  .results{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+  .wrap{width:calc(100% - 16px);margin-top:8px}
+  .hero{padding:20px;border-radius:14px}
+  .hero h1{font-size:25px}
+  .cards,.flow,.fee-grid,.inputs{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
+<div class="wrap">
 
-<div class="hero">
-  <div class="hero-label">Survey Analysis Report · 2026</div>
-  <h1>OVAS 観覧客<br>満足度・認識調査</h1>
-  <div class="hero-sub">大阪観光現地アンケート — 韓国人観覧客対象 / N=3</div>
-</div>
+<section class="hero">
+  <div class="tag">STAFF ONLY · KANSAI</div>
+  <h1>야마토 수하물 배송 요금 최종 기획안</h1>
+  <div class="ja-title">ヤマト手荷物配送 料金最終案</div>
+  <p>
+    야마토 사이즈 상한 기준으로 소형·중형·대형을 나누고 접수비를 차등 적용<br>
+    <span class="jp-line">ヤマトサイズの上限基準で小型・中型・大型に区分し、受付手数料を設定します。</span>
+  </p>
+</section>
 
-<div class="stat-strip">
-  <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">有効回答者数</div></div>
-  <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">推薦意向率</div></div>
-  <div class="stat-item"><div class="stat-num">67%</div><div class="stat-label">全体満足（満足以上）</div></div>
-  <div class="stat-item"><div class="stat-num">4回↑</div><div class="stat-label">回答者の大阪訪問回数</div></div>
-</div>
-
-<div class="container">
-
-  <div class="eyebrow">Section 01</div>
-  <div class="sh">基本情報・訪問背景</div>
-
-  <div class="g3">
-    <div class="card">
-      <div class="ct">年齢層の分布</div>
-      <div class="bc">
-        <div class="br"><div class="bl2">20代</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
-        <div class="br"><div class="bl2">30代</div><div class="bt"><div class="bf" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
-        <div class="br"><div class="bl2">40代</div><div class="bt"><div class="bf go" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="ct">観覧同行者の構成</div>
-      <div class="bc">
-        <div class="br"><div class="bl2">一人</div><div class="bt"><div class="bf" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
-        <div class="br"><div class="bl2">友人</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
-        <div class="br"><div class="bl2">家族</div><div class="bt"><div class="bf go" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="ct">普段の公演観覧習慣</div>
-      <div class="bc">
-        <div class="br"><div class="bl2">よく観覧する</div><div class="bt"><div class="bf" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
-        <div class="br"><div class="bl2">たまに観覧する</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
-        <div class="br"><div class="bl2">ほぼ初めて</div><div class="bt"><div class="bf go" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="g2">
-    <div class="card">
-      <div class="ct">観覧を決めた理由 (Q5)</div>
-      <div class="bc">
-        <div class="br"><div class="bl2">大阪での特別な体験</div><div class="bt"><div class="bf" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
-        <div class="br"><div class="bl2">観光コースの一つ</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
-        <div class="br"><div class="bl2">同行者が希望したため</div><div class="bt"><div class="bf go" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="ct">観覧前の期待度 (Q6)</div>
-      <div class="mw">
-        <div class="mb2" style="background:#dbeafe;color:#1d4ed8;flex:1"><div class="mn">1</div>非常に期待</div>
-        <div class="mb2" style="background:#eff6ff;color:#3b82f6;flex:1"><div class="mn">1</div>普通</div>
-        <div class="mb2" style="background:#f8faff;color:#93b4d8;flex:1"><div class="mn">1</div>期待せず</div>
-      </div>
-      <p style="font-size:12px;color:var(--ts);line-height:1.6;">期待が低かった回答者も<strong>満足</strong>に転換した点が注目されます。</p>
-    </div>
-  </div>
-
-  <hr class="sep">
-
-  <div class="eyebrow">Section 02</div>
-  <div class="sh">観覧満足度・体験評価</div>
-
-  <div class="g2">
-    <div class="card">
-      <div class="ct">全体的な満足度 (Q8)</div>
-      <div class="bc" style="margin-bottom:14px">
-        <div class="br"><div class="bl2">満足</div><div class="bt"><div class="bf sa" style="width:67%"><span class="bp2">67%</span></div></div><div class="bco">2名</div></div>
-        <div class="br"><div class="bl2">普通</div><div class="bt"><div class="bf gr" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
-      </div>
-      <div style="background:var(--gr-bg);border-radius:var(--rs);padding:12px;text-align:center;">
-        <span style="font-size:13px;color:var(--gr-t);font-weight:700;">不満回答0件・最低限のポジティブ体験が保障</span>
-      </div>
-    </div>
-    <div class="card">
-      <div class="ct">期待と実際の比較 (Q10)</div>
-      <div class="bc">
-        <div class="br"><div class="bl2">期待以上</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
-        <div class="br"><div class="bl2">期待通り</div><div class="bt"><div class="bf" style="width:67%"><span class="bp2">67%</span></div></div><div class="bco">2名</div></div>
-        <div class="br"><div class="bl2">期待以下</div><div class="bt"><div class="bf ac" style="width:0%"></div></div><div class="bco">0名</div></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="ct">最も満足した要素 (Q9)</div>
-      <div class="bc">
-        <div class="br"><div class="bl2">公演内容</div><div class="bt"><div class="bf" style="width:67%"><span class="bp2">67%</span></div></div><div class="bco">2名</div></div>
-        <div class="br"><div class="bl2">非日常的な体験</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="ct">公演の理解度 (Q12)</div>
-      <div class="bc">
-        <div class="br"><div class="bl2">非常にわかりやすい</div><div class="bt"><div class="bf sa" style="width:67%"><span class="bp2">67%</span></div></div><div class="bco">2名</div></div>
-        <div class="br"><div class="bl2">ある程度理解できた</div><div class="bt"><div class="bf" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
-      </div>
-      <p style="font-size:12px;color:var(--ts);line-height:1.6;margin-top:12px;">言語の壁への懸念があっても全員が理解可能 → 視覚・パフォーマンス中心構成の強みを確認</p>
-    </div>
-  </div>
-
-  <div class="card" style="margin-bottom:40px">
-    <div class="ct">韓国人観光客から見た公演の雰囲気 (Q13)</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
-      <div style="text-align:center;padding:20px;background:var(--bxl);border-radius:var(--rs);border:1px solid var(--bb)">
-        <div style="font-size:32px;margin-bottom:8px">😄</div>
-        <div style="font-size:13px;font-weight:700;color:var(--bd)">非常に興味深い</div>
-        <div style="font-size:11px;color:var(--tt);margin-top:4px;font-weight:500">20代・家族</div>
-      </div>
-      <div style="text-align:center;padding:20px;background:var(--bxl);border-radius:var(--rs);border:1px solid var(--bb)">
-        <div style="font-size:32px;margin-bottom:8px">😊</div>
-        <div style="font-size:13px;font-weight:700;color:var(--bd)">概ね楽しかった</div>
-        <div style="font-size:11px;color:var(--tt);margin-top:4px;font-weight:500">30・40代</div>
-      </div>
-      <div style="text-align:center;padding:20px;background:#f8faff;border-radius:var(--rs);border:1px solid var(--bi)">
-        <div style="font-size:32px;margin-bottom:8px">😐</div>
-        <div style="font-size:13px;font-weight:700;color:var(--ts)">馴染みにくい雰囲気</div>
-        <div style="font-size:11px;color:var(--tt);margin-top:4px;font-weight:500">30代・友人同行</div>
-      </div>
-    </div>
-  </div>
-
-  <hr class="sep">
-
-  <div class="eyebrow">Section 03</div>
-  <div class="sh">不満点・参入障壁の分析</div>
-
-  <div class="g2">
-    <div class="card">
-      <div class="ct">観覧中に残念だった点 (Q14)</div>
-      <div class="bc" style="margin-bottom:14px">
-        <div class="br"><div class="bl2">価格の負担感</div><div class="bt"><div class="bf ac" style="width:67%"><span class="bp2">67%</span></div></div><div class="bco">2名</div></div>
-        <div class="br"><div class="bl2">馴染みにくい雰囲気</div><div class="bt"><div class="bf gr" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
-      </div>
-      <div style="background:var(--re-bg);border-radius:var(--rs);padding:12px">
-        <p style="font-size:12px;color:var(--re-t);font-weight:700">⚠ 価格が最多の不満要素 (67%)</p>
-        <p style="font-size:12px;color:#b91c1c;margin-top:4px">再訪問および口コミ拡散への心理的ハードルとして機能</p>
-      </div>
-    </div>
-    <div class="card">
-      <div class="ct">韓国人が観覧を迷う主な理由 (Q17)</div>
-      <div class="bc">
-        <div class="br"><div class="bl2">言語の壁への不安</div><div class="bt"><div class="bf" style="width:67%"><span class="bp2">67%</span></div></div><div class="bco">2名</div></div>
-        <div class="br"><div class="bl2">好みに合うか不安</div><div class="bt"><div class="bf go" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
-        <div class="br"><div class="bl2">公演内容の理解不足</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
-        <div class="br"><div class="bl2">旅行優先順位が低い</div><div class="bt"><div class="bf gr" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="ct">必要な韓国語サポート (Q15·Q16)</div>
-      <div class="bc">
-        <div class="br"><div class="bl2">韓国語案内</div><div class="bt"><div class="bf" style="width:100%"><span class="bp2">100%</span></div></div><div class="bco">3名</div></div>
-        <div class="br"><div class="bl2">実際の観覧レビュー</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
-        <div class="br"><div class="bl2">旅行コースとの連携紹介</div><div class="bt"><div class="bf go" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1名</div></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="ct">追加してほしい要素</div>
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <div style="padding:11px 14px;background:var(--bxl);border-radius:var(--rs);font-size:13px;border-left:3px solid var(--bp)">🎬 <strong>SNSコンテンツでの発信</strong> — バイラルマーケティング (40代)</div>
-        <div style="padding:11px 14px;background:#fffbeb;border-radius:var(--rs);font-size:13px;border-left:3px solid #d97706">🎟 <strong>割引・参加型イベント</strong> — 価格ハードルの緩和 (20代)</div>
-        <div style="padding:11px 14px;background:#f0fdf4;border-radius:var(--rs);font-size:13px;border-left:3px solid #059669">🗺 <strong>旅行コースとの連携紹介</strong> — 旅程への統合 (30代)</div>
-        <div style="padding:11px 14px;background:#fdf4ff;border-radius:var(--rs);font-size:13px;border-left:3px solid #9333ea">🎌 <strong>アニメ要素の追加</strong> — 韓国人の好みへの対応 (20代)</div>
-      </div>
-    </div>
-  </div>
-
-  <hr class="sep">
-
-  <div class="eyebrow">Section 04</div>
-  <div class="sh">推薦意向・再観覧意向</div>
-
-  <div class="g2">
-    <div class="card">
-      <div class="ct">周囲への推薦意向 (Q18)</div>
-      <div class="mw">
-        <div class="mb2" style="background:#dbeafe;color:#1d4ed8;flex:1"><div class="mn">1</div>非常にそう思う</div>
-        <div class="mb2" style="background:#2563eb;color:#fff;flex:2"><div class="mn">2</div>そう思う</div>
-      </div>
-      <div style="background:var(--bl);border-radius:var(--rs);padding:14px;text-align:center;border:1px solid var(--bb)">
-        <span style="font-size:30px;font-weight:800;color:var(--bp)">100%</span>
-        <span style="font-size:13px;color:var(--bd);margin-left:8px;font-weight:600">全員が推薦意向あり</span>
-      </div>
-    </div>
-    <div class="card">
-      <div class="ct">再観覧意向 (Q19)</div>
-      <div class="mw">
-        <div class="mb2" style="background:#dbeafe;color:#1d4ed8;flex:1"><div class="mn">1</div>ぜひまた行きたい</div>
-        <div class="mb2" style="background:#2563eb;color:#fff;flex:2"><div class="mn">2</div>少し行きたい</div>
-      </div>
-      <p style="font-size:12px;color:var(--ts);line-height:1.6;margin-top:12px">「全く行きたくない」「行きたくない」の回答0件。再観覧の障壁は主に価格と旅行頻度に起因すると推定。</p>
-    </div>
-  </div>
-
-  <hr class="sep">
-
-  <div class="eyebrow">Section 05</div>
-  <div class="sh">観覧客の声 (Q21–Q23)</div>
-
-  <div class="qg">
-    <div class="qi">
-      大阪旅行の<br><strong>ユニークな体験</strong>
-      <div style="margin-top:10px;font-size:13px;line-height:1.7;color:var(--ts)">「魅力は十分あるので、しっかりPRすれば反応は良いと思う。」</div>
-      <div class="qm">40代・一人・SNS発信を提案</div>
-    </div>
-    <div class="qi">
-      大阪のローカル公演を<br><strong>全身で体験！</strong>
-      <div style="margin-top:10px;font-size:13px;line-height:1.7;color:var(--ts)">「楽しかったが、子どもと行くには喫煙・飲酒の雰囲気が気になった。まずは公演の存在自体を認知させる必要がある。」</div>
-      <div class="qm">30代・友人同行・認知度拡大を強調</div>
-    </div>
-    <div class="qi">
-      大阪ならではの<br><strong>特別なショー</strong>
-      <div style="margin-top:10px;font-size:13px;line-height:1.7;color:var(--ts)">「皆さんの熱量に感動しました！言語の壁なく十分に楽しめるショーでした。」</div>
-      <div class="qm">20代・家族・言語不要を強調</div>
-    </div>
-  </div>
-
-  <hr class="sep">
-
-  <div class="eyebrow">Section 06</div>
-  <div class="sh">重要インサイト</div>
-
-  <div class="il">
-    <div class="ii"><div class="iic">✅</div><div class="iib"><h4>言語の壁＝実際の壁ではない <span class="badge">STRENGTH</span></h4><p>観覧前に「言語の壁」を最も多く懸念していたが(67%)、観覧後は全員が理解可能と回答。非言語パフォーマンス中心の構成が韓国人観光客に有効に機能。この「誤解の解消」をマーケティングの核心メッセージとして活用すべき。</p></div></div>
-    <div class="ii"><div class="iic">💰</div><div class="iib"><h4>価格への抵抗が最大の離脱リスク <span class="badge warn">RISK</span></h4><p>回答者の67%が「価格の負担感」を明示的な不満として挙げた。満足度は高いが、再訪問や口コミ拡散への心理的ハードルとして機能。割引クーポン・パッケージ連携など参入コスト緩和策が必要。</p></div></div>
-    <div class="ii"><div class="iic">📢</div><div class="iib"><h4>認知度不足が根本的な課題 <span class="badge warn">RISK</span></h4><p>「公演の存在自体を知らせる必要がある」との直接的な声。3名全員が大阪4回以上の訪問者であり、旅慣れた旅行者もOVASをごく最近知ったことが判明。初期認知チャネルの拡大（SNS・旅行プラットフォーム提携）が最優先課題。</p></div></div>
-    <div class="ii"><div class="iic">🎯</div><div class="iib"><h4>リピーター訪問者がコアターゲット <span class="badge gold">OPPORTUNITY</span></h4><p>全回答者が大阪4回以上の訪問者。「新しい体験」を求める旅慣れた大阪旅行者に特に響く。初訪問者よりリピーター向けマーケティングが有効な可能性が高い。</p></div></div>
-    <div class="ii"><div class="iic">🌐</div><div class="iib"><h4>SNSレビューが主要流入経路になり得る <span class="badge gold">OPPORTUNITY</span></h4><p>推薦意向100%・再観覧意向100%であり口コミマーケティングの潜在力が高い。実際の韓国人観覧レビュー・ショートフォームコンテンツ制作支援でバイラル効果が期待できる。観覧客をコンテンツ生産者として活用する戦略を検討。</p></div></div>
-    <div class="ii"><div class="iic">👨‍👩‍👧</div><div class="iib"><h4>ファミリー観覧環境の改善が必要 <span class="badge">IMPROVE</span></h4><p>飲酒・喫煙の雰囲気により子ども連れでの観覧が難しいとのフィードバック。ファミリー市場は大きいため、ファミリー専用タイム設定や年齢を考慮した環境区分などの対策検討の価値あり。</p></div></div>
-  </div>
-
-  <hr class="sep">
-
-  <div class="eyebrow">Section 07</div>
-  <div class="sh">韓国人最適ターゲットセグメント (Q20より)</div>
-
-  <div class="sw">
-    <div class="sc"><div class="si">🧳</div><h4>特別な体験追求型</h4><p>大阪を複数回訪れた旅慣れた旅行者。一般的な観光地はすでに巡っており、「今回は何か違うもの」を求める層。</p></div>
-    <div class="sc"><div class="si">👫</div><h4>友人・カップル旅行者</h4><p>公演・文化に関心があるか、新しい体験を共有したい20〜30代の同行旅行者。SNSシェア意欲が高い。</p></div>
-    <div class="sc"><div class="si">👨‍👩‍👧‍👦</div><h4>ファミリー旅行者（条件付き）</h4><p>現状の飲酒・喫煙環境改善を前提とした潜在ターゲット。子連れの30〜40代の親世代も公演自体に興味を感じる。</p></div>
-  </div>
-
-  <hr class="sep">
-
-  <div class="eyebrow">Section 08</div>
-  <div class="sh">実行推奨事項</div>
-
+<section class="cards">
   <div class="card">
-    <div class="rl">
-      <div class="ri"><div class="rn">01</div><div class="rc2"><h4>「言葉がわからなくても楽しめる」メッセージを前面に</h4><p>観覧前の最多懸念(67%)だが、実際には全員が理解に成功。「言語の壁のないパフォーマンス」を韓国語プロモーションの核心コピーとして使用。レビュー収集時にこの体験を際立たせるよう誘導。</p><span class="rt">MARKETING · CONTENT</span></div></div>
-      <div class="ri"><div class="rn">02</div><div class="rc2"><h4>韓国旅行プラットフォームへの出店＋韓国語案内資料の制作</h4><p>認知度不足が核心問題。Klook・マイリアルトリップ・ネイバーカフェの大阪旅行コミュニティなど韓国人接点チャネルへの出店を優先。韓国語パンフレットおよびウェブサイトの韓国語版が必須。</p><span class="rt">DISTRIBUTION · LOCALIZATION</span></div></div>
-      <div class="ri"><div class="rn">03</div><div class="rc2"><h4>価格体系の柔軟化（割引クーポン・パッケージ連携）</h4><p>67%が価格負担を言及。初回体験誘導のための割引クーポン配布、大阪主要観光地パッケージ連携、または早期予約割引の導入。実際の値下げより「特典を受けた感覚」の設計が効果的。</p><span class="rt">PRICING · PARTNERSHIP</span></div></div>
-      <div class="ri"><div class="rn">04</div><div class="rc2"><h4>SNSレビューコンテンツ生産インフラの構築</h4><p>推薦意向100%の資産をバイラルに転換。観覧後のフォトスポット設置・シェア促進、ハッシュタグ運営、韓国人インフルエンサー招待試写会など、レビュー生産エコシステムを積極的に整備。</p><span class="rt">SNS · VIRAL</span></div></div>
-      <div class="ri"><div class="rn">05</div><div class="rc2"><h4>ファミリー観覧環境の分離または改善</h4><p>飲酒・喫煙環境の改善によりファミリー市場の拡大可能性を探索。ファミリー専用時間帯の設定または区域分離だけでも新規ターゲット開拓が期待できる。</p><span class="rt">EXPERIENCE · VENUE</span></div></div>
-    </div>
+    <div class="name">소형 · 100까지</div>
+    <div class="ja-name">小型 · 100サイズまで</div>
+    <div class="price">보관 500円 / 1일</div>
+    <div class="desc">60까지 / 80까지 / 100까지 모두 소형으로 적용.<br><span class="jp-line">60・80・100サイズまでをすべて小型として適用。</span></div>
   </div>
-
-
-</div><!-- end JP container -->
-
-<!-- TOGGLE SECTION -->
-<div style="background:#fff;border-top:2px solid var(--bi);">
-  <div style="max-width:1160px;margin:0 auto;padding:0 32px;">
-    <button onclick="toggleKR()" id="toggle-btn"
-      style="display:flex;align-items:center;gap:12px;width:100%;padding:24px 0;background:none;border:none;cursor:pointer;text-align:left;font-family:'Pretendard',sans-serif;">
-      <div style="width:36px;height:36px;background:var(--bp);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform 0.3s;" id="toggle-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
-      <div>
-        <div style="font-size:15px;font-weight:700;color:var(--bd);">한국어 버전 보기</div>
-        <div style="font-size:12px;color:var(--tt);margin-top:2px;">Korean Version · 동일 내용</div>
-      </div>
-    </button>
+  <div class="card">
+    <div class="name">중형 · 120~160</div>
+    <div class="ja-name">中型 · 120〜160サイズ</div>
+    <div class="price">보관 800円 / 1일</div>
+    <div class="desc">120까지 / 140까지 / 160까지 중형 적용.<br><span class="jp-line">120・140・160サイズまでを中型として適用。</span></div>
   </div>
+  <div class="card">
+    <div class="name">대형 · 180~200</div>
+    <div class="ja-name">大型 · 180〜200サイズ</div>
+    <div class="price">보관 800円 / 1일</div>
+    <div class="desc">180까지 / 200까지 대형 적용.<br><span class="jp-line">180・200サイズまでを大型として適用。</span></div>
+  </div>
+</section>
+
+<div class="notice">
+  <b>100사이즈는 한 번만 표기합니다.</b><br>
+  100까지는 소형으로 확정하고, 별도 캐리어 행을 두지 않습니다.
+  사이즈는 “60까지 / 80까지 / 100까지”처럼 각 야마토 규격의 <b>상한</b>을 의미합니다.<br>
+  <span class="jp-line">100サイズまでは小型として統一し、100サイズの重複行は設けません。各サイズは「60まで・80まで・100まで」の上限基準です。</span>
 </div>
 
-<div id="kr-section" style="display:none;background:var(--bg);">
-  <!-- KR HERO -->
-  <div class="hero" style="background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 60%,#3b82f6 100%);">
-    <div class="hero-label">Survey Analysis Report · 2026</div>
-    <h1>OVAS 관람객<br>만족도 · 인식 조사</h1>
-    <div class="hero-sub">오사카 관광 현장 설문 — 한국인 관람객 대상 / N=3</div>
+<section class="fee-grid">
+  <div class="fee-card">
+    <div class="range">소형 · 60 / 80 / 100까지</div>
+    <div class="fee">접수비 200円</div>
+    <div class="ja-fee">小型 · 受付手数料 200円</div>
   </div>
-  <div class="stat-strip">
-    <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">유효 응답자 수</div></div>
-    <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">추천 의향률</div></div>
-    <div class="stat-item"><div class="stat-num">67%</div><div class="stat-label">전반 만족 (만족 이상)</div></div>
-    <div class="stat-item"><div class="stat-num">4회↑</div><div class="stat-label">응답자 오사카 방문 횟수</div></div>
+  <div class="fee-card">
+    <div class="range">중형 · 120 / 140 / 160까지</div>
+    <div class="fee">접수비 300円</div>
+    <div class="ja-fee">中型 · 受付手数料 300円</div>
   </div>
-  <div class="container">
+  <div class="fee-card">
+    <div class="range">대형 · 180 / 200까지</div>
+    <div class="fee">접수비 400円</div>
+    <div class="ja-fee">大型 · 受付手数料 400円</div>
+  </div>
+</section>
 
-  <div class="eyebrow">Section 01</div>
-  <div class="sh">기본 정보 · 방문 맥락</div>
+<section class="flow">
+  <div class="flow-card">
+    <div class="time">09:00~11:30</div>
+    <div class="ftitle">호텔 · 당일 배송</div>
+    <div class="fja">ホテル・当日配送</div>
+    <div class="fdesc">당일 11:30 수거. 1일 보관료 기준의 일부 반영.<br><span class="jp-line">当日11:30集荷。1日保管料金を基準に一部を反映。</span></div>
+  </div>
+  <div class="flow-card late">
+    <div class="time">11:40~익일 11:30</div>
+    <div class="ftitle">호텔 · 익일 배송</div>
+    <div class="fja">ホテル・翌日配送</div>
+    <div class="fdesc">날짜가 넘어가므로 2일 보관료 기준 + 높은 반영률 적용.<br><span class="jp-line">日付をまたぐため2日分の保管料金を基準に高い反映率を適用。</span></div>
+  </div>
+  <div class="flow-card air">
+    <div class="time">공항 · 전 시간대</div>
+    <div class="ftitle">전부 익일 배송 · +600엔</div>
+    <div class="fja">空港・全時間帯 翌日配送・+600円</div>
+    <div class="fdesc">사이즈와 관계없이 공항 추가운임 600엔.<br><span class="jp-line">サイズに関係なく空港追加運賃600円。</span></div>
+  </div>
+</section>
 
-  <div class="g3">
-    <div class="card">
-      <div class="ct">연령대 분포</div>
-      <div class="bc">
-        <div class="br"><div class="bl2">20대</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
-        <div class="br"><div class="bl2">30대</div><div class="bt"><div class="bf" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
-        <div class="br"><div class="bl2">40대</div><div class="bt"><div class="bf go" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
-      </div>
+<section class="logic">
+  <h3>가격 구조</h3>
+  <div class="logic-ja">料金構成</div>
+  <p>
+    고객 판매가 = 야마토 실제 운임 + 구간별 접수비 + 보관료 일부.<br>
+    소형 200엔 / 중형 300엔 / 대형 400엔.<br>
+    A안: 당일 20% / 익일 45% · B안: 당일 25% / 익일 60% · C안: 당일 30% / 익일 70%.<br>
+    <span style="opacity:.78">販売価格＝ヤマト実運賃＋区分別受付手数料＋保管料金の一部。小型200円 / 中型300円 / 大型400円。</span>
+  </p>
+</section>
+
+
+<section class="section">
+  <div class="title-row">
+    <div>
+      <h2>A안 · 보관 부담 낮게 반영</h2>
+      <div class="section-ja">A案 · 保管負担を低めに反映</div>
     </div>
-    <div class="card">
-      <div class="ct">관람 동행 구성</div>
-      <div class="bc">
-        <div class="br"><div class="bl2">혼자</div><div class="bt"><div class="bf" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
-        <div class="br"><div class="bl2">친구</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
-        <div class="br"><div class="bl2">가족</div><div class="bt"><div class="bf go" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
-      </div>
+    <span class="badge">당일 20% / 익일 45%<br><small>当日 20% / 翌日 45%</small></span>
+  </div>
+  <p class="sub">
+    09:00~11:30은 1일 보관료 기준의 20%, 11:40~익일 11:30은 2일 보관료 기준의 45%를 반영합니다.<br>
+    <span class="jp-line">09:00〜11:30は1日保管料金の20%、11:40〜翌日11:30は2日分保管料金の45%を反映します。</span>
+  </p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th><div class="th-bi"><span class="ko">야마토 사이즈</span><span class="ja">ヤマトサイズ</span></div></th>
+          <th><div class="th-bi"><span class="ko">구분</span><span class="ja">区分</span></div></th>
+          <th><div class="th-bi"><span class="ko">접수비</span><span class="ja">受付手数料</span></div></th>
+          <th><div class="th-bi"><span class="ko">1일 보관 기준</span><span class="ja">1日保管基準</span></div></th>
+          <th><div class="th-bi"><span class="ko">날짜 넘어갈 때 보관 기준</span><span class="ja">日付をまたぐ場合の保管基準</span></div></th>
+          <th><div class="th-bi"><span class="ko">야마토 원가</span><span class="ja">ヤマト原価</span></div></th>
+          <th><div class="th-bi"><span class="ko">09:00~11:30 호텔</span><span class="ja">09:00〜11:30 ホテル</span></div><small>판매가 / 이익 · 販売価格 / 利益</small></th>
+          <th class="late-head"><div class="th-bi"><span class="ko">11:40~익일 11:30 호텔</span><span class="ja">11:40〜翌日11:30 ホテル</span></div><small>판매가 / 이익 · 販売価格 / 利益</small></th>
+          <th><div class="th-bi"><span class="ko">09:00~11:30 공항</span><span class="ja">09:00〜11:30 空港</span></div><small>판매가 / 이익 · 販売価格 / 利益</small></th>
+          <th class="late-head"><div class="th-bi"><span class="ko">11:40~익일 11:30 공항</span><span class="ja">11:40〜翌日11:30 空港</span></div><small>판매가 / 이익 · 販売価格 / 利益</small></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>60까지</b><span class="unit-ja">〜60サイズ</span></td>
+          <td><div class="cell-bi"><span class="ko">소형</span><span class="ja">小型</span></div></td>
+          <td class="handling">200円</td>
+          <td>500円</td>
+          <td>1,000円</td>
+          <td class="cost">740円</td>
+          <td class="money">1,100円<span class="profit">이익 / 利益 +360円</span></td>
+          <td class="money late">1,400円<span class="profit">이익 / 利益 +660円</span></td>
+          <td class="money">1,700円<span class="profit">이익 / 利益 +360円</span></td>
+          <td class="money late">2,000円<span class="profit">이익 / 利益 +660円</span></td>
+        </tr>
+
+        <tr>
+          <td><b>80까지</b><span class="unit-ja">〜80サイズ</span></td>
+          <td><div class="cell-bi"><span class="ko">소형</span><span class="ja">小型</span></div></td>
+          <td class="handling">200円</td>
+          <td>500円</td>
+          <td>1,000円</td>
+          <td class="cost">980円</td>
+          <td class="money">1,300円<span class="profit">이익 / 利益 +320円</span></td>
+          <td class="money late">1,700円<span class="profit">이익 / 利益 +720円</span></td>
+          <td class="money">1,900円<span class="profit">이익 / 利益 +320円</span></td>
+          <td class="money late">2,300円<span class="profit">이익 / 利益 +720円</span></td>
+        </tr>
+
+        <tr>
+          <td><b>100까지</b><span class="unit-ja">〜100サイズ</span></td>
+          <td><div class="cell-bi"><span class="ko">소형</span><span class="ja">小型</span></div></td>
+          <td class="handling">200円</td>
+          <td>500円</td>
+          <td>1,000円</td>
+          <td class="cost">1,240円</td>
+          <td class="money">1,600円<span class="profit">이익 / 利益 +360円</span></td>
+          <td class="money late">1,900円<span class="profit">이익 / 利益 +660円</span></td>
+          <td class="money">2,200円<span class="profit">이익 / 利益 +360円</span></td>
+          <td class="money late">2,500円<span class="profit">이익 / 利益 +660円</span></td>
+        </tr>
+
+        <tr>
+          <td><b>120까지</b><span class="unit-ja">〜120サイズ</span></td>
+          <td><div class="cell-bi"><span class="ko">중형</span><span class="ja">中型</span></div></td>
+          <td class="handling">300円</td>
+          <td>800円</td>
+          <td>1,600円</td>
+          <td class="cost">1,680円</td>
+          <td class="money">2,200円<span class="profit">이익 / 利益 +520円</span></td>
+          <td class="money late">2,700円<span class="profit">이익 / 利益 +1,020円</span></td>
+          <td class="money">2,800円<span class="profit">이익 / 利益 +520円</span></td>
+          <td class="money late">3,300円<span class="profit">이익 / 利益 +1,020円</span></td>
+        </tr>
+
+        <tr>
+          <td><b>140까지</b><span class="unit-ja">〜140サイズ</span></td>
+          <td><div class="cell-bi"><span class="ko">중형</span><span class="ja">中型</span></div></td>
+          <td class="handling">300円</td>
+          <td>800円</td>
+          <td>1,600円</td>
+          <td class="cost">2,200円</td>
+          <td class="money">2,700円<span class="profit">이익 / 利益 +500円</span></td>
+          <td class="money late">3,300円<span class="profit">이익 / 利益 +1,100円</span></td>
+          <td class="money">3,300円<span class="profit">이익 / 利益 +500円</span></td>
+          <td class="money late">3,900円<span class="profit">이익 / 利益 +1,100円</span></td>
+        </tr>
+
+        <tr>
+          <td><b>160까지</b><span class="unit-ja">〜160サイズ</span></td>
+          <td><div class="cell-bi"><span class="ko">중형</span><span class="ja">中型</span></div></td>
+          <td class="handling">300円</td>
+          <td>800円</td>
+          <td>1,600円</td>
+          <td class="cost">2,530円</td>
+          <td class="money">3,000円<span class="profit">이익 / 利益 +470円</span></td>
+          <td class="money late">3,600円<span class="profit">이익 / 利益 +1,070円</span></td>
+          <td class="money">3,600円<span class="profit">이익 / 利益 +470円</span></td>
+          <td class="money late">4,200円<span class="profit">이익 / 利益 +1,070円</span></td>
+        </tr>
+
+        <tr>
+          <td><b>180까지</b><span class="unit-ja">〜180サイズ</span></td>
+          <td><div class="cell-bi"><span class="ko">대형</span><span class="ja">大型</span></div></td>
+          <td class="handling">400円</td>
+          <td>800円</td>
+          <td>1,600円</td>
+          <td class="cost">3,110円</td>
+          <td class="money">3,700円<span class="profit">이익 / 利益 +590円</span></td>
+          <td class="money late">4,300円<span class="profit">이익 / 利益 +1,190円</span></td>
+          <td class="money">4,300円<span class="profit">이익 / 利益 +590円</span></td>
+          <td class="money late">4,900円<span class="profit">이익 / 利益 +1,190円</span></td>
+        </tr>
+
+        <tr>
+          <td><b>200까지</b><span class="unit-ja">〜200サイズ</span></td>
+          <td><div class="cell-bi"><span class="ko">대형</span><span class="ja">大型</span></div></td>
+          <td class="handling">400円</td>
+          <td>800円</td>
+          <td>1,600円</td>
+          <td class="cost">3,810円</td>
+          <td class="money">4,400円<span class="profit">이익 / 利益 +590円</span></td>
+          <td class="money late">5,000円<span class="profit">이익 / 利益 +1,190円</span></td>
+          <td class="money">5,000円<span class="profit">이익 / 利益 +590円</span></td>
+          <td class="money late">5,600円<span class="profit">이익 / 利益 +1,190円</span></td>
+        </tr></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="section">
+  <div class="title-row">
+    <div>
+      <h2>B안 · 보관 부담 중간 반영</h2>
+      <div class="section-ja">B案 · 保管負担を中程度に反映</div>
     </div>
-    <div class="card">
-      <div class="ct">평소 공연 관람 습관</div>
-      <div class="bc">
-        <div class="br"><div class="bl2">자주 관람</div><div class="bt"><div class="bf" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
-        <div class="br"><div class="bl2">가끔 관람</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
-        <div class="br"><div class="bl2">거의 처음</div><div class="bt"><div class="bf go" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
-      </div>
+    <span class="badge">당일 25% / 익일 60%<br><small>当日 25% / 翌日 60%</small></span>
+  </div>
+  <p class="sub">
+    09:00~11:30은 1일 보관료 기준의 25%, 11:40~익일 11:30은 2일 보관료 기준의 60%를 반영합니다.<br>
+    <span class="jp-line">09:00〜11:30は1日保管料金の25%、11:40〜翌日11:30は2日分保管料金の60%を反映します。</span>
+  </p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th><div class="th-bi"><span class="ko">야마토 사이즈</span><span class="ja">ヤマトサイズ</span></div></th>
+          <th><div class="th-bi"><span class="ko">구분</span><span class="ja">区分</span></div></th>
+          <th><div class="th-bi"><span class="ko">접수비</span><span class="ja">受付手数料</span></div></th>
+          <th><div class="th-bi"><span class="ko">1일 보관 기준</span><span class="ja">1日保管基準</span></div></th>
+          <th><div class="th-bi"><span class="ko">날짜 넘어갈 때 보관 기준</span><span class="ja">日付をまたぐ場合の保管基準</span></div></th>
+          <th><div class="th-bi"><span class="ko">야마토 원가</span><span class="ja">ヤマト原価</span></div></th>
+          <th><div class="th-bi"><span class="ko">09:00~11:30 호텔</span><span class="ja">09:00〜11:30 ホテル</span></div><small>판매가 / 이익 · 販売価格 / 利益</small></th>
+          <th class="late-head"><div class="th-bi"><span class="ko">11:40~익일 11:30 호텔</span><span class="ja">11:40〜翌日11:30 ホテル</span></div><small>판매가 / 이익 · 販売価格 / 利益</small></th>
+          <th><div class="th-bi"><span class="ko">09:00~11:30 공항</span><span class="ja">09:00〜11:30 空港</span></div><small>판매가 / 이익 · 販売価格 / 利益</small></th>
+          <th class="late-head"><div class="th-bi"><span class="ko">11:40~익일 11:30 공항</span><span class="ja">11:40〜翌日11:30 空港</span></div><small>판매가 / 이익 · 販売価格 / 利益</small></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>60까지</b><span class="unit-ja">〜60サイズ</span></td>
+          <td><div class="cell-bi"><span class="ko">소형</span><span class="ja">小型</span></div></td>
+          <td class="handling">200円</td>
+          <td>500円</td>
+          <td>1,000円</td>
+          <td class="cost">740円</td>
+          <td class="money">1,100円<span class="profit">이익 / 利益 +360円</span></td>
+          <td class="money late">1,600円<span class="profit">이익 / 利益 +860円</span></td>
+          <td class="money">1,700円<span class="profit">이익 / 利益 +360円</span></td>
+          <td class="money late">2,200円<span class="profit">이익 / 利益 +860円</span></td>
+        </tr>
+
+        <tr>
+          <td><b>80까지</b><span class="unit-ja">〜80サイズ</span></td>
+          <td><div class="cell-bi"><span class="ko">소형</span><span class="ja">小型</span></div></td>
+          <td class="handling">200円</td>
+          <td>500円</td>
+          <td>1,000円</td>
+          <td class="cost">980円</td>
+          <td class="money">1,400円<span class="profit">이익 / 利益 +420円</span></td>
+          <td class="money late">1,800円<span class="profit">이익 / 利益 +820円</span></td>
+          <td class="money">2,000円<span class="profit">이익 / 利益 +420円</span></td>
+          <td class="money late">2,400円<span class="profit">이익 / 利益 +820円</span></td>
+        </tr>
+
+        <tr>
+          <td><b>100까지</b><span class="unit-ja">〜100サイズ</span></td>
+          <td><div class="cell-bi"><span class="ko">소형</span><span class="ja">小型</span></div></td>
+          <td class="handling">200円</td>
+          <td>500円</td>
+          <td>1,000円</td>
+          <td class="cost">1,240円</td>
+          <td class="money">1,600円<span class="profit">이익 / 利益 +360円</span></td>
+          <td class="money late">2,100円<span class="profit">이익 / 利益 +860円</span></td>
+          <td class="money">2,200円<span class="profit">이익 / 利益 +360円</span></td>
+          <td class="money late">2,700円<span class="profit">이익 / 利益 +860円</span></td>
+        </tr>
+
+        <tr>
+          <td><b>120까지</b><span class="unit-ja">〜120サイズ</span></td>
+          <td><div class="cell-bi"><span class="ko">중형</span><span class="ja">中型</span></div></td>
+          <td class="handling">300円</td>
+          <td>800円</td>
+          <td>1,600円</td>
+          <td class="cost">1,680円</td>
+          <td class="money">2,200円<span class="profit">이익 / 利益 +520円</span></td>
+          <td class="money late">3,000円<span class="profit">이익 / 利益 +1,320円</span></td>
+          <td class="money">2,800円<span class="profit">이익 / 利益 +520円</span></td>
+          <td class="money late">3,600円<span class="profit">이익 / 利益 +1,320円</span></td>
+        </tr>
+
+        <tr>
+          <td><b>140까지</b><span class="unit-ja">〜140サイズ</span></td>
+          <td><div class="cell-bi"><span class="ko">중형</span><span class="ja">中型</span></div></td>
+          <td class="handling">300円</td>
+          <td>800円</td>
+          <td>1,600円</td>
+          <td class="cost">2,200円</td>
+          <td class="money">2,700円<span class="profit">이익 / 利益 +500円</span></td>
+          <td class="money late">3,500円<span class="profit">이익 / 利益 +1,300円</span></td>
+          <td class="money">3,300円<span class="profit">이익 / 利益 +500円</span></td>
+          <td class="money late">4,100円<span class="profit">이익 / 利益 +1,300円</span></td>
+        </tr>
+
+        <tr>
+          <td><b>160까지</b><span class="unit-ja">〜160サイズ</span></td>
+          <td><div class="cell-bi"><span class="ko">중형</span><span class="ja">中型</span></div></td>
+          <td class="handling">300円</td>
+          <td>800円</td>
+          <td>1,600円</td>
+          <td class="cost">2,530円</td>
+          <td class="money">3,100円<span class="profit">이익 / 利益 +570円</span></td>
+          <td class="money late">3,800円<span class="profit">이익 / 利益 +1,270円</span></td>
+          <td class="money">3,700円<span class="profit">이익 / 利益 +570円</span></td>
+          <td class="money late">4,400円<span class="profit">이익 / 利益 +1,270円</span></td>
+        </tr>
+
+        <tr>
+          <td><b>180까지</b><span class="unit-ja">〜180サイズ</span></td>
+          <td><div class="cell-bi"><span class="ko">대형</span><span class="ja">大型</span></div></td>
+          <td class="handling">400円</td>
+          <td>800円</td>
+          <td>1,600円</td>
+          <td class="cost">3,110円</td>
+          <td class="money">3,800円<span class="profit">이익 / 利益 +690円</span></td>
+          <td class="money late">4,500円<span class="profit">이익 / 利益 +1,390円</span></td>
+          <td class="money">4,400円<span class="profit">이익 / 利益 +690円</span></td>
+          <td class="money late">5,100円<span class="profit">이익 / 利益 +1,390円</span></td>
+        </tr>
+
+        <tr>
+          <td><b>200까지</b><span class="unit-ja">〜200サイズ</span></td>
+          <td><div class="cell-bi"><span class="ko">대형</span><span class="ja">大型</span></div></td>
+          <td class="handling">400円</td>
+          <td>800円</td>
+          <td>1,600円</td>
+          <td class="cost">3,810円</td>
+          <td class="money">4,500円<span class="profit">이익 / 利益 +690円</span></td>
+          <td class="money late">5,200円<span class="profit">이익 / 利益 +1,390円</span></td>
+          <td class="money">5,100円<span class="profit">이익 / 利益 +690円</span></td>
+          <td class="money late">5,800円<span class="profit">이익 / 利益 +1,390円</span></td>
+        </tr></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="section">
+  <div class="title-row">
+    <div>
+      <h2>C안 · 보관 부담 높게 반영</h2>
+      <div class="section-ja">C案 · 保管負担を高めに反映</div>
+    </div>
+    <span class="badge">당일 30% / 익일 70%<br><small>当日 30% / 翌日 70%</small></span>
+  </div>
+  <p class="sub">
+    09:00~11:30은 1일 보관료 기준의 30%, 11:40~익일 11:30은 2일 보관료 기준의 70%를 반영합니다.<br>
+    <span class="jp-line">09:00〜11:30は1日保管料金の30%、11:40〜翌日11:30は2日分保管料金の70%を反映します。</span>
+  </p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th><div class="th-bi"><span class="ko">야마토 사이즈</span><span class="ja">ヤマトサイズ</span></div></th>
+          <th><div class="th-bi"><span class="ko">구분</span><span class="ja">区分</span></div></th>
+          <th><div class="th-bi"><span class="ko">접수비</span><span class="ja">受付手数料</span></div></th>
+          <th><div class="th-bi"><span class="ko">1일 보관 기준</span><span class="ja">1日保管基準</span></div></th>
+          <th><div class="th-bi"><span class="ko">날짜 넘어갈 때 보관 기준</span><span class="ja">日付をまたぐ場合の保管基準</span></div></th>
+          <th><div class="th-bi"><span class="ko">야마토 원가</span><span class="ja">ヤマト原価</span></div></th>
+          <th><div class="th-bi"><span class="ko">09:00~11:30 호텔</span><span class="ja">09:00〜11:30 ホテル</span></div><small>판매가 / 이익 · 販売価格 / 利益</small></th>
+          <th class="late-head"><div class="th-bi"><span class="ko">11:40~익일 11:30 호텔</span><span class="ja">11:40〜翌日11:30 ホテル</span></div><small>판매가 / 이익 · 販売価格 / 利益</small></th>
+          <th><div class="th-bi"><span class="ko">09:00~11:30 공항</span><span class="ja">09:00〜11:30 空港</span></div><small>판매가 / 이익 · 販売価格 / 利益</small></th>
+          <th class="late-head"><div class="th-bi"><span class="ko">11:40~익일 11:30 공항</span><span class="ja">11:40〜翌日11:30 空港</span></div><small>판매가 / 이익 · 販売価格 / 利益</small></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>60까지</b><span class="unit-ja">〜60サイズ</span></td>
+          <td><div class="cell-bi"><span class="ko">소형</span><span class="ja">小型</span></div></td>
+          <td class="handling">200円</td>
+          <td>500円</td>
+          <td>1,000円</td>
+          <td class="cost">740円</td>
+          <td class="money">1,100円<span class="profit">이익 / 利益 +360円</span></td>
+          <td class="money late">1,700円<span class="profit">이익 / 利益 +960円</span></td>
+          <td class="money">1,700円<span class="profit">이익 / 利益 +360円</span></td>
+          <td class="money late">2,300円<span class="profit">이익 / 利益 +960円</span></td>
+        </tr>
+
+        <tr>
+          <td><b>80까지</b><span class="unit-ja">〜80サイズ</span></td>
+          <td><div class="cell-bi"><span class="ko">소형</span><span class="ja">小型</span></div></td>
+          <td class="handling">200円</td>
+          <td>500円</td>
+          <td>1,000円</td>
+          <td class="cost">980円</td>
+          <td class="money">1,400円<span class="profit">이익 / 利益 +420円</span></td>
+          <td class="money late">1,900円<span class="profit">이익 / 利益 +920円</span></td>
+          <td class="money">2,000円<span class="profit">이익 / 利益 +420円</span></td>
+          <td class="money late">2,500円<span class="profit">이익 / 利益 +920円</span></td>
+        </tr>
+
+        <tr>
+          <td><b>100까지</b><span class="unit-ja">〜100サイズ</span></td>
+          <td><div class="cell-bi"><span class="ko">소형</span><span class="ja">小型</span></div></td>
+          <td class="handling">200円</td>
+          <td>500円</td>
+          <td>1,000円</td>
+          <td class="cost">1,240円</td>
+          <td class="money">1,600円<span class="profit">이익 / 利益 +360円</span></td>
+          <td class="money late">2,200円<span class="profit">이익 / 利益 +960円</span></td>
+          <td class="money">2,200円<span class="profit">이익 / 利益 +360円</span></td>
+          <td class="money late">2,800円<span class="profit">이익 / 利益 +960円</span></td>
+        </tr>
+
+        <tr>
+          <td><b>120까지</b><span class="unit-ja">〜120サイズ</span></td>
+          <td><div class="cell-bi"><span class="ko">중형</span><span class="ja">中型</span></div></td>
+          <td class="handling">300円</td>
+          <td>800円</td>
+          <td>1,600円</td>
+          <td class="cost">1,680円</td>
+          <td class="money">2,300円<span class="profit">이익 / 利益 +620円</span></td>
+          <td class="money late">3,100円<span class="profit">이익 / 利益 +1,420円</span></td>
+          <td class="money">2,900円<span class="profit">이익 / 利益 +620円</span></td>
+          <td class="money late">3,700円<span class="profit">이익 / 利益 +1,420円</span></td>
+        </tr>
+
+        <tr>
+          <td><b>140까지</b><span class="unit-ja">〜140サイズ</span></td>
+          <td><div class="cell-bi"><span class="ko">중형</span><span class="ja">中型</span></div></td>
+          <td class="handling">300円</td>
+          <td>800円</td>
+          <td>1,600円</td>
+          <td class="cost">2,200円</td>
+          <td class="money">2,800円<span class="profit">이익 / 利益 +600円</span></td>
+          <td class="money late">3,700円<span class="profit">이익 / 利益 +1,500円</span></td>
+          <td class="money">3,400円<span class="profit">이익 / 利益 +600円</span></td>
+          <td class="money late">4,300円<span class="profit">이익 / 利益 +1,500円</span></td>
+        </tr>
+
+        <tr>
+          <td><b>160까지</b><span class="unit-ja">〜160サイズ</span></td>
+          <td><div class="cell-bi"><span class="ko">중형</span><span class="ja">中型</span></div></td>
+          <td class="handling">300円</td>
+          <td>800円</td>
+          <td>1,600円</td>
+          <td class="cost">2,530円</td>
+          <td class="money">3,100円<span class="profit">이익 / 利益 +570円</span></td>
+          <td class="money late">4,000円<span class="profit">이익 / 利益 +1,470円</span></td>
+          <td class="money">3,700円<span class="profit">이익 / 利益 +570円</span></td>
+          <td class="money late">4,600円<span class="profit">이익 / 利益 +1,470円</span></td>
+        </tr>
+
+        <tr>
+          <td><b>180까지</b><span class="unit-ja">〜180サイズ</span></td>
+          <td><div class="cell-bi"><span class="ko">대형</span><span class="ja">大型</span></div></td>
+          <td class="handling">400円</td>
+          <td>800円</td>
+          <td>1,600円</td>
+          <td class="cost">3,110円</td>
+          <td class="money">3,800円<span class="profit">이익 / 利益 +690円</span></td>
+          <td class="money late">4,700円<span class="profit">이익 / 利益 +1,590円</span></td>
+          <td class="money">4,400円<span class="profit">이익 / 利益 +690円</span></td>
+          <td class="money late">5,300円<span class="profit">이익 / 利益 +1,590円</span></td>
+        </tr>
+
+        <tr>
+          <td><b>200까지</b><span class="unit-ja">〜200サイズ</span></td>
+          <td><div class="cell-bi"><span class="ko">대형</span><span class="ja">大型</span></div></td>
+          <td class="handling">400円</td>
+          <td>800円</td>
+          <td>1,600円</td>
+          <td class="cost">3,810円</td>
+          <td class="money">4,500円<span class="profit">이익 / 利益 +690円</span></td>
+          <td class="money late">5,400円<span class="profit">이익 / 利益 +1,590円</span></td>
+          <td class="money">5,100円<span class="profit">이익 / 利益 +690円</span></td>
+          <td class="money late">6,000円<span class="profit">이익 / 利益 +1,590円</span></td>
+        </tr></tbody>
+    </table>
+  </div>
+</section>
+
+
+<section class="calc">
+  <h2>직원용 요금 계산기</h2>
+  <div class="ja-head">スタッフ用料金計算</div>
+  <div class="inputs">
+    <div>
+      <label>요금안<small>料金案</small></label>
+      <select id="plan"><option value="A">A · 20% / 45%</option><option value="B" selected>B · 25% / 60%</option><option value="C">C · 30% / 70%</option></select>
+    </div>
+    <div>
+      <label>야마토 사이즈<small>ヤマトサイズ</small></label>
+      <select id="size"><option value="60">60까지 / 〜60</option><option value="80">80까지 / 〜80</option><option value="100" selected>100까지 / 〜100</option><option value="120">120까지 / 〜120</option><option value="140">140까지 / 〜140</option><option value="160">160까지 / 〜160</option><option value="180">180까지 / 〜180</option><option value="200">200까지 / 〜200</option></select>
+    </div>
+    <div>
+      <label>구분 / 접수비<small>区分 / 受付手数料</small></label>
+      <input id="category" type="text" readonly>
+    </div>
+    <div>
+      <label>목적지<small>配送先</small></label>
+      <select id="dest"><option value="hotel" selected>호텔 / ホテル</option><option value="airport">공항 / 空港</option></select>
+    </div>
+    <div>
+      <label>센터 보관 기준<small>センター保管基準</small></label>
+      <select id="band"><option value="same">09:00~11:30 · 1일 / 1日</option><option value="overnight">11:40~익일 11:30 · 2일 / 2日</option></select>
     </div>
   </div>
 
-  <div class="g2">
-    <div class="card">
-      <div class="ct">관람 결정 이유 (Q5)</div>
-      <div class="bc">
-        <div class="br"><div class="bl2">오사카 색다른 경험</div><div class="bt"><div class="bf" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
-        <div class="br"><div class="bl2">관광 코스 중 하나</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
-        <div class="br"><div class="bl2">동행인이 원해서</div><div class="bt"><div class="bf go" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
-      </div>
+  <div class="results">
+    <div class="total">
+      <div class="lab">고객 결제금액 / お客様支払額</div>
+      <div class="amount" id="amount"></div>
+      <div class="service" id="profit"></div>
     </div>
-    <div class="card">
-      <div class="ct">관람 전 기대 수준 (Q6)</div>
-      <div class="mw">
-        <div class="mb2" style="background:#dbeafe;color:#1d4ed8;flex:1"><div class="mn">1</div>매우 기대</div>
-        <div class="mb2" style="background:#eff6ff;color:#3b82f6;flex:1"><div class="mn">1</div>보통</div>
-        <div class="mb2" style="background:#f8faff;color:#93b4d8;flex:1"><div class="mn">1</div>기대 없음</div>
-      </div>
-      <p style="font-size:12px;color:var(--ts);line-height:1.6;">낮은 기대로 온 응답자도 <strong>만족</strong>으로 전환된 점이 주목됩니다.</p>
+    <div class="delivery">
+      <div class="lab">배송 기준 / 配送基準</div>
+      <div class="main" id="delivery"></div>
+      <div class="note" id="deliveryNote"></div>
     </div>
   </div>
 
-  <hr class="sep">
+  <div class="breakdown" id="breakdown"></div>
+</section>
 
-  <div class="eyebrow">Section 02</div>
-  <div class="sh">관람 만족도 · 경험 평가</div>
+<div class="foot">
+  ※ 100까지 = 소형 보관료 500엔 기준. 120 이상은 800엔/1일 기준. 날짜가 넘어가면 각각 1,000엔 / 1,600엔 기준.<br>
+  ※ 100サイズまで＝小型保管料金500円基準。120サイズ以上＝800円/1日基準。翌日にまたぐ場合はそれぞれ1,000円 / 1,600円基準。
+</div>
 
-  <div class="g2">
-    <div class="card">
-      <div class="ct">전반 만족도 (Q8)</div>
-      <div class="bc" style="margin-bottom:14px">
-        <div class="br"><div class="bl2">만족</div><div class="bt"><div class="bf sa" style="width:67%"><span class="bp2">67%</span></div></div><div class="bco">2명</div></div>
-        <div class="br"><div class="bl2">보통</div><div class="bt"><div class="bf gr" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
-      </div>
-      <div style="background:var(--gr-bg);border-radius:var(--rs);padding:12px;text-align:center;">
-        <span style="font-size:13px;color:var(--gr-t);font-weight:700;">불만족 응답 0건 · 최소한의 긍정 경험 보장</span>
-      </div>
-    </div>
-    <div class="card">
-      <div class="ct">기대 대비 실제 경험 (Q10)</div>
-      <div class="bc">
-        <div class="br"><div class="bl2">기대 이상</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
-        <div class="br"><div class="bl2">기대한 만큼</div><div class="bt"><div class="bf" style="width:67%"><span class="bp2">67%</span></div></div><div class="bco">2명</div></div>
-        <div class="br"><div class="bl2">기대 이하</div><div class="bt"><div class="bf ac" style="width:0%"></div></div><div class="bco">0명</div></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="ct">가장 만족한 요소 (Q9)</div>
-      <div class="bc">
-        <div class="br"><div class="bl2">공연 내용</div><div class="bt"><div class="bf" style="width:67%"><span class="bp2">67%</span></div></div><div class="bco">2명</div></div>
-        <div class="br"><div class="bl2">색다른 경험</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="ct">공연 이해도 (Q12)</div>
-      <div class="bc">
-        <div class="br"><div class="bl2">매우 쉬웠다</div><div class="bt"><div class="bf sa" style="width:67%"><span class="bp2">67%</span></div></div><div class="bco">2명</div></div>
-        <div class="br"><div class="bl2">어느 정도 이해</div><div class="bt"><div class="bf" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
-      </div>
-      <p style="font-size:12px;color:var(--ts);line-height:1.6;margin-top:12px;">언어 장벽 우려에도 전원 이해 가능 → 시각·퍼포먼스 중심 구성의 강점 확인</p>
-    </div>
-  </div>
-
-  <div class="card" style="margin-bottom:40px">
-    <div class="ct">한국인 관점 공연 분위기 (Q13)</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
-      <div style="text-align:center;padding:20px;background:var(--bxl);border-radius:var(--rs);border:1px solid var(--bb)">
-        <div style="font-size:32px;margin-bottom:8px">😄</div>
-        <div style="font-size:13px;font-weight:700;color:var(--bd)">매우 흥미로움</div>
-        <div style="font-size:11px;color:var(--tt);margin-top:4px;font-weight:500">20대 · 가족</div>
-      </div>
-      <div style="text-align:center;padding:20px;background:var(--bxl);border-radius:var(--rs);border:1px solid var(--bb)">
-        <div style="font-size:32px;margin-bottom:8px">😊</div>
-        <div style="font-size:13px;font-weight:700;color:var(--bd)">대체로 재미있음</div>
-        <div style="font-size:11px;color:var(--tt);margin-top:4px;font-weight:500">30·40대</div>
-      </div>
-      <div style="text-align:center;padding:20px;background:#f8faff;border-radius:var(--rs);border:1px solid var(--bi)">
-        <div style="font-size:32px;margin-bottom:8px">😐</div>
-        <div style="font-size:13px;font-weight:700;color:var(--ts)">낯선 느낌</div>
-        <div style="font-size:11px;color:var(--tt);margin-top:4px;font-weight:500">30대 친구동행</div>
-      </div>
-    </div>
-  </div>
-
-  <hr class="sep">
-
-  <div class="eyebrow">Section 03</div>
-  <div class="sh">아쉬운 점 · 진입 장벽 분석</div>
-
-  <div class="g2">
-    <div class="card">
-      <div class="ct">관람 중 아쉬웠던 점 (Q14)</div>
-      <div class="bc" style="margin-bottom:14px">
-        <div class="br"><div class="bl2">가격 부담</div><div class="bt"><div class="bf ac" style="width:67%"><span class="bp2">67%</span></div></div><div class="bco">2명</div></div>
-        <div class="br"><div class="bl2">낯선 분위기</div><div class="bt"><div class="bf gr" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
-      </div>
-      <div style="background:var(--re-bg);border-radius:var(--rs);padding:12px">
-        <p style="font-size:12px;color:var(--re-t);font-weight:700">⚠ 가격이 최다 불만 요소 (67%)</p>
-        <p style="font-size:12px;color:#b91c1c;margin-top:4px">재방문 및 추천 확산에 심리적 허들로 작용</p>
-      </div>
-    </div>
-    <div class="card">
-      <div class="ct">한국인이 관람 망설이는 이유 (Q17)</div>
-      <div class="bc">
-        <div class="br"><div class="bl2">언어 장벽 우려</div><div class="bt"><div class="bf" style="width:67%"><span class="bp2">67%</span></div></div><div class="bco">2명</div></div>
-        <div class="br"><div class="bl2">취향 불확실</div><div class="bt"><div class="bf go" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
-        <div class="br"><div class="bl2">공연 이해 부족</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
-        <div class="br"><div class="bl2">여행 우선순위 낮음</div><div class="bt"><div class="bf gr" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="ct">필요한 한국어 지원 (Q15·Q16)</div>
-      <div class="bc">
-        <div class="br"><div class="bl2">한국어 안내</div><div class="bt"><div class="bf" style="width:100%"><span class="bp2">100%</span></div></div><div class="bco">3명</div></div>
-        <div class="br"><div class="bl2">실제 관람 후기</div><div class="bt"><div class="bf sa" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
-        <div class="br"><div class="bl2">여행코스 연계 소개</div><div class="bt"><div class="bf go" style="width:33%"><span class="bp2">33%</span></div></div><div class="bco">1명</div></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="ct">추가되길 바라는 요소</div>
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <div style="padding:11px 14px;background:var(--bxl);border-radius:var(--rs);font-size:13px;border-left:3px solid var(--bp)">🎬 <strong>SNS 콘텐츠 홍보</strong> — 바이럴 마케팅 (40대)</div>
-        <div style="padding:11px 14px;background:#fffbeb;border-radius:var(--rs);font-size:13px;border-left:3px solid #d97706">🎟 <strong>할인 이벤트 &amp; 참여형 이벤트</strong> — 가격 허들 완화 (20대)</div>
-        <div style="padding:11px 14px;background:#f0fdf4;border-radius:var(--rs);font-size:13px;border-left:3px solid #059669">🗺 <strong>여행 코스 연계 소개</strong> — 여행 동선 통합 (30대)</div>
-        <div style="padding:11px 14px;background:#fdf4ff;border-radius:var(--rs);font-size:13px;border-left:3px solid #9333ea">🎌 <strong>애니메이션 요소 추가</strong> — 한국 취향 공략 (20대)</div>
-      </div>
-    </div>
-  </div>
-
-  <hr class="sep">
-
-  <div class="eyebrow">Section 04</div>
-  <div class="sh">추천 의향 · 재관람 의향</div>
-
-  <div class="g2">
-    <div class="card">
-      <div class="ct">주변 추천 의향 (Q18)</div>
-      <div class="mw">
-        <div class="mb2" style="background:#dbeafe;color:#1d4ed8;flex:1"><div class="mn">1</div>매우 그렇다</div>
-        <div class="mb2" style="background:#2563eb;color:#fff;flex:2"><div class="mn">2</div>그렇다</div>
-      </div>
-      <div style="background:var(--bl);border-radius:var(--rs);padding:14px;text-align:center;border:1px solid var(--bb)">
-        <span style="font-size:30px;font-weight:800;color:var(--bp)">100%</span>
-        <span style="font-size:13px;color:var(--bd);margin-left:8px;font-weight:600">전원 추천 의향 보유</span>
-      </div>
-    </div>
-    <div class="card">
-      <div class="ct">재관람 의향 (Q19)</div>
-      <div class="mw">
-        <div class="mb2" style="background:#dbeafe;color:#1d4ed8;flex:1"><div class="mn">1</div>매우 있다</div>
-        <div class="mb2" style="background:#2563eb;color:#fff;flex:2"><div class="mn">2</div>조금 있다</div>
-      </div>
-      <p style="font-size:12px;color:var(--ts);line-height:1.6;margin-top:12px">"매우 없다" "없다" 응답 0건. 재관람 장벽은 주로 가격과 여행 빈도에 기인할 것으로 추정.</p>
-    </div>
-  </div>
-
-  <hr class="sep">
-
-  <div class="eyebrow">Section 05</div>
-  <div class="sh">관람객 직접 목소리 (Q21–Q23)</div>
-
-  <div class="qg">
-    <div class="qi">
-      오사카 여행의<br><strong>독특한 체험</strong>
-      <div style="margin-top:10px;font-size:13px;line-height:1.7;color:var(--ts)">"장점이 충분해서 홍보가 잘되면 반응이 좋을 거라 생각됨."</div>
-      <div class="qm">40대 · 혼자 · SNS 홍보 제안</div>
-    </div>
-    <div class="qi">
-      오사카의 로컬 공연을<br><strong>온몸으로!</strong>
-      <div style="margin-top:10px;font-size:13px;line-height:1.7;color:var(--ts)">"재미있었지만 아이들이랑 가기엔 흡연·음주 분위기가 아쉬움. 공연의 존재 자체를 알려야 함."</div>
-      <div class="qm">30대 · 친구 동행 · 인지도 확대 강조</div>
-    </div>
-    <div class="qi">
-      오사카만의<br><strong>특별한 쇼</strong>
-      <div style="margin-top:10px;font-size:13px;line-height:1.7;color:var(--ts)">"다들 너무 열정적으로 공연해서 반했습니다! 언어 장벽 없이 충분히 즐길 수 있었어요."</div>
-      <div class="qm">20대 · 가족 · 언어 장벽 불필요 강조</div>
-    </div>
-  </div>
-
-  <hr class="sep">
-
-  <div class="eyebrow">Section 06</div>
-  <div class="sh">핵심 인사이트</div>
-
-  <div class="il">
-    <div class="ii"><div class="iic">✅</div><div class="iib"><h4>언어 장벽 = 실제 장벽 아님 <span class="badge">STRENGTH</span></h4><p>관람 전 "언어 장벽"을 가장 많이 우려했지만(67%), 막상 관람 후에는 전원 이해 가능하다고 응답. 비언어 퍼포먼스 중심 구성이 한국 관광객에게 유효하게 작동. 이 '착각 해소'를 마케팅 핵심 메시지로 활용해야 함.</p></div></div>
-    <div class="ii"><div class="iic">💰</div><div class="iib"><h4>가격 저항이 최대 이탈 위험 <span class="badge warn">RISK</span></h4><p>응답자 67%가 "가격 부담"을 명시적 아쉬움으로 지목. 만족도는 높지만 재방문 및 추천 확산에 가격이 심리적 허들로 작용. 할인 쿠폰·패키지 연계 등 진입 비용 완화 전략이 필요.</p></div></div>
-    <div class="ii"><div class="iic">📢</div><div class="iib"><h4>인지도 부재가 근본 문제 <span class="badge warn">RISK</span></h4><p>"공연의 존재 자체를 알려야 한다"는 직접 언급. 3명 모두 오사카 4회 이상 방문자로, 경험 많은 여행객도 OVAS를 최근에야 인지. 초기 인지 채널 확장(SNS, 여행 플랫폼 제휴)이 최우선 과제.</p></div></div>
-    <div class="ii"><div class="iic">🎯</div><div class="iib"><h4>고반복 방문자가 핵심 타깃 <span class="badge gold">OPPORTUNITY</span></h4><p>응답자 전원이 오사카 4회 이상 방문자. "색다른 경험"을 원하는 숙련된 오사카 여행자에게 특히 어필. 첫 방문자보다 반복 여행자 대상 마케팅이 효과적일 가능성이 높음.</p></div></div>
-    <div class="ii"><div class="iic">🌐</div><div class="iib"><h4>SNS 후기가 핵심 유입 경로 될 것 <span class="badge gold">OPPORTUNITY</span></h4><p>추천 의향 100%, 재관람 의향 100%이므로 구전 마케팅 잠재력 높음. 실제 한국인 관람 후기·숏폼 콘텐츠 제작 지원 시 바이럴 효과 기대 가능. 관람객을 콘텐츠 생산자로 활용하는 전략 고려.</p></div></div>
-    <div class="ii"><div class="iic">👨‍👩‍👧</div><div class="iib"><h4>가족 관람객 환경 개선 필요 <span class="badge">IMPROVE</span></h4><p>음주·흡연 분위기로 인해 아이와 함께하기 어렵다는 피드백. 가족 여행객은 큰 시장이므로, 패밀리 타임 별도 운영 또는 연령 고려 환경 구획 등 대안 검토 가치 있음.</p></div></div>
-  </div>
-
-  <hr class="sep">
-
-  <div class="eyebrow">Section 07</div>
-  <div class="sh">한국인 최적 타깃 세그먼트 (Q20 기반)</div>
-
-  <div class="sw">
-    <div class="sc"><div class="si">🧳</div><h4>특별한 경험 추구형</h4><p>오사카를 여러 번 방문한 숙련 여행자. 일반 관광지는 이미 다 돌아봤고, "이번엔 뭔가 다른 것"을 원하는 층.</p></div>
-    <div class="sc"><div class="si">👫</div><h4>친구/커플 여행객</h4><p>공연·문화에 관심이 있거나 새로운 경험을 함께 나누고 싶은 20~30대 동반 여행자. SNS 공유 욕구 높음.</p></div>
-    <div class="sc"><div class="si">👨‍👩‍👧‍👦</div><h4>가족 여행객 (조건부)</h4><p>현재 음주·흡연 분위기 개선 전제 하에 잠재 타깃. 아이가 있는 30~40대 부모 세대도 공연 자체에 흥미를 느낌.</p></div>
-  </div>
-
-  <hr class="sep">
-
-  <div class="eyebrow">Section 08</div>
-  <div class="sh">실행 권고사항</div>
-
-  <div class="card">
-    <div class="rl">
-      <div class="ri"><div class="rn">01</div><div class="rc2"><h4>"언어 몰라도 즐길 수 있다" 메시지를 전면에</h4><p>관람 전 최다 우려(67%)지만 실제론 전원 이해 성공. "언어 장벽 없는 퍼포먼스"를 한국어 홍보의 핵심 카피로 사용. 리뷰 수집 시 이 경험을 부각하도록 유도.</p><span class="rt">MARKETING · CONTENT</span></div></div>
-      <div class="ri"><div class="rn">02</div><div class="rc2"><h4>한국 여행 플랫폼 입점 + 한국어 안내 자료 제작</h4><p>인지도 부재가 핵심 문제. 클룩, 마이리얼트립, 네이버 카페 오사카 여행 커뮤니티 등 한국인 접점 채널 입점 우선. 한국어 팸플릿 및 웹사이트 한국어 버전 필수.</p><span class="rt">DISTRIBUTION · LOCALIZATION</span></div></div>
-      <div class="ri"><div class="rn">03</div><div class="rc2"><h4>가격 체계 유연화 (할인 쿠폰 / 패키지 연계)</h4><p>67%가 가격 부담 언급. 초기 경험 유도를 위한 할인 쿠폰 배포, 오사카 주요 관광지 패키지 연계, 또는 조기 예약 할인 도입. 실제 가격 인하보다 "혜택 받은 느낌" 설계가 효과적.</p><span class="rt">PRICING · PARTNERSHIP</span></div></div>
-      <div class="ri"><div class="rn">04</div><div class="rc2"><h4>SNS 후기 콘텐츠 생산 인프라 구축</h4><p>추천 의향 100% 자원을 바이럴로 전환. 관람 후 포토존·공유 유도 멘트, 해시태그 운영, 한국인 인플루언서 초청 시사회 등 후기 생산 생태계를 적극 조성.</p><span class="rt">SNS · VIRAL</span></div></div>
-      <div class="ri"><div class="rn">05</div><div class="rc2"><h4>가족 관람 환경 분리 또는 개선</h4><p>음주·흡연 환경 개선을 통해 가족 시장 확장 가능성 탐색. 패밀리 전용 시간대 운영 또는 구역 분리만으로도 신규 타깃 개척 기대.</p><span class="rt">EXPERIENCE · VENUE</span></div></div>
-    </div>
-  </div>
-
-  </div>
-  <div style="background:var(--bd);color:rgba(255,255,255,0.45);text-align:center;padding:28px;font-size:12px;font-weight:500;line-height:1.8;">
-    OVAS 관람객 만족도 및 인식 조사 분석 리포트 &nbsp;·&nbsp; N=3 (유효 한국어 응답) &nbsp;·&nbsp; 2026.04–05<br>
-    소규모 표본으로 통계적 대표성 제한 — 추가 설문 확장 권장
-  </div>
 </div>
 
 <script>
-function toggleKR() {
-  var sec = document.getElementById('kr-section');
-  var btn = document.getElementById('toggle-btn');
-  var icon = document.getElementById('toggle-icon');
-  var label = btn.querySelector('div > div:first-child');
-  var sub = btn.querySelector('div > div:last-child');
-  var open = sec.style.display === 'none';
-  sec.style.display = open ? 'block' : 'none';
-  icon.style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
-  label.textContent = open ? '한국어 버전 닫기' : '한국어 버전 보기';
-  sub.textContent = open ? 'Korean Version · 접기' : 'Korean Version · 동일 내용';
-  if (open) sec.scrollIntoView({behavior:'smooth', block:'start'});
+const yamato={"60":740,"80":980,"100":1240,"120":1680,"140":2200,"160":2530,"180":3110,"200":3810};
+const category={"60":"small","80":"small","100":"small","120":"medium","140":"medium","160":"medium","180":"large","200":"large"};
+const handling={small:200,medium:300,large:400};
+const oneDay={small:500,medium:800,large:800};
+const twoDay={small:1000,medium:1600,large:1600};
+const names={
+  small:"소형 / 小型 · 접수비 200円",
+  medium:"중형 / 中型 · 접수비 300円",
+  large:"대형 / 大型 · 접수비 400円"
+};
+const planPct={A:{same:0.20,overnight:0.45},B:{same:0.25,overnight:0.60},C:{same:0.30,overnight:0.70}};
+
+const planEl=document.getElementById("plan");
+const sizeEl=document.getElementById("size");
+const categoryEl=document.getElementById("category");
+const destEl=document.getElementById("dest");
+const bandEl=document.getElementById("band");
+
+function ceil100(n){return Math.ceil(n/100)*100}
+
+function calc(){
+  const plan=planEl.value;
+  const size=sizeEl.value;
+  const cat=category[size];
+  const dest=destEl.value;
+  const band=bandEl.value;
+
+  categoryEl.value=names[cat];
+
+  const storageBase=band==="same"?oneDay[cat]:twoDay[cat];
+  const pct=planPct[plan][band];
+  const storageShare=storageBase*pct;
+
+  let sale=ceil100(yamato[size]+handling[cat]+storageShare);
+  if(dest==="airport") sale+=600;
+
+  const cost=yamato[size]+(dest==="airport"?600:0);
+  const profit=sale-cost;
+
+  document.getElementById("amount").textContent=sale.toLocaleString()+"円";
+  document.getElementById("profit").textContent="이익 / 利益 +"+profit.toLocaleString()+"円 (기타 운영비 차감 전 / 運営費控除前)";
+
+  if(dest==="airport"){
+    document.getElementById("delivery").textContent="익일 공항 배송 / 空港翌日配送";
+    document.getElementById("deliveryNote").textContent="공항은 전 시간대 익일 배송 · 사이즈 무관 +600円 / 空港は全時間帯翌日配送・全サイズ+600円";
+  }else if(band==="overnight"){
+    document.getElementById("delivery").textContent="익일 호텔 배송 / ホテル翌日配送";
+    document.getElementById("deliveryNote").textContent="11:40~익일 11:30 보관 · 2일 보관 기준 / 11:40〜翌日11:30保管・2日分保管基準";
+  }else{
+    document.getElementById("delivery").textContent="당일 호텔 배송 / ホテル当日配送";
+    document.getElementById("deliveryNote").textContent="09:00~11:30 접수 → 당일 11:30 수거 / 09:00〜11:30受付 → 当日11:30集荷";
+  }
+
+  const catName=cat==="small"?"소형 / 小型":cat==="medium"?"중형 / 中型":"대형 / 大型";
+  const days=band==="same"?"1일 / 1日":"2일 / 2日";
+  document.getElementById("breakdown").innerHTML=
+    `<b>내부 계산 / 内部計算:</b> 야마토 / ヤマト ${yamato[size].toLocaleString()}円 + `+
+    `${catName} 접수비 / 受付 ${handling[cat].toLocaleString()}円 + `+
+    `${days} 보관기준 / 保管基準 ${storageBase.toLocaleString()}円 × ${Math.round(pct*100)}% (${storageShare.toLocaleString()}円)`+
+    `${dest==="airport"?" + 공항 / 空港 600円":""} → <b>${sale.toLocaleString()}円</b>`;
 }
+
+[planEl,sizeEl,destEl,bandEl].forEach(el=>el.addEventListener("change",calc));
+calc();
 </script>
-
-
-<footer>
-  OVAS 観覧客満足度および認識調査分析レポート &nbsp;·&nbsp; N=3（有効韓国語回答）&nbsp;·&nbsp; 2026.04–05<br>
-  少規模サンプルのため統計的代表性に限界あり — 追加アンケートの拡大を推奨
-</footer>
 
 </body>
 </html>
