@@ -111,7 +111,7 @@ select,input{width:100%;height:44px;padding:0 11px;border:1px solid #ccd7d0;bord
       <div class="price-block"><div class="label">당일 수거 / 当日集荷</div><div class="big">+800円</div></div>
       <div class="price-block"><div class="label">다음날 수거 / 翌日集荷</div><div class="big">+1,600円</div></div>
     </div>
-    <div class="desc">180·200사이즈는 대형짐으로 분류.<br>180・200サイズは大型荷物として分類。</div>
+    <div class="desc">180·200사이즈는 캐리어가 아닌 대형짐으로 분류.<br>180・200サイズはスーツケースではなく大型荷物として分類。</div>
   </div>
 </section>
 
@@ -129,17 +129,26 @@ select,input{width:100%;height:44px;padding:0 11px;border:1px solid #ccd7d0;bord
     <div class="fdesc">날짜가 넘어가므로 소형짐 +1,000엔 / 캐리어·대형짐 +1,600엔의 이익을 확보.</div>
   </div>
   <div class="flow-card air">
-    <div class="time">공항 · +600엔</div>
-    <div class="ftitle">전부 익일 배송</div>
-    <div class="fja">空港・すべて翌日配送</div>
-    <div class="fdesc">공항 추가운임 600엔은 야마토 원가이므로 고객가에 그대로 더함.</div>
+    <div class="time">09:00~17:00 접수</div>
+    <div class="ftitle">공항 · 전부 익일 발송 · +600엔</div>
+    <div class="fja">空港・09:00〜17:00受付 → 翌日発送・+600円</div>
+    <div class="fdesc">접수시간과 관계없이 전부 다음날 발송. 소형짐은 +1,000엔, 캐리어·대형짐은 +1,600엔의 2일 요금을 적용.</div>
   </div>
 </section>
 
 <div class="note">
   <b>계산 방식 / 計算方法</b><br>
-  고객 판매가 = <b>야마토 실제 운임 + 이익금액</b>입니다. 공항 배송은 여기에 야마토 공항 추가운임 600엔을 더합니다.<br>
-  販売価格 ＝ <b>ヤマト実運賃 ＋ 利益額</b>。空港配送はヤマト空港追加運賃600円を加算します。
+  고객 판매가 = <b>야마토 실제 운임 + 이익금액</b>입니다. 공항은 접수시간과 관계없이 <b>2일 요금</b>을 적용하고, 야마토 공항 추가운임 600엔을 더합니다.<br>
+  販売価格 ＝ <b>ヤマト実運賃 ＋ 利益額</b>。空港は受付時間に関係なく<b>2日料金</b>を適用し、空港追加運賃600円を加算します。
+</div>
+
+
+<div class="note">
+  <b>공항 배송 / 空港配送</b><br>
+  공항은 09:00~21:00 언제 접수하더라도 전부 다음날 발송으로 처리합니다.
+  따라서 소형짐은 +1,000엔, 캐리어·대형짐은 +1,600엔의 2일 요금을 적용합니다.<br>
+  空港配送は09:00〜17:00の受付時間に関係なく、すべて翌日発送です。
+  小型荷物は+1,000円、スーツケース・大型荷物は+1,600円の2日料金を適用します。
 </div>
 
 <section class="section">
@@ -147,25 +156,24 @@ select,input{width:100%;height:44px;padding:0 11px;border:1px solid #ccd7d0;bord
   <div class="ja-head">最終料金表</div>
   <div class="table-wrap">
     <table>
-      <thead>
-        <tr>
-          <th>사이즈<br><span class="jp-small">サイズ</span></th>
-          <th>구분<br><span class="jp-small">区分</span></th>
-          <th>야마토 원가<br><span class="jp-small">ヤマト原価</span></th>
-          <th>09:00~11:30 호텔<br><span class="jp-small">ホテル 当日集荷</span></th>
-          <th>11:40~익일 11:30 호텔<br><span class="jp-small">ホテル 翌日集荷</span></th>
-          <th>09:00~11:30 공항<br><span class="jp-small">空港 当日集荷</span></th>
-          <th>11:40~익일 11:30 공항<br><span class="jp-small">空港 翌日集荷</span></th>
-        </tr>
-      </thead>
-      <tbody>
+      
+<thead>
+  <tr>
+    <th>사이즈<br><span class="jp-small">サイズ</span></th>
+    <th>구분<br><span class="jp-small">区分</span></th>
+    <th>야마토 원가<br><span class="jp-small">ヤマト原価</span></th>
+    <th>09:00~11:30 호텔<br><span class="jp-small">ホテル 当日集荷</span></th>
+    <th>11:40~익일 11:30 호텔<br><span class="jp-small">ホテル 翌日集荷</span></th>
+    <th>09:00~17:00 접수 → 익일 발송<br><span class="jp-small">09:00〜17:00受付 → 翌日発送</span></th>
+  </tr>
+</thead>
+<tbody>
     <tr>
       <td><b>60까지</b><span class="jp-small">〜60サイズ</span></td>
       <td><b>소형짐</b><span class="jp-small">小型荷物</span></td>
       <td class="cost">740円</td>
       <td class="money">1,240円<span class="profit">이익 / 利益 +500円</span></td>
       <td class="money next">1,740円<span class="profit">이익 / 利益 +1,000円</span></td>
-      <td class="money">1,840円<span class="profit">이익 / 利益 +500円</span></td>
       <td class="money next">2,340円<span class="profit">이익 / 利益 +1,000円</span></td>
     </tr>
     
@@ -175,7 +183,6 @@ select,input{width:100%;height:44px;padding:0 11px;border:1px solid #ccd7d0;bord
       <td class="cost">980円</td>
       <td class="money">1,480円<span class="profit">이익 / 利益 +500円</span></td>
       <td class="money next">1,980円<span class="profit">이익 / 利益 +1,000円</span></td>
-      <td class="money">2,080円<span class="profit">이익 / 利益 +500円</span></td>
       <td class="money next">2,580円<span class="profit">이익 / 利益 +1,000円</span></td>
     </tr>
     
@@ -185,7 +192,6 @@ select,input{width:100%;height:44px;padding:0 11px;border:1px solid #ccd7d0;bord
       <td class="cost">1,240円</td>
       <td class="money">1,740円<span class="profit">이익 / 利益 +500円</span></td>
       <td class="money next">2,240円<span class="profit">이익 / 利益 +1,000円</span></td>
-      <td class="money">2,340円<span class="profit">이익 / 利益 +500円</span></td>
       <td class="money next">2,840円<span class="profit">이익 / 利益 +1,000円</span></td>
     </tr>
     
@@ -195,7 +201,6 @@ select,input{width:100%;height:44px;padding:0 11px;border:1px solid #ccd7d0;bord
       <td class="cost">1,680円</td>
       <td class="money">2,480円<span class="profit">이익 / 利益 +800円</span></td>
       <td class="money next">3,280円<span class="profit">이익 / 利益 +1,600円</span></td>
-      <td class="money">3,080円<span class="profit">이익 / 利益 +800円</span></td>
       <td class="money next">3,880円<span class="profit">이익 / 利益 +1,600円</span></td>
     </tr>
     
@@ -205,7 +210,6 @@ select,input{width:100%;height:44px;padding:0 11px;border:1px solid #ccd7d0;bord
       <td class="cost">2,200円</td>
       <td class="money">3,000円<span class="profit">이익 / 利益 +800円</span></td>
       <td class="money next">3,800円<span class="profit">이익 / 利益 +1,600円</span></td>
-      <td class="money">3,600円<span class="profit">이익 / 利益 +800円</span></td>
       <td class="money next">4,400円<span class="profit">이익 / 利益 +1,600円</span></td>
     </tr>
     
@@ -215,30 +219,28 @@ select,input{width:100%;height:44px;padding:0 11px;border:1px solid #ccd7d0;bord
       <td class="cost">2,530円</td>
       <td class="money">3,330円<span class="profit">이익 / 利益 +800円</span></td>
       <td class="money next">4,130円<span class="profit">이익 / 利益 +1,600円</span></td>
-      <td class="money">3,930円<span class="profit">이익 / 利益 +800円</span></td>
       <td class="money next">4,730円<span class="profit">이익 / 利益 +1,600円</span></td>
     </tr>
     
     <tr>
       <td><b>180까지</b><span class="jp-small">〜180サイズ</span></td>
-      <td><b>캐리어</b><span class="jp-small">スーツケース</span></td>
+      <td><b>대형짐</b><span class="jp-small">大型荷物</span></td>
       <td class="cost">3,110円</td>
       <td class="money">3,910円<span class="profit">이익 / 利益 +800円</span></td>
       <td class="money next">4,710円<span class="profit">이익 / 利益 +1,600円</span></td>
-      <td class="money">4,510円<span class="profit">이익 / 利益 +800円</span></td>
       <td class="money next">5,310円<span class="profit">이익 / 利益 +1,600円</span></td>
     </tr>
     
     <tr>
       <td><b>200까지</b><span class="jp-small">〜200サイズ</span></td>
-      <td><b>캐리어</b><span class="jp-small">スーツケース</span></td>
+      <td><b>대형짐</b><span class="jp-small">大型荷物</span></td>
       <td class="cost">3,810円</td>
       <td class="money">4,610円<span class="profit">이익 / 利益 +800円</span></td>
       <td class="money next">5,410円<span class="profit">이익 / 利益 +1,600円</span></td>
-      <td class="money">5,210円<span class="profit">이익 / 利益 +800円</span></td>
       <td class="money next">6,010円<span class="profit">이익 / 利益 +1,600円</span></td>
     </tr>
     </tbody>
+
     </table>
   </div>
 </section>
@@ -272,7 +274,7 @@ select,input{width:100%;height:44px;padding:0 11px;border:1px solid #ccd7d0;bord
       </select>
     </div>
     <div>
-      <label>수거 기준<small>集荷基準</small></label>
+      <label>호텔 수거 기준<small>ホテル集荷基準 · 공항 선택 시 자동 익일</small></label>
       <select id="pickup">
         <option value="same">09:00~11:30 · 당일 수거 / 当日集荷</option>
         <option value="next">11:40~익일 11:30 · 다음날 수거 / 翌日集荷</option>
@@ -315,8 +317,10 @@ function calc(){
   const n=Number(size);
   const isSmall=n<=100;
   const isLarge=n>=180;
-  const next=pickupEl.value==="next";
   const airport=destEl.value==="airport";
+
+  // 공항은 접수시간과 관계없이 무조건 다음날 발송 = 2일 요금 적용
+  const next=airport ? true : pickupEl.value==="next";
   const margin=isSmall ? (next ? 1000 : 500) : (next ? 1600 : 800);
   const sale=yamato[size]+margin+(airport?600:0);
 
@@ -325,14 +329,16 @@ function calc(){
     : isLarge
       ? "대형짐 / 大型荷物"
       : "캐리어 / スーツケース";
+
+  pickupEl.disabled=airport;
+
   document.getElementById("amount").textContent=sale.toLocaleString()+"円";
   document.getElementById("profit").textContent="이익 / 利益 +"+margin.toLocaleString()+"円";
 
   if(airport){
-    document.getElementById("delivery").textContent="익일 공항 배송 / 空港翌日配送";
+    document.getElementById("delivery").textContent="공항 익일 발송 / 空港翌日発送";
     document.getElementById("deliveryNote").textContent=
-      next ? "다음날 야마토 수거 + 공항 배송 / 翌日集荷 + 空港配送"
-           : "당일 야마토 수거 + 공항은 익일 배송 / 当日集荷 + 空港は翌日配送";
+      "09:00~17:00 접수 → 전부 다음날 발송 · 2일 요금 적용 / 09:00〜17:00はすべて翌日発送・2日料金適用";
   } else {
     document.getElementById("delivery").textContent=
       next ? "익일 호텔 배송 / ホテル翌日配送" : "당일 호텔 배송 / ホテル当日配送";
@@ -342,10 +348,12 @@ function calc(){
   }
 
   const typeName=isSmall ? "소형짐 / 小型荷物" : (isLarge ? "대형짐 / 大型荷物" : "캐리어 / スーツケース");
+  const feeName=airport ? "공항 2일 요금 / 空港2日料金" : (next ? "2일 요금 / 2日料金" : "1일 요금 / 1日料金");
+
   document.getElementById("breakdown").innerHTML=
     `<b>내부 계산 / 内部計算:</b> 야마토 / ヤマト ${yamato[size].toLocaleString()}円 + `+
-    `${typeName} 이익 / 利益 ${margin.toLocaleString()}円`+
-    `${airport ? " + 공항 / 空港 600円" : ""} = <b>${sale.toLocaleString()}円</b>`;
+    `${typeName} ${feeName} ${margin.toLocaleString()}円`+
+    `${airport ? " + 공항 추가운임 / 空港追加運賃 600円" : ""} = <b>${sale.toLocaleString()}円</b>`;
 }
 
 [sizeEl,destEl,pickupEl].forEach(el=>el.addEventListener("change",calc));
